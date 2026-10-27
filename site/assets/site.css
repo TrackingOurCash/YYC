@@ -141,3 +141,18 @@ a.card:hover { border-color: var(--s1); }
 .card .more { color: var(--link); font-size: 13px; margin-top: 8px; }
 
 [hidden] { display: none !important; }
+
+/* Council votes */
+.filters input[type="search"] {
+  font: inherit; font-size: 14px; color: var(--ink); background: var(--surface);
+  border: 1px solid var(--border); border-radius: 8px; padding: 6px 10px; min-width: 220px;
+}
+td.motion { min-width: 22rem; max-width: 40rem; }
+td.motion details summary { cursor: pointer; color: var(--ink); list-style: none; }
+td.motion details summary::-webkit-details-marker { display: none; }
+td.motion details summary .more-toggle { color: var(--link); white-space: nowrap; }
+td.motion details[open] summary .more-toggle { display: none; }
+td.motion .full { margin-top: 6px; color: var(--ink-2); }
+.result { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+.result::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--dot); }
+.load-more { margin-top: 12px; font: inherit; font-size: 14px; color: var(--link); background: none; border: 1px solid var(--border); border-radius: 8px; padding: 6px 12px; cursor: pointer; }

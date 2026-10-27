@@ -26,10 +26,13 @@ jobs:
         run: python collectors/jobs.py
       - name: Budget (Open Calgary)
         run: python collectors/budget.py
+      - name: Council votes (Open Calgary)
+        run: python collectors/votes.py
       - name: Build dashboard data
         run: |
           python scripts/build_jobs_summary.py
           python scripts/build_budget.py
+          python scripts/build_votes.py
       - name: Commit changes
         run: |
           git config user.name "yyc-collector"

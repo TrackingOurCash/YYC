@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Calgary council votes</title>
+<meta name="description" content="Every recorded City of Calgary council and committee vote since October 2020, with how each member voted.">
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<main>
+  <header>
+    <div class="crumb"><a href="https://trackingourcash.github.io/">Tracking Our Cash</a> / Calgary</div>
+    <h1>Calgary council votes</h1>
+    <p>Every recorded council and committee vote since electronic voting began in October 2020, from the City's <a href="https://data.calgary.ca/d/ruq3-99hx">Council and Committee Votes</a> data.</p>
+    <nav class="tabs" aria-label="Sections">
+      <a href="./">Overview</a><a href="jobs.html">City jobs</a><a href="budget.html">Budget</a><a href="votes.html" aria-current="page">Council votes</a>
+    </nav>
+  </header>
+
+  <div class="filters" role="group" aria-label="Filters">
+    <label>Council term
+      <select id="f-term">
+        <option value="2025">2025 to now</option>
+        <option value="2021">2021–2025</option>
+        <option value="2017">2017–2021 (from Oct 2020)</option>
+        <option value="">All terms</option>
+      </select>
+    </label>
+    <label>Meetings
+      <select id="f-meeting">
+        <option value="council">Council meetings</option>
+        <option value="">Council and committees</option>
+      </select>
+    </label>
+    <label>Motions
+      <select id="f-money">
+        <option value="money">Mentioning money</option>
+        <option value="">All motions</option>
+      </select>
+    </label>
+    <label>Search motion text
+      <input type="search" id="f-q" placeholder="e.g. Green Line, arena, housing">
+    </label>
+  </div>
+
+  <section class="hero" aria-label="Totals">
+    <div class="card stat big">
+      <div class="label">Motions voted on</div>
+      <div class="value" id="s-motions">–</div>
+      <div class="note" id="s-motions-note"></div>
+    </div>
+    <div class="card stat"><div class="label">Carried</div><div class="value" id="s-carried">–</div></div>
+    <div class="card stat"><div class="label">Unanimous</div><div class="value" id="s-unanimous">–</div></div>
+    <div class="card stat"><div class="label">Decided by 1 or 2 votes</div><div class="value" id="s-close">–</div></div>
+  </section>
+
+  <section class="card" style="margin-top:16px">
+    <h2>How often each member voted No</h2>
+    <p class="sub">Share of each member's Yes and No votes that were No, on the motions in view. Members with fewer than 10 votes in view aren't shown. Hover a row for counts.</p>
+    <div class="hbars" id="c-members"></div>
+  </section>
+
+  <section class="card" style="margin-top:16px">
+    <h2>Motions</h2>
+    <p class="sub" id="t-sub"></p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr id="t-head"></tr></thead>
+        <tbody id="t-body"></tbody>
+      </table>
+    </div>
+    <button class="load-more" id="more" hidden>Show 100 more</button>
+  </section>
+
+  <footer>
+    <p><strong>How the numbers work</strong></p>
+    <ul>
+      <li>"Mentioning money" means the motion's text includes a dollar figure or a word like budget, funding, grant, capital, levy, tax, contract or cost. It catches spending decisions but also some procedural motions; read the text to be sure.</li>
+      <li>The City's data has no motion number. Votes are grouped by meeting, date, wording and result, so two identically worded motions with the same result in one meeting may be counted as one.</li>
+      <li>Council terms start at the general elections of October 18, 2021 and October 20, 2025. Votes before October 7, 2020 aren't in the data; see the <a href="https://www.calgary.ca/agendaminutes">City's minutes</a> for those.</li>
+    </ul>
+    <p>Data: <a href="https://data.calgary.ca/d/ruq3-99hx">Council and Committee Votes</a> on Open Calgary, refreshed daily. Code: <a href="https://github.com/TrackingOurCash/YYC">github.com/TrackingOurCash/YYC</a>. Latest vote in the data: <span id="latest">–</span>.</p>
+  </footer>
+</main>
+
+<script src="assets/common.js"></script>
+<script>
+(() => {
+  const { $, money, num, pct, dayName, el, hbars, table, onResize } = YYC;
+  const TERMS = { "2017": ["2020-10-07", "2021-10-18"], "2021": ["2021-10-18", "2025-10-20"], "2025": ["2025-10-20", "9999"] };
+  let voters = [], types = [], motions = [];
+  const state = { term: "2025", meeting: "council", money: "money", q: "", sort: "date", dir: -1, shown: 100 };
+
+  function filtered() {
+    const [from, to] = state.term ? TERMS[state.term] : ["", "9999"];
+    const q = state.q.trim().toLowerCase();
+    return motions.filter((m) =>
+      m.date >= from && m.date < to &&
+      (!state.meeting || m.council) &&
+      (!state.money || m.money) &&
+      (!q || m.text.toLowerCase().includes(q)));
+  }
+
+  function renderStats(rows) {
+    const carried = rows.filter((m) => m.carried).length;
+    const unanimous = rows.filter((m) => m.no.length === 0 || m.yes.length === 0).length;
+    const close = rows.filter((m) => m.yes.length && m.no.length && Math.abs(m.yes.length - m.no.length) <= 2).length;
+    $("s-motions").textContent = num(rows.length);
+    const dates = rows.map((m) => m.date).sort();
+    $("s-motions-note").textContent = rows.length ? `${dayName(dates[0])} to ${dayName(dates[dates.length - 1])}` : "No motions match these filters";
+    $("s-carried").textContent = rows.length ? pct(carried / rows.length) : "–";
+    $("s-unanimous").textContent = rows.length ? pct(unanimous / rows.length) : "–";
+    $("s-close").textContent = num(close);
+  }
+
+  function renderMembers(rows) {
+    const c = voters.map(() => ({ yes: 0, no: 0, absent: 0 }));
+    for (const m of rows) {
+      for (const i of m.yes) c[i].yes++;
+      for (const i of m.no) c[i].no++;
+      for (const i of m.absent) c[i].absent++;
+    }
+    const list = c.map((v, i) => ({ name: voters[i], ...v, cast: v.yes + v.no }))
+      .filter((d) => d.cast >= 10)
+      .map((d) => ({
+        name: d.name,
+        value: d.no / d.cast,
+        tip: () => [["Voted No", `${pct(d.no / d.cast)} (${num(d.no)})`], ["Voted Yes", num(d.yes)], ["Absent", num(d.absent)]],
+      }))
+      .sort((a, b) => b.value - a.value);
+    hbars($("c-members"), list, { format: pct, empty: "No member has 10 or more votes on these motions." });
+  }
+
+  const names = (idx) => idx.map((i) => voters[i]).join(", ");
+  // Long No lists swamp the row; past 7 names, say who didn't vote No instead.
+  function noNames(m) {
+    if (m.no.length <= 7) return names(m.no);
+    return m.yes.length && m.yes.length <= 4 ? `${m.no.length} members, all but ${names(m.yes)}` : `${m.no.length} members`;
+  }
+  function motionCell(m) {
+    const short = m.text.length > 220 ? m.text.slice(0, 220).replace(/\s+\S*$/, "") + "…" : m.text;
+    if (short === m.text) return el("span", {}, m.text);
+    const d = el("details");
+    const s = el("summary");
+    s.append(el("span", {}, short + " "), el("span", { className: "more-toggle" }, "Read more"));
+    d.append(s, el("div", { className: "full" }, m.text));
+    return d;
+  }
+  function resultCell(m) {
+    const span = el("span", { className: "result" }, m.carried ? "Carried" : "Defeated");
+    span.style.setProperty("--dot", m.carried ? "var(--s1)" : "var(--s2)");
+    return span;
+  }
+  const COLS = [
+    { key: "date", label: "Date", desc: true, cls: "date", value: (m) => m.date, render: (m) => dayName(m.date) },
+    { key: "meeting", label: "Meeting", value: (m) => m.type },
+    { key: "text", label: "Motion", cls: "motion", value: (m) => m.text, render: motionCell },
+    { key: "amount", label: "Largest $ in text", num: true, value: (m) => m.amount ?? -1, render: (m) => (m.amount ? money(m.amount) : "") },
+    { key: "carried", label: "Result", value: (m) => m.carried, render: resultCell },
+    { key: "yes", label: "Yes", num: true, value: (m) => m.yes.length, render: (m) => num(m.yes.length) },
+    { key: "no", label: "No", num: true, value: (m) => m.no.length, render: (m) => num(m.no.length) },
+    { key: "noNames", label: "Voted No", value: (m) => names(m.no), render: noNames },
+  ];
+  function renderTable(rows) {
+    table($("t-head"), $("t-body"), rows, COLS, state, () => { state.shown = 100; renderTable(filtered()); }, { limit: state.shown });
+    $("more").hidden = rows.length <= state.shown;
+    $("t-sub").textContent = `Showing ${num(Math.min(rows.length, state.shown))} of ${num(rows.length)} motion${rows.length === 1 ? "" : "s"}. Select a column to sort.`;
+  }
+
+  function render() {
+    const rows = filtered();
+    renderStats(rows);
+    renderMembers(rows);
+    renderTable(rows);
+  }
+
+  fetch("data/votes.json", { cache: "no-cache" })
+    .then((r) => r.json())
+    .then((data) => {
+      voters = data.voters;
+      types = data.meeting_types;
+      motions = data.motions.map(([date, t, carried, money, amount, text, yes, no, absent]) => ({
+        date, type: types[t], council: / of Council$/.test(types[t]), carried: !!carried, money: !!money, amount, text, yes, no, absent,
+      }));
+      $("latest").textContent = dayName(motions.reduce((m, x) => (x.date > m ? x.date : m), ""));
+      const bind = (id, key, evt = "change") => $(id).addEventListener(evt, (e) => { state[key] = e.target.value; state.shown = 100; render(); });
+      bind("f-term", "term"); bind("f-meeting", "meeting"); bind("f-money", "money"); bind("f-q", "q", "input");
+      $("more").addEventListener("click", () => { state.shown += 100; renderTable(filtered()); });
+      render();
+    })
+    .catch(() => { $("t-sub").textContent = "Couldn't load the data. Try reloading the page."; });
+})();
+</script>
+</body>
+</html>

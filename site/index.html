@@ -14,7 +14,7 @@
     <h1>Where Calgary's money goes</h1>
     <p>What the City of Calgary commits to spend, collected from the City's own public data and updated every morning.</p>
     <nav class="tabs" aria-label="Sections">
-      <a href="./" aria-current="page">Overview</a><a href="jobs.html">City jobs</a><a href="budget.html">Budget</a><span>Council votes (coming)</span>
+      <a href="./" aria-current="page">Overview</a><a href="jobs.html">City jobs</a><a href="budget.html">Budget</a><a href="votes.html">Council votes</a>
     </nav>
   </header>
 
@@ -24,6 +24,12 @@
       <div class="value" id="b-value">–</div>
       <div class="note" id="b-note"></div>
       <div class="more">See the budget by department →</div>
+    </a>
+    <a class="card stat" href="votes.html">
+      <div class="label">Council motions mentioning money this term</div>
+      <div class="value" id="v-value">–</div>
+      <div class="note" id="v-note"></div>
+      <div class="more">See how each member voted →</div>
     </a>
     <a class="card stat" href="jobs.html">
       <div class="label">Estimated annual cost of jobs posted</div>
@@ -36,7 +42,6 @@
   <section class="card" style="margin-top:16px">
     <h2>Coming next</h2>
     <ul class="sub" style="margin:8px 0 0; padding-left:18px">
-      <li>Council votes: how each councillor voted on spending, from 2020 on</li>
       <li>Grants: who gets Civic Partners and FCSS funding, by name and amount</li>
       <li>Ward map: ward office spending and capital projects by ward</li>
     </ul>
@@ -57,6 +62,13 @@
     $("b-label").textContent = `${year} operating budget`;
     $("b-value").textContent = money(sum("operating"));
     $("b-note").textContent = `Plus ${money(sum("capital"))} in capital`;
+  }).catch(() => {});
+  fetch("data/votes.json", { cache: "no-cache" }).then((r) => r.json()).then((d) => {
+    const types = d.meeting_types;
+    const ms = d.motions.filter(([date, t, , money]) => date >= "2025-10-20" && / of Council$/.test(types[t]) && money);
+    $("v-value").textContent = num(ms.length);
+    const split = ms.filter(([, , , , , , yes, no]) => yes.length && no.length).length;
+    $("v-note").textContent = `${num(split)} with at least one No vote, since the October 2025 election`;
   }).catch(() => {});
   fetch("data/postings.json", { cache: "no-cache" }).then((r) => r.json()).then((ps) => {
     const since = ps.reduce((m, p) => (!m || p.first_seen < m ? p.first_seen : m), "");

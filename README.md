@@ -10,8 +10,9 @@ Part of [Tracking Our Cash](https://trackingourcash.github.io). The Calgary dash
 | --- | --- | --- |
 | City job postings | [calgary.ca/careers](https://www.calgary.ca/careers.html) | Daily |
 | Operating and capital budget, 2023 to 2032 | [Calgary Open Budget](https://data.calgary.ca/d/fqax-i3nz) on Open Calgary | Daily (the City updates it about once a year) |
+| Council and committee votes since October 2020 | [Council and Committee Votes](https://data.calgary.ca/d/ruq3-99hx) on Open Calgary | Daily |
 
-Council votes, Civic Partners and FCSS grants, and ward-level spending come next.
+Civic Partners and FCSS grants, and ward-level spending come next.
 
 ## Job postings
 
@@ -27,18 +28,24 @@ Council votes, Civic Partners and FCSS grants, and ward-level spending come next
 
 `collectors/budget.py` downloads the Calgary Open Budget dataset into `data/budget/open_budget.csv`, and `scripts/build_budget.py` turns it into `site/data/budget.json`. Amounts in the source are in millions; the JSON stores whole dollars. Operating figures are net of recoveries. Actual spending is only published for capital, for 2023 and 2024. `collectors/opencalgary.py` is the shared downloader for Open Calgary datasets.
 
+## Council votes
+
+`collectors/votes.py` downloads every recorded vote (about 55,000 rows, one per member per vote) and groups them into motions, since the City's data has no motion number. It writes `data/votes/motions.csv` (one row per motion, flagged when the text mentions money, with the largest dollar figure in the text) and `data/votes/ballots.csv` (one row per member per motion). `scripts/build_votes.py` packs both into `site/data/votes.json`.
+
 ## Running locally
 
 ```sh
 pip install -r requirements.txt
 python collectors/jobs.py
 python collectors/budget.py
+python collectors/votes.py
 python scripts/build_jobs_summary.py
 python scripts/build_budget.py
+python scripts/build_votes.py
 ```
 
 The GitHub Action in `.github/workflows/collect.yml` runs both every day at 13:00 UTC and commits any changes. `.github/workflows/pages.yml` then publishes `site/` to GitHub Pages.
 
 ## Dashboard
 
-`site/` is a static site with no build step: `index.html` (overview), `jobs.html` and `budget.html`, sharing `assets/site.css` and `assets/common.js`. Each page reads its JSON from `site/data/` and works out every total in the browser, so a page's filters apply to its totals, charts and table together. To preview it locally, run `python -m http.server -d site` and open http://localhost:8000.
+`site/` is a static site with no build step: `index.html` (overview), `jobs.html`, `budget.html` and `votes.html`, sharing `assets/site.css` and `assets/common.js`. Each page reads its JSON from `site/data/` and works out every total in the browser, so a page's filters apply to its totals, charts and table together. To preview it locally, run `python -m http.server -d site` and open http://localhost:8000.

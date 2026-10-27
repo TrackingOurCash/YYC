@@ -156,3 +156,10 @@ td.motion .full { margin-top: 6px; color: var(--ink-2); }
 .result { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
 .result::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--dot); }
 .load-more { margin-top: 12px; font: inherit; font-size: 14px; color: var(--link); background: none; border: 1px solid var(--border); border-radius: 8px; padding: 6px 12px; cursor: pointer; }
+
+/* Theme switch: sits at the end of the tab row */
+nav.tabs .theme { margin-left: auto; align-self: center; display: inline-flex; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 6px; }
+nav.tabs .theme button { font: inherit; font-size: 13px; color: var(--ink-2); background: var(--surface); border: 0; padding: 4px 10px; cursor: pointer; }
+nav.tabs .theme button + button { border-left: 1px solid var(--border); }
+nav.tabs .theme button[aria-pressed="true"] { color: var(--ink); background: var(--hover); font-weight: 600; }
+nav.tabs .theme button:focus-visible { outline: 2px solid var(--s1); outline-offset: -2px; }

@@ -1,0 +1,24 @@
+name: debug
+on:
+  push:
+    branches: [debug-detail]
+jobs:
+  dump:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: pip install -r requirements.txt
+      - run: |
+          python - <<'PY'
+          import sys; sys.path.insert(0, "collectors")
+          import jobs
+          from bs4 import BeautifulSoup
+          s = jobs.session()
+          for jid in ["315083", "315216", "315150", "315500"]:
+              url = f"https://recruiting.calgary.ca/psc/hcm/EMPLOYEE/HRMS/c/HRS_HRAM_FL.HRS_CG_SEARCH_FL.GBL?FOCUS=Applicant&Page=HRS_APP_JBPST_FL&JobOpeningId={jid}&PostingSeq=1&SiteId=1"
+              for _ in range(2):
+                  r = s.get(url, timeout=30)
+              text = BeautifulSoup(r.text, "html.parser").get_text("\n", strip=True)
+              print("=" * 20, jid, len(text))
+              print(text[:6000])
+          PY

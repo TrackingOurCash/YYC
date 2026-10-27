@@ -22,6 +22,20 @@ OUT = ROOT / "site" / "data" / "jobs_summary.json"
 
 STANDARD_WEEKLY_HOURS = 35
 
+# Postings spell some business units several ways; group them under one name.
+DEPARTMENT_ALIASES = {
+    "calgary police services": "Calgary Police Service",
+    "chief administrator´s office": "Chief Administrative Office",
+    "chief administrator's office": "Chief Administrative Office",
+    "capital planning & business services": "Capital Planning and Business Services",
+    "operational services": "Operational Services",
+}
+
+
+def department(row: dict) -> str:
+    name = " ".join((row.get("department") or "").split())
+    return DEPARTMENT_ALIASES.get(name.lower(), name) or "Not stated"
+
 
 def annual_midpoint(row: dict) -> float | None:
     try:
@@ -73,7 +87,7 @@ def summarise(rows: list[dict]) -> dict:
         keys = [
             by_month[row["first_seen"][:7]],
             by_category[row.get("category") or "Uncategorised"],
-            by_department[row.get("department") or "Not stated"],
+            by_department[department(row)],
             total,
         ]
         for b in keys:

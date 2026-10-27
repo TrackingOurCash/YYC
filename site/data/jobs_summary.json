@@ -150,10 +150,10 @@
    "est_annual_cost": 1323522,
    "with_pay": 7
   },
-  "Calgary Police Services": {
-   "postings": 5,
-   "positions": 8,
-   "permanent": 6,
+  "Calgary Police Service": {
+   "postings": 8,
+   "positions": 11,
+   "permanent": 9,
    "temporary": 2,
    "est_annual_cost": 732499,
    "with_pay": 5
@@ -165,6 +165,22 @@
    "temporary": 5,
    "est_annual_cost": 983878,
    "with_pay": 4
+  },
+  "Chief Administrative Office": {
+   "postings": 4,
+   "positions": 4,
+   "permanent": 4,
+   "temporary": 0,
+   "est_annual_cost": 423132,
+   "with_pay": 4
+  },
+  "Capital Planning and Business Services": {
+   "postings": 3,
+   "positions": 3,
+   "permanent": 3,
+   "temporary": 0,
+   "est_annual_cost": 374780,
+   "with_pay": 3
   },
   "Recreation and Social Programs": {
    "postings": 3,
@@ -181,30 +197,6 @@
    "temporary": 4,
    "est_annual_cost": 567540,
    "with_pay": 3
-  },
-  "Chief Administrative Office": {
-   "postings": 3,
-   "positions": 3,
-   "permanent": 3,
-   "temporary": 0,
-   "est_annual_cost": 319920,
-   "with_pay": 3
-  },
-  "Calgary Police Service": {
-   "postings": 3,
-   "positions": 3,
-   "permanent": 3,
-   "temporary": 0,
-   "est_annual_cost": 0,
-   "with_pay": 0
-  },
-  "Capital Planning and Business Services": {
-   "postings": 2,
-   "positions": 2,
-   "permanent": 2,
-   "temporary": 0,
-   "est_annual_cost": 299268,
-   "with_pay": 2
   },
   "Supply Management": {
    "postings": 2,
@@ -262,28 +254,12 @@
    "est_annual_cost": 170840,
    "with_pay": 1
   },
-  "Chief Administrator\u00b4s Office": {
-   "postings": 1,
-   "positions": 1,
-   "permanent": 1,
-   "temporary": 0,
-   "est_annual_cost": 103212,
-   "with_pay": 1
-  },
   "Corporate Security": {
    "postings": 1,
    "positions": 1,
    "permanent": 1,
    "temporary": 0,
    "est_annual_cost": 103212,
-   "with_pay": 1
-  },
-  "Capital Planning & Business Services": {
-   "postings": 1,
-   "positions": 1,
-   "permanent": 1,
-   "temporary": 0,
-   "est_annual_cost": 75512,
    "with_pay": 1
   },
   "Environmental Risk and Resilience": {
@@ -302,7 +278,7 @@
    "est_annual_cost": 98025,
    "with_pay": 1
   },
-  "Operational services": {
+  "Operational Services": {
    "postings": 1,
    "positions": 1,
    "permanent": 0,

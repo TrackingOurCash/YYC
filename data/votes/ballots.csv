@@ -13774,16 +13774,16 @@ motion_id,voter,vote
 3fbb06ea2ddf,Rob Ward,Yes
 3fcc31f8f90f,Andre Chabot,No
 3fcc31f8f90f,Courtney Walcott,Yes
-3fcc31f8f90f,Dan McLean,Yes
+3fcc31f8f90f,Dan McLean,No
 3fcc31f8f90f,Evan Spencer,Yes
-3fcc31f8f90f,Gian-Carlo Carra,Yes
+3fcc31f8f90f,Gian-Carlo Carra,No
 3fcc31f8f90f,Jasmine Mian,Yes
 3fcc31f8f90f,Jennifer Wyness,No
 3fcc31f8f90f,John (Richard) Pootmans,Yes
 3fcc31f8f90f,Kourtney Penner,Yes
 3fcc31f8f90f,Mayor J. Gondek,Yes
 3fcc31f8f90f,Peter Demong,Yes
-3fcc31f8f90f,Rajdeep Dhaliwal,No
+3fcc31f8f90f,Rajdeep Dhaliwal,Yes
 3fcc31f8f90f,Sean Chu,No
 3fcc31f8f90f,Sonya Sharp,Yes
 3fcc31f8f90f,Terry Wong,No
@@ -14084,16 +14084,16 @@ motion_id,voter,vote
 40ef69a4a7da,Terry Wong,Yes
 40f504e77777,Andre Chabot,No
 40f504e77777,Courtney Walcott,Yes
-40f504e77777,Dan McLean,No
+40f504e77777,Dan McLean,Yes
 40f504e77777,Evan Spencer,Yes
-40f504e77777,Gian-Carlo Carra,No
+40f504e77777,Gian-Carlo Carra,Yes
 40f504e77777,Jasmine Mian,Yes
 40f504e77777,Jennifer Wyness,Yes
 40f504e77777,John (Richard) Pootmans,Yes
 40f504e77777,Kourtney Penner,Yes
 40f504e77777,Mayor J. Gondek,Yes
 40f504e77777,Peter Demong,Yes
-40f504e77777,Rajdeep Dhaliwal,Yes
+40f504e77777,Rajdeep Dhaliwal,No
 40f504e77777,Sean Chu,No
 40f504e77777,Sonya Sharp,Yes
 40f504e77777,Terry Wong,No
@@ -25736,7 +25736,7 @@ motion_id,voter,vote
 75487754ef94,Andre Chabot,No
 75487754ef94,Andrew Yule,Yes
 75487754ef94,DJ Kelly,Yes
-75487754ef94,Dan McLean,Yes
+75487754ef94,Dan McLean,No
 75487754ef94,Harrison Clark,Yes
 75487754ef94,Jennifer Wyness,No
 75487754ef94,John Pantazopoulos,Yes
@@ -25744,7 +25744,7 @@ motion_id,voter,vote
 75487754ef94,Landon Johnston,No
 75487754ef94,Mayor J. Farkas,Yes
 75487754ef94,Mike Jamieson,No
-75487754ef94,Myke Atkinson,No
+75487754ef94,Myke Atkinson,Yes
 75487754ef94,Nathaniel Schmidt,Yes
 75487754ef94,Rajdeep Dhaliwal,No
 75487754ef94,Rob Ward,No
@@ -37353,7 +37353,7 @@ aca01909ba90,Shawn Small,Yes
 aca286135173,Brenden Montgomery,Yes
 aca286135173,Charles Boechler,No
 aca286135173,Chris Hardwicke,Yes
-aca286135173,Katherine Wagner,No
+aca286135173,Katherine Wagner,Yes
 aca286135173,Nathan Hawryluk,Yes
 aca286135173,Thom Mahler,Yes
 aca6ee99d6b1,Andre Chabot,Yes
@@ -42242,7 +42242,7 @@ c490ee03444b,Terry Wong,Yes
 c4a7e6e2bfd5,Brenden Montgomery,Yes
 c4a7e6e2bfd5,Charles Boechler,No
 c4a7e6e2bfd5,Chris Hardwicke,Yes
-c4a7e6e2bfd5,Katherine Wagner,Yes
+c4a7e6e2bfd5,Katherine Wagner,No
 c4a7e6e2bfd5,Nathan Hawryluk,Yes
 c4a7e6e2bfd5,Shawn Small,Yes
 c4a7e6e2bfd5,Thom Mahler,Yes
@@ -47296,7 +47296,7 @@ db7e91eecadc,Ryan Vanderputten,Yes
 db8241e88ed7,Andre Chabot,No
 db8241e88ed7,Andrew Yule,Yes
 db8241e88ed7,DJ Kelly,Yes
-db8241e88ed7,Dan McLean,No
+db8241e88ed7,Dan McLean,Yes
 db8241e88ed7,Harrison Clark,Yes
 db8241e88ed7,Jennifer Wyness,No
 db8241e88ed7,John Pantazopoulos,Yes
@@ -47304,7 +47304,7 @@ db8241e88ed7,Kim Tyers,Yes
 db8241e88ed7,Landon Johnston,No
 db8241e88ed7,Mayor J. Farkas,Yes
 db8241e88ed7,Mike Jamieson,No
-db8241e88ed7,Myke Atkinson,Yes
+db8241e88ed7,Myke Atkinson,No
 db8241e88ed7,Nathaniel Schmidt,Yes
 db8241e88ed7,Rajdeep Dhaliwal,No
 db8241e88ed7,Rob Ward,No
@@ -48819,7 +48819,7 @@ e219dab3576b,Mayor J. Gondek,Yes
 e219dab3576b,Peter Demong,No
 e219dab3576b,Rajdeep Dhaliwal,Yes
 e219dab3576b,Sean Chu,Yes
-e219dab3576b,Sonya Sharp,No
+e219dab3576b,Sonya Sharp,Yes
 e219dab3576b,Terry Wong,Yes
 e23c47dbded3,Andre Chabot,Yes
 e23c47dbded3,Courtney Walcott,Yes
@@ -52249,7 +52249,7 @@ f233749eacc9,Mayor J. Gondek,Yes
 f233749eacc9,Peter Demong,No
 f233749eacc9,Rajdeep Dhaliwal,Yes
 f233749eacc9,Sean Chu,Yes
-f233749eacc9,Sonya Sharp,Yes
+f233749eacc9,Sonya Sharp,No
 f233749eacc9,Terry Wong,Yes
 f23a7db1ec93,Gian-Carlo Carra,Yes
 f23a7db1ec93,Jacob Weber,Yes

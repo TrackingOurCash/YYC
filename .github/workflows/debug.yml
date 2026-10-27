@@ -9,25 +9,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - run: pip install -r requirements.txt
       - run: |
-          mkdir -p dump3
-          python3 - <<'PY'
-          import json, urllib.request, urllib.parse
-          B = "https://data.calgary.ca/resource/"
-          def get(ds, name, **q):
-              url = B + ds + ".json?" + urllib.parse.urlencode(q)
-              try:
-                  data = urllib.request.urlopen(url, timeout=60).read()
-              except Exception as e:
-                  data = json.dumps({"error": str(e), "url": url}).encode()
-              open(f"dump3/{name}.json", "wb").write(data)
-          get("fqax-i3nz", "budget", **{"$limit": 5000})
-          get("ruq3-99hx", "votes-types", **{"$select": "meetingtype,count(*)", "$group": "meetingtype", "$order": "count(*) desc"})
-          get("ruq3-99hx", "votes-voters", **{"$select": "voter,count(*)", "$group": "voter", "$order": "count(*) desc", "$limit": 200})
-          get("ruq3-99hx", "votes-range", **{"$select": "min(meetingdate),max(meetingdate)"})
-          get("ruq3-99hx", "votes-values", **{"$select": "vote,count(*)", "$group": "vote"})
-          get("ruq3-99hx", "votes-recent", **{"$order": "meetingdate desc", "$limit": 400})
+          python collectors/votes.py > votes_stats.txt
+          python - >> votes_stats.txt <<'PY'
+          import csv, collections
+          m = list(csv.DictReader(open("data/votes/motions.csv")))
+          b = list(csv.DictReader(open("data/votes/ballots.csv")))
+          per = collections.defaultdict(collections.Counter)
+          for x in b: per[x["motion_id"]][x["vote"]] += 1
+          sizes = collections.Counter(sum(c.values()) for c in per.values())
+          print("ballots per motion", sorted(sizes.items())[:40])
+          print(collections.Counter(x["meeting_type"] for x in m).most_common())
           PY
-          ls -la dump3
+          ls -la data/votes
           git config user.name dbg; git config user.email dbg@users.noreply.github.com
-          git add dump3; git commit -m "dump3 [skip ci]"; git push
+          git add votes_stats.txt data/votes; git commit -m "votes test [skip ci]"; git push

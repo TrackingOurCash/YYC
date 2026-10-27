@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Calgary city budget</title>
+<meta name="description" content="Where the City of Calgary's operating and capital budget goes, by department and business unit, 2023 to 2032.">
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<main>
+  <header>
+    <div class="crumb"><a href="https://trackingourcash.github.io/">Tracking Our Cash</a> / Calgary</div>
+    <h1>City of Calgary budget</h1>
+    <p>Where the money is planned to go, and where it went, from the City's <a href="https://data.calgary.ca/d/fqax-i3nz">Calgary Open Budget</a> data for the 2023–2026 Service Plans and Budgets.</p>
+    <nav class="tabs" aria-label="Sections">
+      <a href="./">Overview</a><a href="jobs.html">City jobs</a><a href="budget.html" aria-current="page">Budget</a><span>Council votes (coming)</span>
+    </nav>
+  </header>
+
+  <div class="filters" role="group" aria-label="Filters">
+    <label>Budget
+      <select id="f-fund">
+        <option value="operating">Operating</option>
+        <option value="capital">Capital</option>
+      </select>
+    </label>
+    <label>Year
+      <select id="f-year"></select>
+    </label>
+    <label>Figures
+      <select id="f-status">
+        <option value="Approved">Approved budget</option>
+        <option value="Actual">Actual spending</option>
+      </select>
+    </label>
+    <label>Department
+      <select id="f-dept"><option value="">All departments</option></select>
+    </label>
+  </div>
+
+  <section class="hero" aria-label="Totals">
+    <div class="card stat big">
+      <div class="label" id="s-main-label">Budget</div>
+      <div class="value" id="s-main">–</div>
+      <div class="note" id="s-main-note"></div>
+    </div>
+    <div class="card stat"><div class="label" id="s-other-label">Other budget</div><div class="value" id="s-other">–</div></div>
+    <div class="card stat"><div class="label">Change from previous year</div><div class="value" id="s-change">–</div></div>
+    <div class="card stat"><div class="label" id="s-top-label">Largest share</div><div class="value" id="s-top">–</div><div class="note" id="s-top-note"></div></div>
+  </section>
+
+  <section class="grid charts" style="margin-top:16px">
+    <div class="card">
+      <h2 id="c-split-title">By department</h2>
+      <p class="sub" id="c-split-sub">Hover a row for its share and change from the previous year.</p>
+      <div class="hbars" id="c-split"></div>
+    </div>
+    <div class="card">
+      <h2 id="c-years-title">By year</h2>
+      <p class="sub" id="c-years-sub"></p>
+      <div class="legend" id="lg-years"><span style="--c:var(--s1)">Approved budget</span><span style="--c:var(--s2)">Actual spending</span></div>
+      <svg id="c-years" role="img" aria-label="Budget by year" width="100%" height="240"></svg>
+    </div>
+  </section>
+
+  <section class="card" style="margin-top:16px">
+    <h2>Business units</h2>
+    <p class="sub" id="t-sub"></p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr id="t-head"></tr></thead>
+        <tbody id="t-body"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer>
+    <p><strong>How the numbers work</strong></p>
+    <ul>
+      <li>Operating figures are expenditures net of recoveries, the City's own measure. Money one City unit charges another isn't counted twice.</li>
+      <li>Capital figures are the approved capital budget for each year. Projects approved now run as far ahead as 2032.</li>
+      <li>Actual spending is published only for the capital budget, for 2023 and 2024. The dataset has no approved capital figures for those two years.</li>
+      <li>"Change from previous year" compares the same department, figures type and budget.</li>
+    </ul>
+    <p>Data: <a href="https://data.calgary.ca/d/fqax-i3nz">Calgary Open Budget</a> on Open Calgary, refreshed daily. Code: <a href="https://github.com/TrackingOurCash/YYC">github.com/TrackingOurCash/YYC</a>.</p>
+  </footer>
+</main>
+
+<script src="assets/common.js"></script>
+<script>
+(() => {
+  const { $, money, moneyFull, pct, el, hbars, columns, table, fillSelect, onResize } = YYC;
+  let all = [];
+  const state = { fund: "operating", year: 0, status: "Approved", dept: "", sort: "amount", dir: -1 };
+  const FUND = { operating: "operating", capital: "capital" };
+
+  const match = (r, o = {}) =>
+    r.fund === (o.fund ?? state.fund) &&
+    r.year === (o.year ?? state.year) &&
+    r.status === (o.status ?? state.status) &&
+    (!state.dept || r.department === state.dept);
+  const total = (o) => all.filter((r) => match(r, o)).reduce((s, r) => s + r.amount, 0);
+  const groupKey = (r) => (state.dept ? r.unit : r.department);
+
+  function sumBy(rows, key) {
+    const m = new Map();
+    for (const r of rows) m.set(key(r), (m.get(key(r)) || 0) + r.amount);
+    return m;
+  }
+  function change(cur, prev) {
+    if (!prev) return "–";
+    const d = (cur - prev) / Math.abs(prev);
+    if (Math.abs(d) < 0.0005) return "0.0%";
+    return `${d > 0 ? "+" : "−"}${(Math.abs(d) * 100).toFixed(1)}%`;
+  }
+
+  function renderStats() {
+    const cur = total(), prev = total({ year: state.year - 1 });
+    const other = state.fund === "operating" ? "capital" : "operating";
+    const scope = state.dept || "City";
+    const fig = state.status === "Approved" ? "budget" : "actual spending";
+    $("s-main-label").textContent = `${state.year} ${FUND[state.fund]} ${fig}, ${scope}`;
+    $("s-main").textContent = cur ? money(cur) : "No data";
+    $("s-main-note").textContent = cur ? moneyFull(cur) : `No ${fig} published for ${state.year}`;
+    $("s-other-label").textContent = `${state.year} ${other} ${fig}`;
+    const o = total({ fund: other });
+    $("s-other").textContent = o ? money(o) : "–";
+    $("s-change").textContent = cur && prev ? change(cur, prev) : "–";
+    const rows = all.filter((r) => match(r));
+    const top = [...sumBy(rows, groupKey).entries()].sort((a, b) => b[1] - a[1])[0];
+    $("s-top-label").textContent = state.dept ? "Largest business unit" : "Largest department";
+    $("s-top").textContent = top && cur ? pct(top[1] / cur) : "–";
+    $("s-top-note").textContent = top ? top[0] : "";
+  }
+
+  function renderSplit() {
+    const rows = all.filter((r) => match(r));
+    const prev = sumBy(all.filter((r) => match(r, { year: state.year - 1 })), groupKey);
+    const cur = rows.reduce((s, r) => s + r.amount, 0);
+    const list = [...sumBy(rows, groupKey).entries()]
+      .map(([name, value]) => ({
+        name, value,
+        tip: () => [["Amount", moneyFull(value)], ["Share", cur ? pct(value / cur) : "–"], [`Change from ${state.year - 1}`, change(value, prev.get(name))]],
+      }))
+      .filter((d) => d.value !== 0)
+      .sort((a, b) => b.value - a.value);
+    $("c-split-title").textContent = state.dept ? `${state.dept} by business unit` : "By department";
+    hbars($("c-split"), list, { empty: `No ${state.status === "Approved" ? "approved budget" : "actual spending"} published for ${state.year}.` });
+  }
+
+  function renderYears() {
+    const years = [...new Set(all.filter((r) => r.fund === state.fund).map((r) => r.year))].sort();
+    const sum = (y, status) => {
+      const v = all.filter((r) => r.fund === state.fund && r.year === y && r.status === status && (!state.dept || r.department === state.dept)).reduce((s, r) => s + r.amount, 0);
+      return v || null;
+    };
+    $("c-years-title").textContent = `${state.fund === "operating" ? "Operating" : "Capital"} by year`;
+    $("c-years-sub").textContent = state.dept || "All departments";
+    // Operating has no actuals, so it's a single series and needs no legend.
+    $("lg-years").hidden = !all.some((r) => r.fund === state.fund && r.status === "Actual");
+    columns($("c-years"), years, [
+      { label: "Approved budget", color: "var(--s1)", values: years.map((y) => sum(y, "Approved")) },
+      { label: "Actual spending", color: "var(--s2)", values: years.map((y) => sum(y, "Actual")) },
+    ], { format: money });
+  }
+
+  const COLS = [
+    { key: "department", label: "Department", value: (r) => r.department },
+    { key: "unit", label: "Business unit", value: (r) => r.unit },
+    { key: "amount", label: "Amount", num: true, value: (r) => r.amount, render: (r) => moneyFull(r.amount) },
+    { key: "share", label: "Share", num: true, value: (r) => r.share, render: (r) => pct(r.share) },
+    { key: "change", label: "Change from previous year", num: true, value: (r) => r.changeRatio ?? -Infinity, render: (r) => r.change },
+  ];
+  function renderTable() {
+    const rows = all.filter((r) => match(r));
+    const cur = rows.reduce((s, r) => s + r.amount, 0);
+    const prev = sumBy(all.filter((r) => match(r, { year: state.year - 1 })), (r) => r.department + "|" + r.unit);
+    const byUnit = sumBy(rows, (r) => r.department + "|" + r.unit);
+    const out = [...byUnit.entries()].map(([k, amount]) => {
+      const [department, unit] = k.split("|");
+      const p = prev.get(k);
+      return { department, unit, amount, share: cur ? amount / cur : 0, change: change(amount, p), changeRatio: p ? (amount - p) / p : null };
+    });
+    table($("t-head"), $("t-body"), out, COLS, state, renderTable);
+    $("t-sub").textContent = `${out.length} business unit${out.length === 1 ? "" : "s"}, ${state.year} ${state.fund} ${state.status === "Approved" ? "budget" : "actual spending"}. Select a column to sort.`;
+  }
+
+  function render() {
+    renderStats();
+    renderSplit();
+    renderYears();
+    renderTable();
+  }
+
+  function setYears() {
+    const years = [...new Set(all.filter((r) => r.fund === state.fund).map((r) => r.year))].sort((a, b) => b - a);
+    const sel = $("f-year");
+    sel.replaceChildren();
+    fillSelect("f-year", years);
+    const thisYear = new Date().getFullYear();
+    if (!years.includes(state.year)) state.year = years.includes(thisYear) ? thisYear : years[years.length - 1];
+    sel.value = state.year;
+  }
+
+  fetch("data/budget.json", { cache: "no-cache" })
+    .then((r) => r.json())
+    .then((data) => {
+      // A few rows are a few dollars either side of zero; they're noise at this scale.
+      all = data.filter((r) => Math.abs(r.amount) >= 1000);
+      setYears();
+      fillSelect("f-dept", [...new Set(all.map((r) => r.department))].sort());
+      $("f-fund").addEventListener("change", (e) => { state.fund = e.target.value; setYears(); render(); });
+      $("f-year").addEventListener("change", (e) => { state.year = +e.target.value; render(); });
+      $("f-status").addEventListener("change", (e) => { state.status = e.target.value; render(); });
+      $("f-dept").addEventListener("change", (e) => { state.dept = e.target.value; render(); });
+      render();
+      onResize(renderYears);
+    })
+    .catch(() => { $("t-sub").textContent = "Couldn't load the data. Try reloading the page."; });
+})();
+</script>
+</body>
+</html>

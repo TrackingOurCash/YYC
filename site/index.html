@@ -3,466 +3,67 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Calgary city jobs</title>
-<meta name="description" content="Every job the City of Calgary posts, tracked daily, with estimated annual cost by department and month.">
-<style>
-  :root {
-    color-scheme: light;
-    --page: #f9f9f7;
-    --surface: #fcfcfb;
-    --ink: #0b0b0b;
-    --ink-2: #52514e;
-    --muted: #898781;
-    --grid: #e1e0d9;
-    --axis: #c3c2b7;
-    --border: rgba(11, 11, 11, 0.10);
-    --s1: #2a78d6;
-    --s2: #eb6834;
-    --hover: rgba(11, 11, 11, 0.04);
-    --link: #1c5cab;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
-      color-scheme: dark;
-      --page: #0d0d0d;
-      --surface: #1a1a19;
-      --ink: #f0efec;
-      --ink-2: #c3c2b7;
-      --muted: #898781;
-      --grid: #2c2c2a;
-      --axis: #383835;
-      --border: rgba(255, 255, 255, 0.10);
-      --s1: #3987e5;
-      --s2: #d95926;
-      --hover: rgba(255, 255, 255, 0.05);
-      --link: #86b6ef;
-    }
-  }
-  :root[data-theme="dark"] {
-    color-scheme: dark;
-    --page: #0d0d0d;
-    --surface: #1a1a19;
-    --ink: #f0efec;
-    --ink-2: #c3c2b7;
-    --muted: #898781;
-    --grid: #2c2c2a;
-    --axis: #383835;
-    --border: rgba(255, 255, 255, 0.10);
-    --s1: #3987e5;
-    --s2: #d95926;
-    --hover: rgba(255, 255, 255, 0.05);
-    --link: #86b6ef;
-  }
-
-  * { box-sizing: border-box; }
-  body {
-    margin: 0;
-    background: var(--page);
-    color: var(--ink);
-    font: 15px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif;
-  }
-  a { color: var(--link); }
-  main { max-width: 1040px; margin: 0 auto; padding: 32px 16px 64px; }
-  header p { color: var(--ink-2); margin: 4px 0 0; max-width: 64ch; }
-  h1 { font-size: 28px; line-height: 1.2; margin: 0; }
-  h2 { font-size: 17px; margin: 0 0 2px; }
-  .sub { color: var(--ink-2); font-size: 13px; margin: 0 0 16px; }
-  .crumb { font-size: 13px; color: var(--muted); margin-bottom: 8px; }
-  .crumb a { color: var(--muted); }
-
-  .filters { display: flex; flex-wrap: wrap; gap: 12px; margin: 24px 0 16px; align-items: end; }
-  .filters label { display: grid; gap: 4px; font-size: 12px; color: var(--ink-2); }
-  select {
-    font: inherit; font-size: 14px; color: var(--ink); background: var(--surface);
-    border: 1px solid var(--border); border-radius: 8px; padding: 6px 10px; min-width: 180px;
-  }
-
-  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
-  .grid { display: grid; gap: 16px; }
-  .hero { display: grid; grid-template-columns: 1.4fr repeat(3, 1fr); gap: 16px; }
-  @media (max-width: 760px) {
-    .hero { grid-template-columns: repeat(3, 1fr); gap: 12px; }
-    .hero .big { grid-column: 1 / -1; }
-    .hero .stat:not(.big) { padding: 14px; }
-    .hero .stat:not(.big) .value { font-size: 22px; }
-  }
-  .stat .label { font-size: 13px; color: var(--ink-2); }
-  .stat .value { font-size: 28px; font-weight: 600; line-height: 1.2; margin-top: 4px; }
-  .stat.big .value { font-size: 48px; }
-  .stat .note { font-size: 12px; color: var(--muted); margin-top: 4px; }
-  .charts { grid-template-columns: 3fr 2fr; }
-  @media (max-width: 760px) { .charts { grid-template-columns: 1fr; } }
-
-  /* Horizontal bars, one HTML row per department */
-  .hbars { display: grid; gap: 6px; }
-  .hbar { display: grid; grid-template-columns: minmax(0, 13rem) 1fr 4.5rem; gap: 10px; align-items: center;
-          border-radius: 6px; padding: 2px 4px; cursor: default; outline: none; }
-  .hbar:hover, .hbar:focus-visible { background: var(--hover); }
-  .hbar .name { font-size: 13px; color: var(--ink-2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .hbar .track { height: 16px; position: relative; border-left: 1px solid var(--axis); }
-  .hbar .fill { position: absolute; left: 0; top: 0; bottom: 0; background: var(--s1); border-radius: 0 4px 4px 0; min-width: 2px; }
-  .hbar .val { font-size: 13px; color: var(--ink); text-align: right; font-variant-numeric: tabular-nums; }
-  @media (max-width: 480px) {
-    .hbar { grid-template-columns: 1fr 4.5rem; row-gap: 2px; }
-    .hbar .name { grid-column: 1 / -1; }
-  }
-
-  .legend { display: flex; gap: 16px; font-size: 12px; color: var(--ink-2); margin-bottom: 8px; }
-  .legend span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 2px;
-                         margin-right: 6px; vertical-align: -1px; background: var(--c); }
-  svg text { fill: var(--muted); font-size: 11px; font-variant-numeric: tabular-nums; }
-  svg .grid line { stroke: var(--grid); }
-  svg .base { stroke: var(--axis); }
-  svg .col { outline: none; }
-  svg .col:hover rect.seg, svg .col:focus-visible rect.seg { filter: brightness(1.12); }
-  svg .lbl { fill: var(--ink); font-size: 12px; }
-
-  #tip { position: fixed; pointer-events: none; z-index: 10; background: var(--surface); color: var(--ink);
-         border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px; font-size: 12px;
-         box-shadow: 0 4px 16px rgba(0,0,0,.12); min-width: 160px; display: none; }
-  #tip .t { color: var(--ink-2); margin-bottom: 4px; }
-  #tip .r { display: flex; justify-content: space-between; gap: 16px; }
-  #tip .r b { font-variant-numeric: tabular-nums; }
-
-  .table-wrap { overflow-x: auto; }
-  table { width: 100%; min-width: 760px; border-collapse: collapse; font-size: 13px; }
-  td.date { white-space: nowrap; }
-  td.job { min-width: 14rem; }
-  th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--grid); vertical-align: top; }
-  th { color: var(--ink-2); font-weight: 600; white-space: nowrap; }
-  th button { all: unset; cursor: pointer; }
-  th button:focus-visible { outline: 2px solid var(--s1); border-radius: 2px; }
-  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
-  tbody tr:hover { background: var(--hover); }
-  .empty { color: var(--muted); padding: 24px 0; text-align: center; }
-  footer { margin-top: 32px; color: var(--ink-2); font-size: 13px; }
-  footer ul { padding-left: 18px; }
-</style>
+<title>Tracking Calgary's cash</title>
+<meta name="description" content="What the City of Calgary commits to spend: its budget, the jobs it posts, and the council votes behind them.">
+<link rel="stylesheet" href="assets/site.css">
 </head>
 <body>
 <main>
   <header>
     <div class="crumb"><a href="https://trackingourcash.github.io/">Tracking Our Cash</a> / Calgary</div>
-    <h1>City of Calgary job postings</h1>
-    <p id="intro">Every job the City posts, collected each morning from <a href="https://www.calgary.ca/careers.html">calgary.ca/careers</a>.</p>
+    <h1>Where Calgary's money goes</h1>
+    <p>What the City of Calgary commits to spend, collected from the City's own public data and updated every morning.</p>
+    <nav class="tabs" aria-label="Sections">
+      <a href="./" aria-current="page">Overview</a><a href="jobs.html">City jobs</a><a href="budget.html">Budget</a><span>Council votes (coming)</span>
+    </nav>
   </header>
 
-  <div class="filters" role="group" aria-label="Filters">
-    <label>Month first posted
-      <select id="f-month"><option value="">All months</option></select>
-    </label>
-    <label>Department
-      <select id="f-dept"><option value="">All departments</option></select>
-    </label>
-    <label>Position type
-      <select id="f-type">
-        <option value="">Permanent and temporary</option>
-        <option value="permanent">Permanent only</option>
-        <option value="temporary">Temporary only</option>
-      </select>
-    </label>
-  </div>
-
-  <section class="hero" aria-label="Totals">
-    <div class="card stat big">
-      <div class="label">Estimated annual cost of posted positions</div>
-      <div class="value" id="s-cost">–</div>
-      <div class="note" id="s-cost-note"></div>
-    </div>
-    <div class="card stat"><div class="label">Postings</div><div class="value" id="s-postings">–</div></div>
-    <div class="card stat"><div class="label">Positions</div><div class="value" id="s-positions">–</div></div>
-    <div class="card stat"><div class="label">Perm. / temp.</div><div class="value" id="s-split">–</div></div>
-  </section>
-
-  <section class="grid charts" style="margin-top:16px">
-    <div class="card">
-      <h2>Estimated annual cost by department</h2>
-      <p class="sub">Pay range midpoint × positions. Hover a row for details.</p>
-      <div class="hbars" id="c-dept"></div>
-    </div>
-    <div class="card">
-      <h2>Positions posted by month</h2>
-      <p class="sub">By the month each posting first appeared.</p>
-      <div class="legend"><span style="--c:var(--s1)">Permanent</span><span style="--c:var(--s2)">Temporary</span></div>
-      <svg id="c-month" role="img" aria-label="Positions posted by month" width="100%" height="240"></svg>
-    </div>
+  <section class="cards" aria-label="Sections">
+    <a class="card stat" href="budget.html">
+      <div class="label" id="b-label">Operating budget</div>
+      <div class="value" id="b-value">–</div>
+      <div class="note" id="b-note"></div>
+      <div class="more">See the budget by department →</div>
+    </a>
+    <a class="card stat" href="jobs.html">
+      <div class="label">Estimated annual cost of jobs posted</div>
+      <div class="value" id="j-value">–</div>
+      <div class="note" id="j-note"></div>
+      <div class="more">See every posting →</div>
+    </a>
   </section>
 
   <section class="card" style="margin-top:16px">
-    <h2>Postings</h2>
-    <p class="sub" id="t-sub"></p>
-    <div class="table-wrap">
-      <table>
-        <thead><tr id="t-head"></tr></thead>
-        <tbody id="t-body"></tbody>
-      </table>
-    </div>
+    <h2>Coming next</h2>
+    <ul class="sub" style="margin:8px 0 0; padding-left:18px">
+      <li>Council votes: how each councillor voted on spending, from 2020 on</li>
+      <li>Grants: who gets Civic Partners and FCSS funding, by name and amount</li>
+      <li>Ward map: ward office spending and capital projects by ward</li>
+    </ul>
   </section>
 
   <footer>
-    <p><strong>How the numbers work</strong></p>
-    <ul>
-      <li>The City's list shows no posting date, so a posting's date is the first morning it appeared here. Tracking started <span id="since">–</span>; earlier postings aren't counted.</li>
-      <li>Department, union, pay range, hours and position counts come from each posting's "Position and Pay Information" section.</li>
-      <li>Annual cost is the pay range midpoint × positions. Hourly pay is annualised from the posting's weekly hours (35 if not stated). Temporary positions count at the same yearly rate, so this is a yearly run rate, not the total paid over a term. Postings without pay count as $0.</li>
-      <li>A posting is a job the City intends to fill, not a confirmed hire.</li>
-    </ul>
-    <p>Data and code: <a href="https://github.com/TrackingOurCash/YYC">github.com/TrackingOurCash/YYC</a>. Updated <span id="updated">–</span>.</p>
+    <p>Data and code: <a href="https://github.com/TrackingOurCash/YYC">github.com/TrackingOurCash/YYC</a>.</p>
   </footer>
 </main>
-<div id="tip" role="tooltip"></div>
 
+<script src="assets/common.js"></script>
 <script>
 (() => {
-  const $ = (id) => document.getElementById(id);
-  const money = (v) => v >= 1e6 ? `$${(v / 1e6).toFixed(1)}M` : v >= 1e3 ? `$${Math.round(v / 1e3)}K` : `$${Math.round(v)}`;
-  const moneyFull = (v) => v == null ? "–" : "$" + Math.round(v).toLocaleString("en-CA");
-  const num = (v) => v.toLocaleString("en-CA");
-  const monthName = (m) => new Date(m + "-15").toLocaleDateString("en-CA", { month: "short", year: "numeric" });
-  const dayName = (d) => d ? new Date(d + "T12:00").toLocaleDateString("en-CA", { month: "short", day: "numeric", year: "numeric" }) : "–";
-  const el = (tag, props = {}, text) => {
-    const n = document.createElement(tag);
-    Object.assign(n, props);
-    if (text != null) n.textContent = text;
-    return n;
-  };
-  const svgEl = (tag, attrs = {}) => {
-    const n = document.createElementNS("http://www.w3.org/2000/svg", tag);
-    for (const [k, v] of Object.entries(attrs)) n.setAttribute(k, v);
-    return n;
-  };
-
-  // Tooltip: rows of [label, value]; values lead.
-  const tip = $("tip");
-  function showTip(evt, title, rows) {
-    tip.replaceChildren(el("div", { className: "t" }, title),
-      ...rows.map(([k, v]) => { const r = el("div", { className: "r" }); r.append(el("span", {}, k), el("b", {}, v)); return r; }));
-    tip.style.display = "block";
-    const box = evt.currentTarget.getBoundingClientRect();
-    const x = evt.clientX ?? box.left + box.width / 2;
-    const y = evt.clientY ?? box.top;
-    const w = tip.offsetWidth, h = tip.offsetHeight;
-    tip.style.left = Math.min(window.innerWidth - w - 8, Math.max(8, x + 12)) + "px";
-    tip.style.top = Math.max(8, y - h - 12) + "px";
-  }
-  const hideTip = () => { tip.style.display = "none"; };
-  function hover(node, title, rows) {
-    node.tabIndex = 0;
-    for (const e of ["pointermove", "focus"]) node.addEventListener(e, (evt) => showTip(evt, title, rows()));
-    for (const e of ["pointerleave", "blur"]) node.addEventListener(e, hideTip);
-  }
-
-  let all = [];
-  const state = { month: "", dept: "", type: "", sort: "first_seen", dir: -1 };
-
-  function positionsOf(p) {
-    return state.type === "permanent" ? p.permanent : state.type === "temporary" ? p.temporary : p.permanent + p.temporary;
-  }
-  function costOf(p) {
-    const n = p.permanent + p.temporary;
-    return p.est_annual_cost == null || n === 0 ? 0 : p.est_annual_cost * positionsOf(p) / n;
-  }
-
-  function filtered() {
-    return all.filter((p) =>
-      (!state.month || p.first_seen.startsWith(state.month)) &&
-      (!state.dept || p.department === state.dept) &&
-      positionsOf(p) > 0);
-  }
-
-  function renderStats(rows) {
-    const cost = rows.reduce((s, p) => s + costOf(p), 0);
-    const perm = rows.reduce((s, p) => s + (state.type === "temporary" ? 0 : p.permanent), 0);
-    const temp = rows.reduce((s, p) => s + (state.type === "permanent" ? 0 : p.temporary), 0);
-    const noPay = rows.filter((p) => p.pay_min == null).length;
-    $("s-cost").textContent = money(cost);
-    $("s-cost-note").textContent = noPay ? `${noPay} posting${noPay > 1 ? "s" : ""} list no pay and count as $0` : "Every posting in view lists pay";
-    $("s-postings").textContent = num(rows.length);
-    $("s-positions").textContent = num(perm + temp);
-    $("s-split").textContent = `${num(perm)} / ${num(temp)}`;
-  }
-
-  function renderDept(rows) {
-    const by = new Map();
-    for (const p of rows) {
-      const d = by.get(p.department) || { cost: 0, postings: 0, perm: 0, temp: 0 };
-      d.cost += costOf(p); d.postings += 1;
-      if (state.type !== "temporary") d.perm += p.permanent;
-      if (state.type !== "permanent") d.temp += p.temporary;
-      by.set(p.department, d);
-    }
-    let list = [...by.entries()].sort((a, b) => b[1].cost - a[1].cost);
-    const TOP = 12;
-    if (list.length > TOP + 1) {
-      const rest = list.slice(TOP).reduce((o, [, d]) => ({ cost: o.cost + d.cost, postings: o.postings + d.postings, perm: o.perm + d.perm, temp: o.temp + d.temp }), { cost: 0, postings: 0, perm: 0, temp: 0 });
-      list = [...list.slice(0, TOP), [`${list.length - TOP} other departments`, rest]];
-    }
-    const max = Math.max(1, ...list.map(([, d]) => d.cost));
-    const host = $("c-dept");
-    host.replaceChildren();
-    if (!list.length) { host.append(el("div", { className: "empty" }, "No postings match these filters.")); return; }
-    for (const [name, d] of list) {
-      const row = el("div", { className: "hbar" });
-      const track = el("div", { className: "track" });
-      const fill = el("div", { className: "fill" });
-      fill.style.width = (100 * d.cost / max) + "%";
-      track.append(fill);
-      row.append(el("div", { className: "name", title: name }, name), track, el("div", { className: "val" }, money(d.cost)));
-      row.setAttribute("aria-label", `${name}: ${moneyFull(d.cost)}`);
-      hover(row, name, () => [["Est. annual cost", moneyFull(d.cost)], ["Postings", num(d.postings)], ["Permanent positions", num(d.perm)], ["Temporary positions", num(d.temp)]]);
-      host.append(row);
-    }
-  }
-
-  function renderMonths(rows) {
-    const svg = $("c-month");
-    svg.replaceChildren();
-    const months = [...new Set(all.map((p) => p.first_seen.slice(0, 7)))].sort();
-    const data = months.map((m) => {
-      const ps = rows.filter((p) => p.first_seen.startsWith(m));
-      return {
-        m,
-        perm: state.type === "temporary" ? 0 : ps.reduce((s, p) => s + p.permanent, 0),
-        temp: state.type === "permanent" ? 0 : ps.reduce((s, p) => s + p.temporary, 0),
-      };
-    });
-    const W = svg.clientWidth || 360, H = 240, L = 36, R = 8, T = 20, B = 26;
-    svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
-    const maxV = Math.max(1, ...data.map((d) => d.perm + d.temp));
-    const step = Math.pow(10, Math.floor(Math.log10(maxV)));
-    const tickStep = [1, 2, 5, 10].map((k) => k * step).find((s) => maxV / s <= 5);
-    const top = Math.ceil(maxV / tickStep) * tickStep;
-    const y = (v) => T + (H - T - B) * (1 - v / top);
-    const g = svgEl("g", { class: "grid" });
-    for (let v = 0; v <= top; v += tickStep) {
-      if (v > 0) g.append(svgEl("line", { x1: L, x2: W - R, y1: y(v), y2: y(v) }));
-      const t = svgEl("text", { x: L - 6, y: y(v) + 4, "text-anchor": "end" }); t.textContent = v; svg.append(t);
-    }
-    svg.append(g);
-    svg.append(svgEl("line", { class: "base", x1: L, x2: W - R, y1: y(0), y2: y(0) }));
-    const band = (W - L - R) / Math.max(1, data.length);
-    const bw = Math.min(24, band * 0.6);
-    // A rect with only its top corners rounded, square at the baseline.
-    const topRounded = (x, y0, w, h, r) => {
-      r = Math.min(r, h, w / 2);
-      return `M${x},${y0 + h}V${y0 + r}Q${x},${y0} ${x + r},${y0}H${x + w - r}Q${x + w},${y0} ${x + w},${y0 + r}V${y0 + h}Z`;
-    };
-    data.forEach((d, i) => {
-      const cx = L + band * i + band / 2, x = cx - bw / 2;
-      const col = svgEl("g", { class: "col" });
-      // hit target: the whole band
-      col.append(svgEl("rect", { x: L + band * i, y: T, width: band, height: H - T - B, fill: "transparent" }));
-      const hp = y(0) - y(d.perm), ht = y(0) - y(d.temp);
-      const gap = d.perm && d.temp ? 2 : 0;
-      if (d.perm) {
-        const seg = d.temp ? svgEl("rect", { x, y: y(d.perm), width: bw, height: hp }) : svgEl("path", { d: topRounded(x, y(d.perm), bw, hp, 4) });
-        seg.setAttribute("class", "seg"); seg.setAttribute("fill", "var(--s1)"); col.append(seg);
-      }
-      if (d.temp) {
-        const y0 = y(d.perm + d.temp);
-        const seg = svgEl("path", { d: topRounded(x, y0, bw, Math.max(1, ht - gap), 4), class: "seg", fill: "var(--s2)" });
-        col.append(seg);
-      }
-      const total = d.perm + d.temp;
-      if (total) { const t = svgEl("text", { x: cx, y: y(total) - 6, "text-anchor": "middle", class: "lbl" }); t.textContent = total; col.append(t); }
-      const xl = svgEl("text", { x: cx, y: H - 8, "text-anchor": "middle" }); xl.textContent = monthName(d.m); col.append(xl);
-      col.setAttribute("aria-label", `${monthName(d.m)}: ${d.perm} permanent, ${d.temp} temporary`);
-      hover(col, monthName(d.m), () => [["Permanent", num(d.perm)], ["Temporary", num(d.temp)], ["Total positions", num(total)]]);
-      svg.append(col);
-    });
-  }
-
-  const COLS = [
-    { key: "first_seen", label: "Posted" },
-    { key: "title", label: "Job" },
-    { key: "department", label: "Department" },
-    { key: "positions", label: "Positions", num: true },
-    { key: "pay_min", label: "Pay range", num: true },
-    { key: "cost", label: "Est. annual cost", num: true },
-    { key: "closing", label: "Closes" },
-  ];
-  function sortValue(p, key) {
-    if (key === "positions") return positionsOf(p);
-    if (key === "cost") return costOf(p);
-    return p[key] ?? "";
-  }
-  function payText(p) {
-    if (p.pay_min == null) return "Not listed";
-    const f = (v) => p.pay_basis === "hourly" ? `$${v.toFixed(2)}` : moneyFull(v);
-    const range = p.pay_max && p.pay_max !== p.pay_min ? `${f(p.pay_min)}–${f(p.pay_max)}` : f(p.pay_min);
-    return range + (p.pay_basis === "hourly" ? "/hr" : "/yr");
-  }
-  function renderTable(rows) {
-    const head = $("t-head");
-    head.replaceChildren(...COLS.map((c) => {
-      const th = el("th", { className: c.num ? "num" : "" });
-      const b = el("button", {}, c.label + (state.sort === c.key ? (state.dir > 0 ? " ↑" : " ↓") : ""));
-      b.addEventListener("click", () => { state.dir = state.sort === c.key ? -state.dir : (c.num || c.key === "first_seen" ? -1 : 1); state.sort = c.key; renderTable(filtered()); });
-      th.setAttribute("aria-sort", state.sort === c.key ? (state.dir > 0 ? "ascending" : "descending") : "none");
-      th.append(b);
-      return th;
-    }));
-    const sorted = [...rows].sort((a, b) => {
-      const va = sortValue(a, state.sort), vb = sortValue(b, state.sort);
-      return (va < vb ? -1 : va > vb ? 1 : 0) * state.dir;
-    });
-    const body = $("t-body");
-    body.replaceChildren(...sorted.map((p) => {
-      const tr = el("tr");
-      const job = el("td", { className: "job" });
-      job.append(el("a", { href: p.url, rel: "noopener" }, p.title));
-      const posPerm = state.type === "temporary" ? 0 : p.permanent, posTemp = state.type === "permanent" ? 0 : p.temporary;
-      tr.append(
-        el("td", { className: "date" }, dayName(p.first_seen)),
-        job,
-        el("td", {}, p.department),
-        el("td", { className: "num", title: `${posPerm} permanent, ${posTemp} temporary` }, num(posPerm + posTemp)),
-        el("td", { className: "num" }, payText(p)),
-        el("td", { className: "num" }, p.est_annual_cost == null ? "–" : moneyFull(costOf(p))),
-        el("td", { className: "date" }, dayName(p.closing)));
-      return tr;
-    }));
-    if (!sorted.length) {
-      const tr = el("tr"); const td = el("td", { className: "empty", colSpan: COLS.length }, "No postings match these filters.");
-      tr.append(td); body.append(tr);
-    }
-    $("t-sub").textContent = `${num(rows.length)} posting${rows.length === 1 ? "" : "s"}. Select a column to sort; select a job to open the City's posting.`;
-  }
-
-  function render() {
-    const rows = filtered();
-    renderStats(rows);
-    renderDept(rows);
-    renderMonths(rows);
-    renderTable(rows);
-  }
-
-  function fillSelect(id, values, label) {
-    const s = $(id);
-    for (const v of values) s.append(el("option", { value: v }, label ? label(v) : v));
-  }
-
-  fetch("data/postings.json", { cache: "no-cache" })
-    .then((r) => r.json())
-    .then((data) => {
-      all = data;
-      const since = all.reduce((m, p) => (!m || p.first_seen < m ? p.first_seen : m), "");
-      const updated = all.reduce((m, p) => (p.last_seen > m ? p.last_seen : m), "");
-      $("since").textContent = dayName(since);
-      $("updated").textContent = dayName(updated);
-      $("intro").append(` Tracking since ${dayName(since)}.`);
-      fillSelect("f-month", [...new Set(all.map((p) => p.first_seen.slice(0, 7)))].sort().reverse(), monthName);
-      fillSelect("f-dept", [...new Set(all.map((p) => p.department))].sort());
-      for (const [id, key] of [["f-month", "month"], ["f-dept", "dept"], ["f-type", "type"]]) {
-        $(id).addEventListener("change", (e) => { state[key] = e.target.value; render(); });
-      }
-      render();
-      let t;
-      window.addEventListener("resize", () => { clearTimeout(t); t = setTimeout(() => renderMonths(filtered()), 150); });
-    })
-    .catch(() => {
-      $("t-sub").textContent = "Couldn't load the data. Try reloading the page.";
-    });
+  const { $, money, num, dayName } = YYC;
+  fetch("data/budget.json", { cache: "no-cache" }).then((r) => r.json()).then((rows) => {
+    const year = Math.max(...rows.filter((r) => r.fund === "operating" && r.status === "Approved").map((r) => r.year));
+    const sum = (fund) => rows.filter((r) => r.fund === fund && r.year === year && r.status === "Approved").reduce((s, r) => s + r.amount, 0);
+    $("b-label").textContent = `${year} operating budget`;
+    $("b-value").textContent = money(sum("operating"));
+    $("b-note").textContent = `Plus ${money(sum("capital"))} in capital`;
+  }).catch(() => {});
+  fetch("data/postings.json", { cache: "no-cache" }).then((r) => r.json()).then((ps) => {
+    const since = ps.reduce((m, p) => (!m || p.first_seen < m ? p.first_seen : m), "");
+    const positions = ps.reduce((s, p) => s + p.permanent + p.temporary, 0);
+    $("j-value").textContent = money(ps.reduce((s, p) => s + (p.est_annual_cost || 0), 0));
+    $("j-note").textContent = `${num(ps.length)} postings, ${num(positions)} positions since ${dayName(since)}`;
+  }).catch(() => {});
 })();
 </script>
 </body>

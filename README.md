@@ -9,8 +9,9 @@ Part of [Tracking Our Cash](https://trackingourcash.github.io). The Calgary dash
 | Data | Source | How often |
 | --- | --- | --- |
 | City job postings | [calgary.ca/careers](https://www.calgary.ca/careers.html) | Daily |
+| Operating and capital budget, 2023 to 2032 | [Calgary Open Budget](https://data.calgary.ca/d/fqax-i3nz) on Open Calgary | Daily (the City updates it about once a year) |
 
-More sources (budget, Civic Partners and FCSS grants, ward office expenses, contract awards, council votes) are added in later steps.
+Council votes, Civic Partners and FCSS grants, and ward-level spending come next.
 
 ## Job postings
 
@@ -22,16 +23,22 @@ More sources (budget, Civic Partners and FCSS grants, ward office expenses, cont
 
 `scripts/build_jobs_summary.py` turns that table into `site/data/jobs_summary.json`, with totals by month, job category, department and overall. Estimated annual cost uses the midpoint of each posted pay range times the number of positions. Hourly rates are annualised from the posting's weekly hours (35 if not stated). Temporary positions count at the same annual rate, so the figure is a yearly run rate, not a total over the term.
 
+## Budget
+
+`collectors/budget.py` downloads the Calgary Open Budget dataset into `data/budget/open_budget.csv`, and `scripts/build_budget.py` turns it into `site/data/budget.json`. Amounts in the source are in millions; the JSON stores whole dollars. Operating figures are net of recoveries. Actual spending is only published for capital, for 2023 and 2024. `collectors/opencalgary.py` is the shared downloader for Open Calgary datasets.
+
 ## Running locally
 
 ```sh
 pip install -r requirements.txt
 python collectors/jobs.py
+python collectors/budget.py
 python scripts/build_jobs_summary.py
+python scripts/build_budget.py
 ```
 
 The GitHub Action in `.github/workflows/collect.yml` runs both every day at 13:00 UTC and commits any changes. `.github/workflows/pages.yml` then publishes `site/` to GitHub Pages.
 
 ## Dashboard
 
-`site/index.html` is a single static page with no build step. It reads `site/data/postings.json` and works out every total in the browser, so the month, department and position-type filters apply to the totals, both charts and the table together. To preview it locally, run `python -m http.server -d site` and open http://localhost:8000.
+`site/` is a static site with no build step: `index.html` (overview), `jobs.html` and `budget.html`, sharing `assets/site.css` and `assets/common.js`. Each page reads its JSON from `site/data/` and works out every total in the browser, so a page's filters apply to its totals, charts and table together. To preview it locally, run `python -m http.server -d site` and open http://localhost:8000.

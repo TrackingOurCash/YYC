@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Calgary city jobs</title>
+<meta name="description" content="Every job the City of Calgary posts, tracked daily, with estimated annual cost by department and month.">
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<main>
+  <header>
+    <div class="crumb"><a href="https://trackingourcash.github.io/">Tracking Our Cash</a> / Calgary</div>
+    <h1>City of Calgary job postings</h1>
+    <p id="intro">Every job the City posts, collected each morning from <a href="https://www.calgary.ca/careers.html">calgary.ca/careers</a>.</p>
+    <nav class="tabs" aria-label="Sections">
+      <a href="./">Overview</a><a href="jobs.html" aria-current="page">City jobs</a><a href="budget.html">Budget</a><span>Council votes (coming)</span>
+    </nav>
+  </header>
+
+  <div class="filters" role="group" aria-label="Filters">
+    <label>Month first posted
+      <select id="f-month"><option value="">All months</option></select>
+    </label>
+    <label>Department
+      <select id="f-dept"><option value="">All departments</option></select>
+    </label>
+    <label>Position type
+      <select id="f-type">
+        <option value="">Permanent and temporary</option>
+        <option value="permanent">Permanent only</option>
+        <option value="temporary">Temporary only</option>
+      </select>
+    </label>
+  </div>
+
+  <section class="hero" aria-label="Totals">
+    <div class="card stat big">
+      <div class="label">Estimated annual cost of posted positions</div>
+      <div class="value" id="s-cost">–</div>
+      <div class="note" id="s-cost-note"></div>
+    </div>
+    <div class="card stat"><div class="label">Postings</div><div class="value" id="s-postings">–</div></div>
+    <div class="card stat"><div class="label">Positions</div><div class="value" id="s-positions">–</div></div>
+    <div class="card stat"><div class="label">Perm. / temp.</div><div class="value" id="s-split">–</div></div>
+  </section>
+
+  <section class="grid charts" style="margin-top:16px">
+    <div class="card">
+      <h2>Estimated annual cost by department</h2>
+      <p class="sub">Pay range midpoint × positions. Hover a row for details.</p>
+      <div class="hbars" id="c-dept"></div>
+    </div>
+    <div class="card">
+      <h2>Positions posted by month</h2>
+      <p class="sub">By the month each posting first appeared.</p>
+      <div class="legend"><span style="--c:var(--s1)">Permanent</span><span style="--c:var(--s2)">Temporary</span></div>
+      <svg id="c-month" role="img" aria-label="Positions posted by month" width="100%" height="240"></svg>
+    </div>
+  </section>
+
+  <section class="card" style="margin-top:16px">
+    <h2>Postings</h2>
+    <p class="sub" id="t-sub"></p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr id="t-head"></tr></thead>
+        <tbody id="t-body"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer>
+    <p><strong>How the numbers work</strong></p>
+    <ul>
+      <li>The City's list shows no posting date, so a posting's date is the first morning it appeared here. Tracking started <span id="since">–</span>; earlier postings aren't counted.</li>
+      <li>Department, union, pay range, hours and position counts come from each posting's "Position and Pay Information" section.</li>
+      <li>Annual cost is the pay range midpoint × positions. Hourly pay is annualised from the posting's weekly hours (35 if not stated). Temporary positions count at the same yearly rate, so this is a yearly run rate, not the total paid over a term. Postings without pay count as $0.</li>
+      <li>A posting is a job the City intends to fill, not a confirmed hire.</li>
+    </ul>
+    <p>Data and code: <a href="https://github.com/TrackingOurCash/YYC">github.com/TrackingOurCash/YYC</a>. Updated <span id="updated">–</span>.</p>
+  </footer>
+</main>
+
+<script src="assets/common.js"></script>
+<script>
+(() => {
+  const { $, money, moneyFull, num, monthName, dayName, el, hbars, columns, table, fillSelect, onResize } = YYC;
+  let all = [];
+  const state = { month: "", dept: "", type: "", sort: "first_seen", dir: -1 };
+
+  const permOf = (p) => (state.type === "temporary" ? 0 : p.permanent);
+  const tempOf = (p) => (state.type === "permanent" ? 0 : p.temporary);
+  const positionsOf = (p) => permOf(p) + tempOf(p);
+  function costOf(p) {
+    const n = p.permanent + p.temporary;
+    return p.est_annual_cost == null || n === 0 ? 0 : p.est_annual_cost * positionsOf(p) / n;
+  }
+  const filtered = () => all.filter((p) =>
+    (!state.month || p.first_seen.startsWith(state.month)) &&
+    (!state.dept || p.department === state.dept) &&
+    positionsOf(p) > 0);
+
+  function renderStats(rows) {
+    const perm = rows.reduce((s, p) => s + permOf(p), 0);
+    const temp = rows.reduce((s, p) => s + tempOf(p), 0);
+    const noPay = rows.filter((p) => p.pay_min == null).length;
+    $("s-cost").textContent = money(rows.reduce((s, p) => s + costOf(p), 0));
+    $("s-cost-note").textContent = noPay ? `${noPay} posting${noPay > 1 ? "s" : ""} list no pay and count as $0` : "Every posting in view lists pay";
+    $("s-postings").textContent = num(rows.length);
+    $("s-positions").textContent = num(perm + temp);
+    $("s-split").textContent = `${num(perm)} / ${num(temp)}`;
+  }
+
+  function renderDept(rows) {
+    const by = new Map();
+    for (const p of rows) {
+      const d = by.get(p.department) || { value: 0, postings: 0, perm: 0, temp: 0 };
+      d.value += costOf(p); d.postings += 1; d.perm += permOf(p); d.temp += tempOf(p);
+      by.set(p.department, d);
+    }
+    let list = [...by.entries()].map(([name, d]) => ({ name, ...d })).sort((a, b) => b.value - a.value);
+    const TOP = 12;
+    if (list.length > TOP + 1) {
+      const rest = list.slice(TOP);
+      const sum = (k) => rest.reduce((s, d) => s + d[k], 0);
+      list = [...list.slice(0, TOP), { name: `${rest.length} other departments`, value: sum("value"), postings: sum("postings"), perm: sum("perm"), temp: sum("temp") }];
+    }
+    for (const d of list) {
+      d.tip = () => [["Est. annual cost", moneyFull(d.value)], ["Postings", num(d.postings)], ["Permanent positions", num(d.perm)], ["Temporary positions", num(d.temp)]];
+    }
+    hbars($("c-dept"), list, { empty: "No postings match these filters." });
+  }
+
+  function renderMonths(rows) {
+    const months = [...new Set(all.map((p) => p.first_seen.slice(0, 7)))].sort();
+    const sumFor = (m, f) => rows.filter((p) => p.first_seen.startsWith(m)).reduce((s, p) => s + f(p), 0);
+    columns($("c-month"), months, [
+      { label: "Permanent", color: "var(--s1)", values: months.map((m) => sumFor(m, permOf)) },
+      { label: "Temporary", color: "var(--s2)", values: months.map((m) => sumFor(m, tempOf)) },
+    ], { stacked: true, catLabel: monthName });
+  }
+
+  function payText(p) {
+    if (p.pay_min == null) return "Not listed";
+    const f = (v) => (p.pay_basis === "hourly" ? `$${v.toFixed(2)}` : moneyFull(v));
+    const range = p.pay_max && p.pay_max !== p.pay_min ? `${f(p.pay_min)}–${f(p.pay_max)}` : f(p.pay_min);
+    return range + (p.pay_basis === "hourly" ? "/hr" : "/yr");
+  }
+  const COLS = [
+    { key: "first_seen", label: "Posted", desc: true, cls: "date", value: (p) => p.first_seen, render: (p) => dayName(p.first_seen) },
+    { key: "title", label: "Job", cls: "job", value: (p) => p.title, render: (p) => el("a", { href: p.url, rel: "noopener" }, p.title) },
+    { key: "department", label: "Department", value: (p) => p.department },
+    { key: "positions", label: "Positions", num: true, value: positionsOf, render: (p) => num(positionsOf(p)) },
+    { key: "pay", label: "Pay range", num: true, value: (p) => p.pay_min ?? -1, render: payText },
+    { key: "cost", label: "Est. annual cost", num: true, value: costOf, render: (p) => (p.est_annual_cost == null ? "–" : moneyFull(costOf(p))) },
+    { key: "closing", label: "Closes", cls: "date", value: (p) => p.closing, render: (p) => dayName(p.closing) },
+  ];
+  function renderTable(rows) {
+    table($("t-head"), $("t-body"), rows, COLS, state, () => renderTable(filtered()));
+    $("t-sub").textContent = `${num(rows.length)} posting${rows.length === 1 ? "" : "s"}. Select a column to sort; select a job to open the City's posting.`;
+  }
+
+  function render() {
+    const rows = filtered();
+    renderStats(rows);
+    renderDept(rows);
+    renderMonths(rows);
+    renderTable(rows);
+  }
+
+  fetch("data/postings.json", { cache: "no-cache" })
+    .then((r) => r.json())
+    .then((data) => {
+      all = data;
+      const since = all.reduce((m, p) => (!m || p.first_seen < m ? p.first_seen : m), "");
+      const updated = all.reduce((m, p) => (p.last_seen > m ? p.last_seen : m), "");
+      $("since").textContent = dayName(since);
+      $("updated").textContent = dayName(updated);
+      $("intro").append(` Tracking since ${dayName(since)}.`);
+      fillSelect("f-month", [...new Set(all.map((p) => p.first_seen.slice(0, 7)))].sort().reverse(), monthName);
+      fillSelect("f-dept", [...new Set(all.map((p) => p.department))].sort());
+      for (const [id, key] of [["f-month", "month"], ["f-dept", "dept"], ["f-type", "type"]]) {
+        $(id).addEventListener("change", (e) => { state[key] = e.target.value; render(); });
+      }
+      render();
+      onResize(() => renderMonths(filtered()));
+    })
+    .catch(() => { $("t-sub").textContent = "Couldn't load the data. Try reloading the page."; });
+})();
+</script>
+</body>
+</html>

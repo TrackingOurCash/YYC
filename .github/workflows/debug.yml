@@ -10,13 +10,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: |
-          mkdir -p dump
-          UA="Mozilla/5.0 (compatible; TrackingOurCash-YYC/0.1; +https://github.com/TrackingOurCash/YYC)"
-          curl -sSL -A "$UA" https://calgary.ca/our-finances/civic-partners-funding.html -o dump/civic.html
-          curl -sSL -A "$UA" https://www.calgary.ca/social-services/funding/organization-allocations.html -o dump/fcss.html
-          curl -sSL -A "$UA" https://www.calgary.ca/service-lines/budget-overview.html -o dump/budget.html
-          curl -sSL -A "$UA" "https://www.calgary.ca/our-finances/2026-budget.html" -o dump/budget2026.html
-          curl -sSL -A "$UA" "https://data.calgary.ca/api/catalog/v1?domains=data.calgary.ca&limit=500" -o dump/catalog.json
-          ls -la dump
+          mkdir -p dump2
+          curl -sSL "https://data.calgary.ca/api/catalog/v1?domains=data.calgary.ca&limit=500&offset=500" -o dump2/catalog2.json
+          for id in ruq3-99hx fqax-i3nz 9bze-mzx6 jd78-wxjp tz8z-hyaz n4di-6hi3; do
+            curl -sSL "https://data.calgary.ca/api/views/$id.json" -o dump2/meta-$id.json
+            curl -sSL "https://data.calgary.ca/resource/$id.json?\$limit=5" -o dump2/rows-$id.json
+            curl -sSL "https://data.calgary.ca/resource/$id.json?\$select=count(*)" -o dump2/count-$id.json
+          done
+          ls -la dump2
           git config user.name dbg; git config user.email dbg@users.noreply.github.com
-          git add dump; git commit -m "dump [skip ci]"; git push
+          git add dump2; git commit -m "dump2 [skip ci]"; git push

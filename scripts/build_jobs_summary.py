@@ -19,6 +19,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 POSTINGS_CSV = ROOT / "data" / "jobs" / "postings.csv"
 OUT = ROOT / "site" / "data" / "jobs_summary.json"
+POSTINGS_OUT = ROOT / "site" / "data" / "postings.json"
 
 STANDARD_WEEKLY_HOURS = 35
 
@@ -112,6 +113,28 @@ def summarise(rows: list[dict]) -> dict:
     }
 
 
+def posting_record(row: dict) -> dict:
+    perm, temp = positions(row)
+    cost = annual_midpoint(row)
+    return {
+        "id": row["job_id"],
+        "title": row["title"],
+        "department": department(row),
+        "category": row.get("category", ""),
+        "first_seen": row["first_seen"],
+        "last_seen": row["last_seen"],
+        "closing": row.get("closing_date", ""),
+        "pay_min": float(row["salary_min"]) if row.get("salary_min") else None,
+        "pay_max": float(row["salary_max"]) if row.get("salary_max") else None,
+        "pay_basis": row.get("pay_basis", ""),
+        "union": row.get("union", ""),
+        "permanent": perm,
+        "temporary": temp,
+        "est_annual_cost": round(cost * (perm + temp)) if cost is not None else None,
+        "url": row["url"],
+    }
+
+
 def main() -> None:
     rows = []
     if POSTINGS_CSV.exists():
@@ -119,7 +142,9 @@ def main() -> None:
             rows = list(csv.DictReader(f))
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps(summarise(rows), indent=1) + "\n")
-    print(f"wrote {OUT.relative_to(ROOT)} from {len(rows)} postings")
+    records = sorted((posting_record(r) for r in rows), key=lambda r: r["first_seen"], reverse=True)
+    POSTINGS_OUT.write_text(json.dumps(records, separators=(",", ":")) + "\n")
+    print(f"wrote {OUT.relative_to(ROOT)} and {POSTINGS_OUT.relative_to(ROOT)} from {len(rows)} postings")
 
 
 if __name__ == "__main__":

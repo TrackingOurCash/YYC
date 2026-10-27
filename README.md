@@ -30,4 +30,8 @@ python collectors/jobs.py
 python scripts/build_jobs_summary.py
 ```
 
-The GitHub Action in `.github/workflows/collect.yml` runs both every day at 13:00 UTC and commits any changes.
+The GitHub Action in `.github/workflows/collect.yml` runs both every day at 13:00 UTC and commits any changes. `.github/workflows/pages.yml` then publishes `site/` to GitHub Pages.
+
+## Dashboard
+
+`site/index.html` is a single static page with no build step. It reads `site/data/postings.json` and works out every total in the browser, so the month, department and position-type filters apply to the totals, both charts and the table together. To preview it locally, run `python -m http.server -d site` and open http://localhost:8000.

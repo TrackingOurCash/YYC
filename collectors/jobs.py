@@ -63,10 +63,11 @@ FIELDS = [
     "audience",
     "details_fetched",
     "details_version",
+    "source",  # "" from the daily collector, "archive" from the backfill
 ]
 
 LISTING_FIELDS = {"job_id", "title", "category", "closing_date", "url"}
-TRACKING_FIELDS = {"first_seen", "last_seen", "details_fetched", "details_version"}
+TRACKING_FIELDS = {"first_seen", "last_seen", "details_fetched", "details_version", "source"}
 DETAIL_FIELDS = [f for f in FIELDS if f not in LISTING_FIELDS | TRACKING_FIELDS]
 
 CLOSING_RE = re.compile(r"Closing\s+date:?\s*(\d{4}[/-]\d{2}[/-]\d{2})", re.I)

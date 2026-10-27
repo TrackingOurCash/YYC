@@ -1,0 +1,3 @@
+{"rows": 54801, "motions": 4901, "money_motions": 1267}
+ballots per motion [(1, 35), (2, 43), (3, 15), (4, 11), (5, 160), (6, 497), (7, 576), (8, 376), (9, 254), (10, 55), (11, 54), (12, 104), (13, 366), (14, 992), (15, 1363)]
+[('Regular Meeting of Council', 1527), ('Combined Meeting of Council', 1166), ('Calgary Planning Commission', 1087), ('Audit Committee', 490), ('Intergovernmental Affairs Committee', 195), ('Strategic Meeting of Council', 133), ('Organizational Meeting of Council', 109), ('Priorities and Finance Committee', 82), ('Special Meeting of Council', 47), ('SPC on Transportation and Transit', 21), ('SPC on Planning and Urban Development', 20), ('SPC on Community and Protective Services', 15), ('Gas, Power and Telecommunications Committee', 9)]

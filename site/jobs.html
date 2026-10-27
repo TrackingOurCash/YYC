@@ -26,6 +26,12 @@
     <label>Department
       <select id="f-dept"><option value="">All departments</option></select>
     </label>
+    <label>Group by
+      <select id="f-group">
+        <option value="category">Job category</option>
+        <option value="department">Department</option>
+      </select>
+    </label>
     <label>Position type
       <select id="f-type">
         <option value="">Permanent and temporary</option>
@@ -43,19 +49,19 @@
     </div>
     <div class="card stat"><div class="label">Postings</div><div class="value" id="s-postings">–</div></div>
     <div class="card stat"><div class="label">Positions</div><div class="value" id="s-positions">–</div></div>
-    <div class="card stat"><div class="label">Perm. / temp.</div><div class="value" id="s-split">–</div></div>
+    <div class="card stat"><div class="label">Perm. / temp.</div><div class="value" id="s-split">–</div><div class="note" id="s-split-note"></div></div>
   </section>
 
   <section class="grid charts" style="margin-top:16px">
     <div class="card">
-      <h2>Estimated annual cost by department</h2>
-      <p class="sub">Pay range midpoint × positions. Hover a row for details.</p>
+      <h2 id="c-group-title">Estimated annual cost by job category</h2>
+      <p class="sub">Pay range midpoint × positions, where pay is known. Hover a row for details.</p>
       <div class="hbars" id="c-dept"></div>
     </div>
     <div class="card">
       <h2>Positions posted by month</h2>
-      <p class="sub">By the month each posting first appeared.</p>
-      <div class="legend"><span style="--c:var(--s1)">Permanent</span><span style="--c:var(--s2)">Temporary</span></div>
+      <p class="sub">By the month each posting was first seen.</p>
+      <div class="legend"><span style="--c:var(--s1)">Permanent</span><span style="--c:var(--s2)">Temporary</span><span style="--c:var(--s3)">Type not known</span></div>
       <svg id="c-month" role="img" aria-label="Positions posted by month" width="100%" height="240"></svg>
     </div>
   </section>
@@ -69,14 +75,16 @@
         <tbody id="t-body"></tbody>
       </table>
     </div>
+    <button class="load-more" id="more" hidden>Show 100 more</button>
   </section>
 
   <footer>
     <p><strong>How the numbers work</strong></p>
     <ul>
-      <li>The City's list shows no posting date, so a posting's date is the first morning it appeared here. Tracking started <span id="since">–</span>; earlier postings aren't counted.</li>
-      <li>Department, union, pay range, hours and position counts come from each posting's "Position and Pay Information" section.</li>
-      <li>Annual cost is the pay range midpoint × positions. Hourly pay is annualised from the posting's weekly hours (35 if not stated). Temporary positions count at the same yearly rate, so this is a yearly run rate, not the total paid over a term. Postings without pay count as $0.</li>
+      <li>Daily tracking started <span id="since">–</span>. The City's list shows no posting date, so a posting's date is the first morning it was seen.</li>
+      <li>Postings from before then were rebuilt from <a href="https://web.archive.org/web/2026*/calgary.ca/careers.html">Internet Archive copies</a> of the careers page, which caught it a few times a month. Their date is the first archived copy that lists them, and postings open only between copies are missed. These are marked "Archived".</li>
+      <li>Department, union, pay range, hours and position counts come from each posting's "Position and Pay Information" section. For archived postings that section usually wasn't saved, so department is "Not stated" and the position counts as one of unknown type.</li>
+      <li>Annual cost is the pay range midpoint × positions. When a posting's own pay isn't available, it uses the range for the same title on the City's <a href="https://data.calgary.ca/d/9bze-mzx6">compensation disclosure list</a>, then the pay on another posting with the same title. Postings with no match count as $0, so totals are a floor. Hourly pay is annualised from weekly hours (35 if not stated), and temporary positions count at the yearly rate.</li>
       <li>A posting is a job the City intends to fill, not a confirmed hire.</li>
     </ul>
     <p>Data and code: <a href="https://github.com/TrackingOurCash/YYC">github.com/TrackingOurCash/YYC</a>. Updated <span id="updated">–</span>.</p>
@@ -88,13 +96,14 @@
 (() => {
   const { $, money, moneyFull, num, monthName, dayName, el, hbars, columns, table, fillSelect, onResize } = YYC;
   let all = [];
-  const state = { month: "", dept: "", type: "", sort: "first_seen", dir: -1 };
+  const state = { month: "", dept: "", type: "", group: "category", sort: "first_seen", dir: -1 };
 
   const permOf = (p) => (state.type === "temporary" ? 0 : p.permanent);
   const tempOf = (p) => (state.type === "permanent" ? 0 : p.temporary);
-  const positionsOf = (p) => permOf(p) + tempOf(p);
+  const unknownOf = (p) => (state.type ? 0 : p.unknown);
+  const positionsOf = (p) => permOf(p) + tempOf(p) + unknownOf(p);
   function costOf(p) {
-    const n = p.permanent + p.temporary;
+    const n = p.permanent + p.temporary + p.unknown;
     return p.est_annual_cost == null || n === 0 ? 0 : p.est_annual_cost * positionsOf(p) / n;
   }
   const filtered = () => all.filter((p) =>
@@ -103,32 +112,40 @@
     positionsOf(p) > 0);
 
   function renderStats(rows) {
-    const perm = rows.reduce((s, p) => s + permOf(p), 0);
-    const temp = rows.reduce((s, p) => s + tempOf(p), 0);
-    const noPay = rows.filter((p) => p.pay_min == null).length;
-    $("s-cost").textContent = money(rows.reduce((s, p) => s + costOf(p), 0));
-    $("s-cost-note").textContent = noPay ? `${noPay} posting${noPay > 1 ? "s" : ""} list no pay and count as $0` : "Every posting in view lists pay";
+    const sum = (f) => rows.reduce((s, p) => s + f(p), 0);
+    const perm = sum(permOf), temp = sum(tempOf), unknown = sum(unknownOf);
+    const fromPosting = rows.filter((p) => p.pay_source === "posting").length;
+    const estimated = rows.filter((p) => p.pay_source && p.pay_source !== "posting").length;
+    const noPay = rows.length - fromPosting - estimated;
+    $("s-cost").textContent = money(sum(costOf));
+    $("s-cost-note").textContent = !rows.length ? "" : noPay
+      ? `Pay known for ${num(fromPosting + estimated)} of ${num(rows.length)} postings (${num(estimated)} estimated from the City's salary list). The rest count as $0.`
+      : estimated ? `${num(estimated)} of ${num(rows.length)} postings use pay from the City's salary list` : "Every posting in view lists pay";
     $("s-postings").textContent = num(rows.length);
-    $("s-positions").textContent = num(perm + temp);
+    $("s-positions").textContent = num(perm + temp + unknown);
     $("s-split").textContent = `${num(perm)} / ${num(temp)}`;
+    $("s-split-note").textContent = unknown ? `${num(unknown)} not known` : "";
   }
 
   function renderDept(rows) {
     const by = new Map();
+    const key = (p) => p[state.group];
     for (const p of rows) {
-      const d = by.get(p.department) || { value: 0, postings: 0, perm: 0, temp: 0 };
-      d.value += costOf(p); d.postings += 1; d.perm += permOf(p); d.temp += tempOf(p);
-      by.set(p.department, d);
+      const d = by.get(key(p)) || { value: 0, postings: 0, perm: 0, temp: 0, unknown: 0, noPay: 0 };
+      d.value += costOf(p); d.postings += 1; d.perm += permOf(p); d.temp += tempOf(p); d.unknown += unknownOf(p);
+      if (p.est_annual_cost == null) d.noPay += 1;
+      by.set(key(p), d);
     }
+    $("c-group-title").textContent = `Estimated annual cost by ${state.group === "category" ? "job category" : "department"}`;
     let list = [...by.entries()].map(([name, d]) => ({ name, ...d })).sort((a, b) => b.value - a.value);
     const TOP = 12;
     if (list.length > TOP + 1) {
       const rest = list.slice(TOP);
       const sum = (k) => rest.reduce((s, d) => s + d[k], 0);
-      list = [...list.slice(0, TOP), { name: `${rest.length} other departments`, value: sum("value"), postings: sum("postings"), perm: sum("perm"), temp: sum("temp") }];
+      list = [...list.slice(0, TOP), { name: `${rest.length} other ${state.group === "category" ? "categories" : "departments"}`, value: sum("value"), postings: sum("postings"), perm: sum("perm"), temp: sum("temp"), unknown: sum("unknown"), noPay: sum("noPay") }];
     }
     for (const d of list) {
-      d.tip = () => [["Est. annual cost", moneyFull(d.value)], ["Postings", num(d.postings)], ["Permanent positions", num(d.perm)], ["Temporary positions", num(d.temp)]];
+      d.tip = () => [["Est. annual cost", moneyFull(d.value)], ["Postings", num(d.postings)], ["Postings without pay", num(d.noPay)], ["Permanent positions", num(d.perm)], ["Temporary positions", num(d.temp)], ["Type not known", num(d.unknown)]];
     }
     hbars($("c-dept"), list, { empty: "No postings match these filters." });
   }
@@ -139,30 +156,44 @@
     columns($("c-month"), months, [
       { label: "Permanent", color: "var(--s1)", values: months.map((m) => sumFor(m, permOf)) },
       { label: "Temporary", color: "var(--s2)", values: months.map((m) => sumFor(m, tempOf)) },
+      { label: "Type not known", color: "var(--s3)", values: months.map((m) => sumFor(m, unknownOf)) },
     ], { stacked: true, catLabel: monthName });
   }
 
   function payText(p) {
-    if (p.pay_min == null) return "Not listed";
+    if (p.pay_min == null) {
+      if (!p.est_annual_cost) return "Not known";
+      const n = p.permanent + p.temporary + p.unknown;
+      return `≈${moneyFull(p.est_annual_cost / n)}/yr (${p.pay_source === "salary list" ? "salary list" : "same title"})`;
+    }
     const f = (v) => (p.pay_basis === "hourly" ? `$${v.toFixed(2)}` : moneyFull(v));
     const range = p.pay_max && p.pay_max !== p.pay_min ? `${f(p.pay_min)}–${f(p.pay_max)}` : f(p.pay_min);
     return range + (p.pay_basis === "hourly" ? "/hr" : "/yr");
   }
+  function jobCell(p) {
+    const wrap = el("span");
+    wrap.append(p.url && !p.archived ? el("a", { href: p.url, rel: "noopener" }, p.title) : document.createTextNode(p.title));
+    if (p.archived) wrap.append(el("span", { className: "tag" }, "Archived"));
+    return wrap;
+  }
   const COLS = [
-    { key: "first_seen", label: "Posted", desc: true, cls: "date", value: (p) => p.first_seen, render: (p) => dayName(p.first_seen) },
-    { key: "title", label: "Job", cls: "job", value: (p) => p.title, render: (p) => el("a", { href: p.url, rel: "noopener" }, p.title) },
+    { key: "first_seen", label: "First seen", desc: true, cls: "date", value: (p) => p.first_seen, render: (p) => dayName(p.first_seen) },
+    { key: "title", label: "Job", cls: "job", value: (p) => p.title, render: jobCell },
     { key: "department", label: "Department", value: (p) => p.department },
+    { key: "category", label: "Category", value: (p) => p.category },
     { key: "positions", label: "Positions", num: true, value: positionsOf, render: (p) => num(positionsOf(p)) },
     { key: "pay", label: "Pay range", num: true, value: (p) => p.pay_min ?? -1, render: payText },
     { key: "cost", label: "Est. annual cost", num: true, value: costOf, render: (p) => (p.est_annual_cost == null ? "–" : moneyFull(costOf(p))) },
     { key: "closing", label: "Closes", cls: "date", value: (p) => p.closing, render: (p) => dayName(p.closing) },
   ];
   function renderTable(rows) {
-    table($("t-head"), $("t-body"), rows, COLS, state, () => renderTable(filtered()));
+    table($("t-head"), $("t-body"), rows, COLS, state, () => { state.shown = 100; renderTable(filtered()); }, { limit: state.shown });
+    $("more").hidden = rows.length <= state.shown;
     $("t-sub").textContent = `${num(rows.length)} posting${rows.length === 1 ? "" : "s"}. Select a column to sort; select a job to open the City's posting.`;
   }
 
   function render() {
+    state.shown = 100;
     const rows = filtered();
     renderStats(rows);
     renderDept(rows);
@@ -176,14 +207,16 @@
       all = data;
       const since = all.reduce((m, p) => (!m || p.first_seen < m ? p.first_seen : m), "");
       const updated = all.reduce((m, p) => (p.last_seen > m ? p.last_seen : m), "");
-      $("since").textContent = dayName(since);
+      const daily = all.filter((p) => !p.archived);
+      $("since").textContent = dayName(daily.reduce((m, p) => (!m || p.first_seen < m ? p.first_seen : m), ""));
       $("updated").textContent = dayName(updated);
-      $("intro").append(` Tracking since ${dayName(since)}.`);
+      $("intro").append(` Earlier postings back to ${dayName(since)} are rebuilt from archived copies of the page.`);
       fillSelect("f-month", [...new Set(all.map((p) => p.first_seen.slice(0, 7)))].sort().reverse(), monthName);
       fillSelect("f-dept", [...new Set(all.map((p) => p.department))].sort());
-      for (const [id, key] of [["f-month", "month"], ["f-dept", "dept"], ["f-type", "type"]]) {
+      for (const [id, key] of [["f-month", "month"], ["f-dept", "dept"], ["f-type", "type"], ["f-group", "group"]]) {
         $(id).addEventListener("change", (e) => { state[key] = e.target.value; render(); });
       }
+      $("more").addEventListener("click", () => { state.shown += 100; renderTable(filtered()); });
       render();
       onResize(() => renderMonths(filtered()));
     })

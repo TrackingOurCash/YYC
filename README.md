@@ -2,13 +2,14 @@
 
 Tracks what the City of Calgary commits to spend: job postings, the budget, grants, contracts and council decisions.
 
-Part of [Tracking Our Cash](https://trackingourcash.github.io). The Calgary dashboard will be published at https://trackingourcash.github.io/YYC/.
+Part of [Tracking Our Cash](https://trackingourcash.github.io). The Calgary dashboard is published at https://trackingourcash.github.io/YYC/.
 
 ## What's collected
 
 | Data | Source | How often |
 | --- | --- | --- |
-| City job postings | [calgary.ca/careers](https://www.calgary.ca/careers.html) | Daily |
+| City job postings | [calgary.ca/careers](https://www.calgary.ca/careers.html), plus earlier 2026 copies from the [Internet Archive](https://web.archive.org/web/2026*/calgary.ca/careers.html) | Daily |
+| Salary range for each City position title | [Compensation Disclosure List](https://data.calgary.ca/d/9bze-mzx6) on Open Calgary | Daily (the City updates it about once a year) |
 | Operating and capital budget, 2023 to 2032 | [Calgary Open Budget](https://data.calgary.ca/d/fqax-i3nz) on Open Calgary | Daily (the City updates it about once a year) |
 | Council and committee votes since October 2020 | [Council and Committee Votes](https://data.calgary.ca/d/ruq3-99hx) on Open Calgary | Daily |
 
@@ -22,7 +23,11 @@ Civic Partners and FCSS grants, and ward-level spending come next.
 - Department (business unit), union, pay grade and range, weekly hours, and the number of permanent and temporary positions come from the "Position and Pay Information" block on each posting's own page.
 - A raw copy of each day's list is saved in `data/jobs/snapshots/`.
 
-`scripts/build_jobs_summary.py` turns that table into `site/data/jobs_summary.json`, with totals by month, job category, department and overall. Estimated annual cost uses the midpoint of each posted pay range times the number of positions. Hourly rates are annualised from the posting's weekly hours (35 if not stated). Temporary positions count at the same annual rate, so the figure is a yearly run rate, not a total over the term.
+Postings from before the collector started are rebuilt by `scripts/backfill_jobs_from_archive.py` (run it from the "Backfill job postings" Action, with a start date). It reads every Internet Archive copy of the careers page since that date, adds any posting not already in the table with `source=archive`, and dates it by the first and last archived copy that lists it. Copies are a few days to weeks apart, so those dates are approximate, and postings open when the first copy was taken all land in that month. The City's posting pages stop working once a job closes, so department, pay and position counts are only known for the few archived postings whose own page was also archived.
+
+`collectors/compensation.py` downloads the City's compensation disclosure list into `data/jobs/compensation.csv`.
+
+`scripts/build_jobs_summary.py` turns the postings into `site/data/postings.json` and `site/data/jobs_summary.json`, with totals by month, job category, department and overall. Estimated annual cost uses the midpoint of the pay range times the number of positions. Pay comes from the posting itself; failing that, from the latest compensation list entry with the same title; failing that, from another posting with the same title. A posting with no position count counts as one position of unknown type. Hourly rates are annualised from the posting's weekly hours (35 if not stated). Temporary positions count at the same annual rate, so the figure is a yearly run rate, not a total over the term. Postings with no pay from any source count as $0, so the total is a floor.
 
 ## Budget
 
@@ -39,12 +44,13 @@ pip install -r requirements.txt
 python collectors/jobs.py
 python collectors/budget.py
 python collectors/votes.py
+python collectors/compensation.py
 python scripts/build_jobs_summary.py
 python scripts/build_budget.py
 python scripts/build_votes.py
 ```
 
-The GitHub Action in `.github/workflows/collect.yml` runs both every day at 13:00 UTC and commits any changes. `.github/workflows/pages.yml` then publishes `site/` to GitHub Pages.
+The GitHub Action in `.github/workflows/collect.yml` runs all of these every day at 13:00 UTC and commits any changes. `.github/workflows/pages.yml` then publishes `site/` to GitHub Pages.
 
 ## Dashboard
 

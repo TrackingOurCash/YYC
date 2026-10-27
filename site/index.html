@@ -73,7 +73,7 @@
   }).catch(() => {});
   fetch("data/postings.json", { cache: "no-cache" }).then((r) => r.json()).then((ps) => {
     const since = ps.reduce((m, p) => (!m || p.first_seen < m ? p.first_seen : m), "");
-    const positions = ps.reduce((s, p) => s + p.permanent + p.temporary, 0);
+    const positions = ps.reduce((s, p) => s + p.permanent + p.temporary + (p.unknown || 0), 0);
     $("j-value").textContent = money(ps.reduce((s, p) => s + (p.est_annual_cost || 0), 0));
     $("j-note").textContent = `${num(ps.length)} postings, ${num(positions)} positions since ${dayName(since)}`;
   }).catch(() => {});

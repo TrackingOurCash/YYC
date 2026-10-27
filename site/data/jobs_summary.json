@@ -1,19 +1,83 @@
 {
  "generated": "2026-10-27",
- "tracking_since": "2026-10-27",
+ "tracking_since": "2026-01-29",
  "total": {
-  "postings": 60,
-  "positions": 94,
-  "permanent": 60,
-  "temporary": 34,
-  "est_annual_cost": 9136310,
-  "with_pay": 56
+  "postings": 1048,
+  "positions": 1116,
+  "permanent": 1051,
+  "temporary": 65,
+  "est_annual_cost": 18459624,
+  "with_pay": 113
  },
  "by_month": {
+  "2026-01": {
+   "postings": 256,
+   "positions": 256,
+   "permanent": 256,
+   "temporary": 0,
+   "est_annual_cost": 0,
+   "with_pay": 0
+  },
+  "2026-03": {
+   "postings": 93,
+   "positions": 93,
+   "permanent": 93,
+   "temporary": 0,
+   "est_annual_cost": 0,
+   "with_pay": 0
+  },
+  "2026-04": {
+   "postings": 101,
+   "positions": 123,
+   "permanent": 107,
+   "temporary": 16,
+   "est_annual_cost": 3941583,
+   "with_pay": 21
+  },
+  "2026-05": {
+   "postings": 98,
+   "positions": 110,
+   "permanent": 96,
+   "temporary": 14,
+   "est_annual_cost": 5251834,
+   "with_pay": 35
+  },
+  "2026-06": {
+   "postings": 123,
+   "positions": 123,
+   "permanent": 123,
+   "temporary": 0,
+   "est_annual_cost": 0,
+   "with_pay": 0
+  },
+  "2026-07": {
+   "postings": 90,
+   "positions": 90,
+   "permanent": 90,
+   "temporary": 0,
+   "est_annual_cost": 0,
+   "with_pay": 0
+  },
+  "2026-08": {
+   "postings": 41,
+   "positions": 41,
+   "permanent": 41,
+   "temporary": 0,
+   "est_annual_cost": 0,
+   "with_pay": 0
+  },
+  "2026-09": {
+   "postings": 138,
+   "positions": 138,
+   "permanent": 137,
+   "temporary": 1,
+   "est_annual_cost": 129897,
+   "with_pay": 1
+  },
   "2026-10": {
-   "postings": 60,
-   "positions": 94,
-   "permanent": 60,
+   "postings": 108,
+   "positions": 142,
+   "permanent": 108,
    "temporary": 34,
    "est_annual_cost": 9136310,
    "with_pay": 56
@@ -21,142 +85,302 @@
  },
  "by_category": {
   "Business/Customer Support": {
-   "postings": 18,
-   "positions": 26,
-   "permanent": 11,
-   "temporary": 15,
-   "est_annual_cost": 2480574,
-   "with_pay": 18
+   "postings": 288,
+   "positions": 304,
+   "permanent": 278,
+   "temporary": 26,
+   "est_annual_cost": 4334384,
+   "with_pay": 32
+  },
+  "Apprentice/Student": {
+   "postings": 194,
+   "positions": 194,
+   "permanent": 194,
+   "temporary": 0,
+   "est_annual_cost": 0,
+   "with_pay": 0
   },
   "Engineering and Geoscience": {
-   "postings": 9,
-   "positions": 12,
-   "permanent": 9,
+   "postings": 114,
+   "positions": 120,
+   "permanent": 113,
+   "temporary": 7,
+   "est_annual_cost": 3905906,
+   "with_pay": 22
+  },
+  "Accounting/Finance": {
+   "postings": 47,
+   "positions": 49,
+   "permanent": 44,
+   "temporary": 5,
+   "est_annual_cost": 537573,
+   "with_pay": 4
+  },
+  "Science/Technical": {
+   "postings": 45,
+   "positions": 54,
+   "permanent": 44,
+   "temporary": 10,
+   "est_annual_cost": 1835939,
+   "with_pay": 9
+  },
+  "Trades": {
+   "postings": 39,
+   "positions": 40,
+   "permanent": 37,
    "temporary": 3,
-   "est_annual_cost": 1588416,
-   "with_pay": 8
+   "est_annual_cost": 571438,
+   "with_pay": 4
+  },
+  "Information Technology": {
+   "postings": 39,
+   "positions": 40,
+   "permanent": 38,
+   "temporary": 2,
+   "est_annual_cost": 682391,
+   "with_pay": 5
+  },
+  "General Management": {
+   "postings": 38,
+   "positions": 38,
+   "permanent": 36,
+   "temporary": 2,
+   "est_annual_cost": 831157,
+   "with_pay": 6
+  },
+  "Labour/Operations Support": {
+   "postings": 37,
+   "positions": 61,
+   "permanent": 61,
+   "temporary": 0,
+   "est_annual_cost": 2220392,
+   "with_pay": 6
+  },
+  "Social and Human Sciences": {
+   "postings": 37,
+   "positions": 40,
+   "permanent": 37,
+   "temporary": 3,
+   "est_annual_cost": 868431,
+   "with_pay": 5
+  },
+  "Leisure Services": {
+   "postings": 36,
+   "positions": 36,
+   "permanent": 36,
+   "temporary": 0,
+   "est_annual_cost": 285958,
+   "with_pay": 6
+  },
+  "Human Resources": {
+   "postings": 26,
+   "positions": 27,
+   "permanent": 24,
+   "temporary": 3,
+   "est_annual_cost": 309637,
+   "with_pay": 2
+  },
+  "Corp Affairs/Communications": {
+   "postings": 20,
+   "positions": 20,
+   "permanent": 19,
+   "temporary": 1,
+   "est_annual_cost": 98271,
+   "with_pay": 1
+  },
+  "Planning": {
+   "postings": 19,
+   "positions": 19,
+   "permanent": 18,
+   "temporary": 1,
+   "est_annual_cost": 149634,
+   "with_pay": 1
+  },
+  "Project/Program Management": {
+   "postings": 12,
+   "positions": 12,
+   "permanent": 12,
+   "temporary": 0,
+   "est_annual_cost": 0,
+   "with_pay": 0
   },
   "Public Sfty/Regltry/Enforcmt": {
-   "postings": 5,
+   "postings": 12,
+   "positions": 14,
+   "permanent": 13,
+   "temporary": 1,
+   "est_annual_cost": 542718,
+   "with_pay": 3
+  },
+  "Real Estate and Facilities": {
+   "postings": 9,
+   "positions": 9,
+   "permanent": 9,
+   "temporary": 0,
+   "est_annual_cost": 75512,
+   "with_pay": 1
+  },
+  "Public Transit": {
+   "postings": 7,
+   "positions": 7,
+   "permanent": 7,
+   "temporary": 0,
+   "est_annual_cost": 0,
+   "with_pay": 0
+  },
+  "Risk and Security Management": {
+   "postings": 6,
    "positions": 6,
    "permanent": 6,
    "temporary": 0,
-   "est_annual_cost": 346176,
+   "est_annual_cost": 118055,
+   "with_pay": 1
+  },
+  "Legal": {
+   "postings": 6,
+   "positions": 9,
+   "permanent": 8,
+   "temporary": 1,
+   "est_annual_cost": 613400,
    "with_pay": 2
   },
-  "Labour/Operations Support": {
-   "postings": 5,
-   "positions": 18,
-   "permanent": 18,
-   "temporary": 0,
-   "est_annual_cost": 1347672,
-   "with_pay": 5
-  },
-  "Science/Technical": {
+  "Executive": {
    "postings": 4,
-   "positions": 9,
+   "positions": 4,
    "permanent": 4,
-   "temporary": 5,
-   "est_annual_cost": 981258,
-   "with_pay": 4
-  },
-  "Social and Human Sciences": {
-   "postings": 4,
-   "positions": 5,
-   "permanent": 2,
-   "temporary": 3,
-   "est_annual_cost": 527045,
-   "with_pay": 4
-  },
-  "Leisure Services": {
-   "postings": 3,
-   "positions": 3,
-   "permanent": 3,
    "temporary": 0,
-   "est_annual_cost": 161871,
-   "with_pay": 3
-  },
-  "General Management": {
-   "postings": 3,
-   "positions": 3,
-   "permanent": 2,
-   "temporary": 1,
-   "est_annual_cost": 429348,
-   "with_pay": 3
-  },
-  "Accounting/Finance": {
-   "postings": 3,
-   "positions": 5,
-   "permanent": 1,
-   "temporary": 4,
-   "est_annual_cost": 423778,
-   "with_pay": 3
+   "est_annual_cost": 0,
+   "with_pay": 0
   },
   "Health Safety Environment": {
-   "postings": 2,
-   "positions": 2,
-   "permanent": 2,
+   "postings": 4,
+   "positions": 4,
+   "permanent": 4,
    "temporary": 0,
    "est_annual_cost": 329195,
    "with_pay": 2
   },
   "Data Science and Analytics": {
-   "postings": 1,
-   "positions": 1,
-   "permanent": 1,
+   "postings": 3,
+   "positions": 3,
+   "permanent": 3,
    "temporary": 0,
    "est_annual_cost": 149634,
    "with_pay": 1
   },
-  "Real Estate and Facilities": {
-   "postings": 1,
-   "positions": 1,
-   "permanent": 1,
-   "temporary": 0,
-   "est_annual_cost": 75512,
-   "with_pay": 1
-  },
-  "Information Technology": {
-   "postings": 1,
-   "positions": 1,
-   "permanent": 0,
-   "temporary": 1,
-   "est_annual_cost": 98271,
-   "with_pay": 1
-  },
-  "Trades": {
-   "postings": 1,
+  "Public Relations / Marketing": {
+   "postings": 2,
    "positions": 2,
-   "permanent": 0,
-   "temporary": 2,
-   "est_annual_cost": 197560,
-   "with_pay": 1
+   "permanent": 2,
+   "temporary": 0,
+   "est_annual_cost": 0,
+   "with_pay": 0
+  },
+  "Supply Chain and Logistics": {
+   "postings": 2,
+   "positions": 2,
+   "permanent": 2,
+   "temporary": 0,
+   "est_annual_cost": 0,
+   "with_pay": 0
+  },
+  "Operations": {
+   "postings": 2,
+   "positions": 2,
+   "permanent": 2,
+   "temporary": 0,
+   "est_annual_cost": 0,
+   "with_pay": 0
   }
  },
  "by_department": {
+  "Not stated": {
+   "postings": 931,
+   "positions": 931,
+   "permanent": 931,
+   "temporary": 0,
+   "est_annual_cost": 0,
+   "with_pay": 0
+  },
   "Water Services": {
-   "postings": 9,
-   "positions": 22,
-   "permanent": 17,
+   "postings": 15,
+   "positions": 39,
+   "permanent": 34,
    "temporary": 5,
-   "est_annual_cost": 1830342,
-   "with_pay": 9
+   "est_annual_cost": 3341157,
+   "with_pay": 15
   },
   "Mobility": {
-   "postings": 8,
-   "positions": 11,
-   "permanent": 7,
-   "temporary": 4,
-   "est_annual_cost": 1323522,
-   "with_pay": 7
+   "postings": 12,
+   "positions": 17,
+   "permanent": 8,
+   "temporary": 9,
+   "est_annual_cost": 2019777,
+   "with_pay": 11
   },
   "Calgary Police Service": {
+   "postings": 11,
+   "positions": 19,
+   "permanent": 13,
+   "temporary": 6,
+   "est_annual_cost": 1432770,
+   "with_pay": 8
+  },
+  "Capital Planning and Business Services": {
    "postings": 8,
-   "positions": 11,
-   "permanent": 9,
+   "positions": 10,
+   "permanent": 8,
    "temporary": 2,
-   "est_annual_cost": 732499,
+   "est_annual_cost": 1144585,
+   "with_pay": 8
+  },
+  "Human Resources": {
+   "postings": 6,
+   "positions": 11,
+   "permanent": 1,
+   "temporary": 10,
+   "est_annual_cost": 1035612,
+   "with_pay": 6
+  },
+  "Recreation and Social Programs": {
+   "postings": 5,
+   "positions": 5,
+   "permanent": 5,
+   "temporary": 0,
+   "est_annual_cost": 249686,
    "with_pay": 5
+  },
+  "Project Development": {
+   "postings": 5,
+   "positions": 7,
+   "permanent": 6,
+   "temporary": 1,
+   "est_annual_cost": 959126,
+   "with_pay": 5
+  },
+  "Finance": {
+   "postings": 4,
+   "positions": 7,
+   "permanent": 2,
+   "temporary": 5,
+   "est_annual_cost": 681335,
+   "with_pay": 4
+  },
+  "Community Planning": {
+   "postings": 4,
+   "positions": 5,
+   "permanent": 4,
+   "temporary": 1,
+   "est_annual_cost": 595137,
+   "with_pay": 4
+  },
+  "Public Spaces Delivery": {
+   "postings": 4,
+   "positions": 4,
+   "permanent": 3,
+   "temporary": 1,
+   "est_annual_cost": 507161,
+   "with_pay": 4
   },
   "Occupational Health & Safety": {
    "postings": 4,
@@ -174,29 +398,69 @@
    "est_annual_cost": 423132,
    "with_pay": 4
   },
-  "Capital Planning and Business Services": {
+  "Calgary Housing": {
    "postings": 3,
-   "positions": 3,
-   "permanent": 3,
-   "temporary": 0,
-   "est_annual_cost": 374780,
-   "with_pay": 3
-  },
-  "Recreation and Social Programs": {
-   "postings": 3,
-   "positions": 3,
-   "permanent": 3,
-   "temporary": 0,
-   "est_annual_cost": 161871,
-   "with_pay": 3
-  },
-  "Finance": {
-   "postings": 3,
-   "positions": 6,
+   "positions": 5,
    "permanent": 2,
-   "temporary": 4,
-   "est_annual_cost": 567540,
+   "temporary": 3,
+   "est_annual_cost": 513069,
    "with_pay": 3
+  },
+  "Calgary Transit": {
+   "postings": 3,
+   "positions": 3,
+   "permanent": 2,
+   "temporary": 1,
+   "est_annual_cost": 159878,
+   "with_pay": 3
+  },
+  "Parks & Open Spaces": {
+   "postings": 2,
+   "positions": 2,
+   "permanent": 2,
+   "temporary": 0,
+   "est_annual_cost": 134544,
+   "with_pay": 2
+  },
+  "Corporate Security": {
+   "postings": 2,
+   "positions": 2,
+   "permanent": 2,
+   "temporary": 0,
+   "est_annual_cost": 221267,
+   "with_pay": 2
+  },
+  "Information Technology": {
+   "postings": 2,
+   "positions": 2,
+   "permanent": 2,
+   "temporary": 0,
+   "est_annual_cost": 237944,
+   "with_pay": 2
+  },
+  "Waste and Recycling Services": {
+   "postings": 2,
+   "positions": 3,
+   "permanent": 2,
+   "temporary": 1,
+   "est_annual_cost": 299754,
+   "with_pay": 2
+  },
+  "Community Strategies": {
+   "postings": 2,
+   "positions": 5,
+   "permanent": 3,
+   "temporary": 2,
+   "est_annual_cost": 537928,
+   "with_pay": 2
+  },
+  "Environmental Risk and Resilience": {
+   "postings": 2,
+   "positions": 2,
+   "permanent": 0,
+   "temporary": 2,
+   "est_annual_cost": 238251,
+   "with_pay": 2
   },
   "Supply Management": {
    "postings": 2,
@@ -204,22 +468,6 @@
    "permanent": 1,
    "temporary": 1,
    "est_annual_cost": 211566,
-   "with_pay": 2
-  },
-  "Human Resources": {
-   "postings": 2,
-   "positions": 3,
-   "permanent": 1,
-   "temporary": 2,
-   "est_annual_cost": 295955,
-   "with_pay": 2
-  },
-  "Community Planning": {
-   "postings": 2,
-   "positions": 3,
-   "permanent": 2,
-   "temporary": 1,
-   "est_annual_cost": 352326,
    "with_pay": 2
   },
   "City Clerk's Office": {
@@ -230,6 +478,94 @@
    "est_annual_cost": 477268,
    "with_pay": 2
   },
+  "Marketing & Communications": {
+   "postings": 1,
+   "positions": 1,
+   "permanent": 0,
+   "temporary": 1,
+   "est_annual_cost": 98271,
+   "with_pay": 1
+  },
+  "Facilities": {
+   "postings": 1,
+   "positions": 2,
+   "permanent": 1,
+   "temporary": 1,
+   "est_annual_cost": 196542,
+   "with_pay": 1
+  },
+  "Green Line": {
+   "postings": 1,
+   "positions": 1,
+   "permanent": 1,
+   "temporary": 0,
+   "est_annual_cost": 103212,
+   "with_pay": 1
+  },
+  "Emergency Management & Community Safety": {
+   "postings": 1,
+   "positions": 1,
+   "permanent": 1,
+   "temporary": 0,
+   "est_annual_cost": 94786,
+   "with_pay": 1
+  },
+  "Partnerships": {
+   "postings": 1,
+   "positions": 1,
+   "permanent": 0,
+   "temporary": 1,
+   "est_annual_cost": 98271,
+   "with_pay": 1
+  },
+  "Utilities Delivery": {
+   "postings": 1,
+   "positions": 1,
+   "permanent": 1,
+   "temporary": 0,
+   "est_annual_cost": 155784,
+   "with_pay": 1
+  },
+  "Parks and Open Spaces": {
+   "postings": 1,
+   "positions": 1,
+   "permanent": 0,
+   "temporary": 1,
+   "est_annual_cost": 93575,
+   "with_pay": 1
+  },
+  "Capital Planning & Business": {
+   "postings": 1,
+   "positions": 1,
+   "permanent": 1,
+   "temporary": 0,
+   "est_annual_cost": 162670,
+   "with_pay": 1
+  },
+  "Legal Services": {
+   "postings": 1,
+   "positions": 3,
+   "permanent": 3,
+   "temporary": 0,
+   "est_annual_cost": 447525,
+   "with_pay": 1
+  },
+  "Development, Business and Building Services": {
+   "postings": 1,
+   "positions": 2,
+   "permanent": 1,
+   "temporary": 1,
+   "est_annual_cost": 196542,
+   "with_pay": 1
+  },
+  "City and Regional Planning": {
+   "postings": 1,
+   "positions": 1,
+   "permanent": 0,
+   "temporary": 1,
+   "est_annual_cost": 149634,
+   "with_pay": 1
+  },
   "Cyber Security": {
    "postings": 1,
    "positions": 1,
@@ -238,76 +574,12 @@
    "est_annual_cost": 149634,
    "with_pay": 1
   },
-  "Public Spaces Delivery": {
-   "postings": 1,
-   "positions": 1,
-   "permanent": 1,
-   "temporary": 0,
-   "est_annual_cost": 170840,
-   "with_pay": 1
-  },
-  "Project Development": {
-   "postings": 1,
-   "positions": 1,
-   "permanent": 1,
-   "temporary": 0,
-   "est_annual_cost": 170840,
-   "with_pay": 1
-  },
-  "Corporate Security": {
-   "postings": 1,
-   "positions": 1,
-   "permanent": 1,
-   "temporary": 0,
-   "est_annual_cost": 103212,
-   "with_pay": 1
-  },
-  "Environmental Risk and Resilience": {
-   "postings": 1,
-   "positions": 1,
-   "permanent": 0,
-   "temporary": 1,
-   "est_annual_cost": 108354,
-   "with_pay": 1
-  },
-  "Calgary Transit": {
-   "postings": 1,
-   "positions": 1,
-   "permanent": 0,
-   "temporary": 1,
-   "est_annual_cost": 98025,
-   "with_pay": 1
-  },
   "Operational Services": {
    "postings": 1,
    "positions": 1,
    "permanent": 0,
    "temporary": 1,
    "est_annual_cost": 108354,
-   "with_pay": 1
-  },
-  "Parks & Open Spaces": {
-   "postings": 1,
-   "positions": 1,
-   "permanent": 1,
-   "temporary": 0,
-   "est_annual_cost": 98271,
-   "with_pay": 1
-  },
-  "Community Strategies": {
-   "postings": 1,
-   "positions": 2,
-   "permanent": 0,
-   "temporary": 2,
-   "est_annual_cost": 196542,
-   "with_pay": 1
-  },
-  "Calgary Housing": {
-   "postings": 1,
-   "positions": 2,
-   "permanent": 0,
-   "temporary": 2,
-   "est_annual_cost": 197560,
    "with_pay": 1
   }
  }

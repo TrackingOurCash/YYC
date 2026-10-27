@@ -3,325 +3,335 @@
  "tracking_since": "2026-10-27",
  "total": {
   "postings": 60,
-  "positions": 60,
-  "est_annual_cost": 5787652,
+  "positions": 94,
+  "permanent": 60,
+  "temporary": 34,
+  "est_annual_cost": 9136310,
   "with_pay": 56
  },
  "by_month": {
   "2026-10": {
    "postings": 60,
-   "positions": 60,
-   "est_annual_cost": 5787652,
+   "positions": 94,
+   "permanent": 60,
+   "temporary": 34,
+   "est_annual_cost": 9136310,
    "with_pay": 56
   }
  },
  "by_category": {
   "Business/Customer Support": {
    "postings": 18,
-   "positions": 18,
-   "est_annual_cost": 1740731,
+   "positions": 26,
+   "permanent": 11,
+   "temporary": 15,
+   "est_annual_cost": 2480574,
    "with_pay": 18
   },
   "Engineering and Geoscience": {
    "postings": 9,
-   "positions": 9,
-   "est_annual_cost": 1065533,
+   "positions": 12,
+   "permanent": 9,
+   "temporary": 3,
+   "est_annual_cost": 1588416,
    "with_pay": 8
   },
   "Public Sfty/Regltry/Enforcmt": {
    "postings": 5,
-   "positions": 5,
-   "est_annual_cost": 229125,
+   "positions": 6,
+   "permanent": 6,
+   "temporary": 0,
+   "est_annual_cost": 346176,
    "with_pay": 2
   },
   "Labour/Operations Support": {
    "postings": 5,
-   "positions": 5,
-   "est_annual_cost": 401627,
+   "positions": 18,
+   "permanent": 18,
+   "temporary": 0,
+   "est_annual_cost": 1347672,
    "with_pay": 5
   },
   "Science/Technical": {
    "postings": 4,
-   "positions": 4,
-   "est_annual_cost": 379496,
+   "positions": 9,
+   "permanent": 4,
+   "temporary": 5,
+   "est_annual_cost": 981258,
    "with_pay": 4
   },
   "Social and Human Sciences": {
    "postings": 4,
-   "positions": 4,
-   "est_annual_cost": 455104,
+   "positions": 5,
+   "permanent": 2,
+   "temporary": 3,
+   "est_annual_cost": 527045,
    "with_pay": 4
   },
   "Leisure Services": {
    "postings": 3,
    "positions": 3,
-   "est_annual_cost": 156853,
+   "permanent": 3,
+   "temporary": 0,
+   "est_annual_cost": 161871,
    "with_pay": 3
   },
   "General Management": {
    "postings": 3,
    "positions": 3,
-   "est_annual_cost": 381643,
+   "permanent": 2,
+   "temporary": 1,
+   "est_annual_cost": 429348,
    "with_pay": 3
   },
   "Accounting/Finance": {
    "postings": 3,
-   "positions": 3,
-   "est_annual_cost": 254197,
+   "positions": 5,
+   "permanent": 1,
+   "temporary": 4,
+   "est_annual_cost": 423778,
    "with_pay": 3
   },
   "Health Safety Environment": {
    "postings": 2,
    "positions": 2,
-   "est_annual_cost": 292618,
+   "permanent": 2,
+   "temporary": 0,
+   "est_annual_cost": 329195,
    "with_pay": 2
   },
   "Data Science and Analytics": {
    "postings": 1,
    "positions": 1,
+   "permanent": 1,
+   "temporary": 0,
    "est_annual_cost": 149634,
    "with_pay": 1
   },
   "Real Estate and Facilities": {
    "postings": 1,
    "positions": 1,
-   "est_annual_cost": 86299,
+   "permanent": 1,
+   "temporary": 0,
+   "est_annual_cost": 75512,
    "with_pay": 1
   },
   "Information Technology": {
    "postings": 1,
    "positions": 1,
-   "est_annual_cost": 96117,
+   "permanent": 0,
+   "temporary": 1,
+   "est_annual_cost": 98271,
    "with_pay": 1
   },
   "Trades": {
    "postings": 1,
-   "positions": 1,
-   "est_annual_cost": 98675,
+   "positions": 2,
+   "permanent": 0,
+   "temporary": 2,
+   "est_annual_cost": 197560,
    "with_pay": 1
   }
  },
  "by_department": {
-  "Mobility": {
-   "postings": 7,
-   "positions": 7,
-   "est_annual_cost": 722006,
-   "with_pay": 6
-  },
   "Water Services": {
-   "postings": 7,
-   "positions": 7,
-   "est_annual_cost": 607547,
+   "postings": 9,
+   "positions": 22,
+   "permanent": 17,
+   "temporary": 5,
+   "est_annual_cost": 1830342,
+   "with_pay": 9
+  },
+  "Mobility": {
+   "postings": 8,
+   "positions": 11,
+   "permanent": 7,
+   "temporary": 4,
+   "est_annual_cost": 1323522,
    "with_pay": 7
   },
   "Calgary Police Services": {
    "postings": 5,
-   "positions": 5,
-   "est_annual_cost": 525628,
+   "positions": 8,
+   "permanent": 6,
+   "temporary": 2,
+   "est_annual_cost": 732499,
    "with_pay": 5
+  },
+  "Occupational Health & Safety": {
+   "postings": 4,
+   "positions": 9,
+   "permanent": 4,
+   "temporary": 5,
+   "est_annual_cost": 983878,
+   "with_pay": 4
   },
   "Recreation and Social Programs": {
    "postings": 3,
    "positions": 3,
-   "est_annual_cost": 156853,
+   "permanent": 3,
+   "temporary": 0,
+   "est_annual_cost": 161871,
+   "with_pay": 3
+  },
+  "Finance": {
+   "postings": 3,
+   "positions": 6,
+   "permanent": 2,
+   "temporary": 4,
+   "est_annual_cost": 567540,
+   "with_pay": 3
+  },
+  "Chief Administrative Office": {
+   "postings": 3,
+   "positions": 3,
+   "permanent": 3,
+   "temporary": 0,
+   "est_annual_cost": 319920,
    "with_pay": 3
   },
   "Calgary Police Service": {
    "postings": 3,
    "positions": 3,
+   "permanent": 3,
+   "temporary": 0,
    "est_annual_cost": 0,
    "with_pay": 0
   },
-  "Finance": {
+  "Capital Planning and Business Services": {
    "postings": 2,
    "positions": 2,
-   "est_annual_cost": 173077,
+   "permanent": 2,
+   "temporary": 0,
+   "est_annual_cost": 299268,
    "with_pay": 2
   },
-  "s.": {
+  "Supply Management": {
    "postings": 2,
    "positions": 2,
-   "est_annual_cost": 177237,
+   "permanent": 1,
+   "temporary": 1,
+   "est_annual_cost": 211566,
+   "with_pay": 2
+  },
+  "Human Resources": {
+   "postings": 2,
+   "positions": 3,
+   "permanent": 1,
+   "temporary": 2,
+   "est_annual_cost": 295955,
+   "with_pay": 2
+  },
+  "Community Planning": {
+   "postings": 2,
+   "positions": 3,
+   "permanent": 2,
+   "temporary": 1,
+   "est_annual_cost": 352326,
    "with_pay": 2
   },
   "City Clerk's Office": {
    "postings": 2,
-   "positions": 2,
-   "est_annual_cost": 187658,
+   "positions": 5,
+   "permanent": 2,
+   "temporary": 3,
+   "est_annual_cost": 477268,
    "with_pay": 2
   },
-  "Capital Planning and Business Services": {
+  "Cyber Security": {
    "postings": 1,
    "positions": 1,
+   "permanent": 1,
+   "temporary": 0,
    "est_annual_cost": 149634,
-   "with_pay": 1
-  },
-  "Not stated": {
-   "postings": 1,
-   "positions": 1,
-   "est_annual_cost": 100963,
-   "with_pay": 1
-  },
-  "safeguards information, technology, and operational systems that enable the delivery of services to Calgarians.": {
-   "postings": 1,
-   "positions": 1,
-   "est_annual_cost": 133008,
-   "with_pay": 1
-  },
-  "s to align data models with strategic goals and integrate them with enterprise data management tools such as Denodo. Primary duties include:": {
-   "postings": 1,
-   "positions": 1,
-   "est_annual_cost": 96117,
-   "with_pay": 1
-  },
-  "Supply Management": {
-   "postings": 1,
-   "positions": 1,
-   "est_annual_cost": 105914,
-   "with_pay": 1
-  },
-  "s, and key partners across the City.": {
-   "postings": 1,
-   "positions": 1,
-   "est_annual_cost": 115464,
-   "with_pay": 1
-  },
-  "s, and external agencies, you will help strengthen The Corporation's ability to deliver capital projects and enhance services for Calgarians. You will coordinate cross-corporate teams for strategic, complex, or long-term funding programs to advance program objectives and outcomes. Primary duties include:": {
-   "postings": 1,
-   "positions": 1,
-   "est_annual_cost": 133008,
-   "with_pay": 1
-  },
-  "Safety Teams.": {
-   "postings": 1,
-   "positions": 1,
-   "est_annual_cost": 133008,
-   "with_pay": 1
-  },
-  "s (BUs) in managing and implementing health and safety programs. You will develop and review procedures, safe work practices, and training requirements, and integrate corporate OHS strategies, standards, and programs into BU operations while ensuring compliance with corporate and legislative requirements. Primary duties include:": {
-   "postings": 1,
-   "positions": 1,
-   "est_annual_cost": 100963,
    "with_pay": 1
   },
   "Public Spaces Delivery": {
    "postings": 1,
    "positions": 1,
-   "est_annual_cost": 151858,
-   "with_pay": 1
-  },
-  "performance and incident data and metrics.": {
-   "postings": 1,
-   "positions": 1,
-   "est_annual_cost": 81120,
+   "permanent": 1,
+   "temporary": 0,
+   "est_annual_cost": 170840,
    "with_pay": 1
   },
   "Project Development": {
    "postings": 1,
    "positions": 1,
-   "est_annual_cost": 151858,
+   "permanent": 1,
+   "temporary": 0,
+   "est_annual_cost": 170840,
    "with_pay": 1
   },
   "Chief Administrator\u00b4s Office": {
    "postings": 1,
    "positions": 1,
-   "est_annual_cost": 100963,
+   "permanent": 1,
+   "temporary": 0,
+   "est_annual_cost": 103212,
    "with_pay": 1
   },
   "Corporate Security": {
    "postings": 1,
    "positions": 1,
-   "est_annual_cost": 100963,
+   "permanent": 1,
+   "temporary": 0,
+   "est_annual_cost": 103212,
    "with_pay": 1
   },
   "Capital Planning & Business Services": {
    "postings": 1,
    "positions": 1,
-   "est_annual_cost": 86299,
+   "permanent": 1,
+   "temporary": 0,
+   "est_annual_cost": 75512,
    "with_pay": 1
   },
-  "Chief Administrative Office": {
+  "Environmental Risk and Resilience": {
    "postings": 1,
    "positions": 1,
-   "est_annual_cost": 100963,
+   "permanent": 0,
+   "temporary": 1,
+   "est_annual_cost": 108354,
    "with_pay": 1
   },
-  "delivery goals.": {
+  "Calgary Transit": {
    "postings": 1,
    "positions": 1,
-   "est_annual_cost": 117957,
+   "permanent": 0,
+   "temporary": 1,
+   "est_annual_cost": 98025,
    "with_pay": 1
   },
-  "s, Payroll, and Information Technology (IT) partners to gather and document current-state processes, analyze operational and system challenges, and identify opportunities for improvement. Through business analysis, process assessment, and collaboration, you will contribute to solutions and recommendations that improve operational efficiency, support process standardization, mitigate risk, and ensure compliance with legislative and organizational requirements. Primary duties include:": {
+  "Operational services": {
    "postings": 1,
    "positions": 1,
-   "est_annual_cost": 81120,
-   "with_pay": 1
-  },
-  "s to integrate watershed best management practices into the planning continuum and City Building processes.": {
-   "postings": 1,
-   "positions": 1,
-   "est_annual_cost": 105914,
-   "with_pay": 1
-  },
-  "outcomes and corporate objectives.": {
-   "postings": 1,
-   "positions": 1,
-   "est_annual_cost": 95846,
-   "with_pay": 1
-  },
-  ", you will apply your strong technical knowledge and professional experience to interpret and explain existing City policies, standards and bylaws; provincial and federal legislation; and to support external and internal partners including developers, engineers and internal team members. Primary duties include:": {
-   "postings": 1,
-   "positions": 1,
-   "est_annual_cost": 96117,
-   "with_pay": 1
-  },
-  ", Departmental and Corporate initiatives to ensure a timely and well-coordinated response.": {
-   "postings": 1,
-   "positions": 1,
-   "est_annual_cost": 105914,
-   "with_pay": 1
-  },
-  "s or affect the organization as a whole.": {
-   "postings": 1,
-   "positions": 1,
-   "est_annual_cost": 123833,
-   "with_pay": 1
-  },
-  "Community Planning": {
-   "postings": 1,
-   "positions": 1,
-   "est_annual_cost": 138475,
-   "with_pay": 1
-  },
-  "s, and data and technology partners.": {
-   "postings": 1,
-   "positions": 1,
-   "est_annual_cost": 115627,
-   "with_pay": 1
-  },
-  "s and corporate functions to establish information requirements, validate findings, reconcile inconsistent information and build a shared understanding of emerging issues, trends and potential implications.": {
-   "postings": 1,
-   "positions": 1,
-   "est_annual_cost": 123833,
+   "permanent": 0,
+   "temporary": 1,
+   "est_annual_cost": 108354,
    "with_pay": 1
   },
   "Parks & Open Spaces": {
    "postings": 1,
    "positions": 1,
-   "est_annual_cost": 96117,
+   "permanent": 1,
+   "temporary": 0,
+   "est_annual_cost": 98271,
    "with_pay": 1
   },
   "Community Strategies": {
    "postings": 1,
-   "positions": 1,
-   "est_annual_cost": 96117,
+   "positions": 2,
+   "permanent": 0,
+   "temporary": 2,
+   "est_annual_cost": 196542,
    "with_pay": 1
   },
   "Calgary Housing": {
    "postings": 1,
-   "positions": 1,
-   "est_annual_cost": 98675,
+   "positions": 2,
+   "permanent": 0,
+   "temporary": 2,
+   "est_annual_cost": 197560,
    "with_pay": 1
   }
  }

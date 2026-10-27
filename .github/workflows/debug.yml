@@ -10,13 +10,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: |
-          mkdir -p dump2
-          curl -sSL "https://data.calgary.ca/api/catalog/v1?domains=data.calgary.ca&limit=500&offset=500" -o dump2/catalog2.json
-          for id in ruq3-99hx fqax-i3nz 9bze-mzx6 jd78-wxjp tz8z-hyaz n4di-6hi3; do
-            curl -sSL "https://data.calgary.ca/api/views/$id.json" -o dump2/meta-$id.json
-            curl -sSL "https://data.calgary.ca/resource/$id.json?\$limit=5" -o dump2/rows-$id.json
-            curl -sSL "https://data.calgary.ca/resource/$id.json?\$select=count(*)" -o dump2/count-$id.json
-          done
-          ls -la dump2
+          mkdir -p dump3
+          B=https://data.calgary.ca/resource
+          curl -sSL "$B/fqax-i3nz.json?\$limit=5000" -o dump3/budget.json
+          curl -sSL "$B/ruq3-99hx.json?\$select=meetingtype,count(*)&\$group=meetingtype&\$order=count(*)%20desc" -o dump3/votes-types.json
+          curl -sSL "$B/ruq3-99hx.json?\$select=voter,count(*)&\$group=voter&\$order=count(*)%20desc&\$limit=200" -o dump3/votes-voters.json
+          curl -sSL "$B/ruq3-99hx.json?\$select=min(meetingdate),max(meetingdate)" -o dump3/votes-range.json
+          curl -sSL "$B/ruq3-99hx.json?\$where=meetingtype='Regular Meeting of Council'&\$order=meetingdate%20desc&\$limit=300" -o dump3/votes-recent.json
+          curl -sSL "$B/ruq3-99hx.json?\$select=vote,count(*)&\$group=vote" -o dump3/votes-values.json
+          ls -la dump3
           git config user.name dbg; git config user.email dbg@users.noreply.github.com
-          git add dump2; git commit -m "dump2 [skip ci]"; git push
+          git add dump3; git commit -m "dump3 [skip ci]"; git push

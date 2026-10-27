@@ -2,9 +2,8 @@
 
 Dataset: Council and Committee Votes (ruq3-99hx), one row per member per
 recorded vote since eVoting began on October 7, 2020. The dataset has no
-motion ID, so rows are grouped into motions here: same meeting date,
-meeting type and resolution text, split again whenever a member appears a
-second time (the same wording voted on twice in one meeting).
+motion ID, so rows are grouped into motions here by meeting date, meeting
+type, resolution text and result (see group_motions).
 
 Writes two tables:
   data/votes/motions.csv  one row per motion
@@ -52,29 +51,34 @@ def clean(text: str) -> str:
 
 
 def group_motions(rows: list[dict]) -> tuple[list[dict], list[dict]]:
-    """Rows must be in dataset order; returns (motions, ballots)."""
+    """Group ballot rows into motions; returns (motions, ballots).
+
+    The dataset has no motion ID and rows for identically worded motions in
+    one meeting are interleaved, so each ballot goes to the first motion with
+    the same date, meeting, wording and result that doesn't have that member
+    yet. Per-member counts are exact either way; only how ballots split
+    between identically worded motions is approximate.
+    """
     motions: list[dict] = []
     ballots: list[dict] = []
-    open_groups: dict[tuple, dict] = {}
-    seq: dict[tuple, int] = {}
+    groups: dict[tuple, list[dict]] = {}
     for r in rows:
         date = (r.get("meetingdate") or "")[:10]
-        key = (date, r.get("meetingtype", ""), clean(r.get("resolution", "")))
+        key = (date, r.get("meetingtype", ""), clean(r.get("resolution", "")), r.get("result", ""))
         voter = clean(r.get("voter", ""))
-        g = open_groups.get(key)
-        if g is None or voter in g["voters"] or r.get("result", "") != g["result"]:
-            n = seq.get(key, 0)
-            seq[key] = n + 1
-            motion_id = hashlib.sha1("|".join([*key, str(n)]).encode()).hexdigest()[:12]
+        candidates = groups.setdefault(key, [])
+        g = next((m for m in candidates if voter not in m["voters"]), None)
+        if g is None:
+            motion_id = hashlib.sha1("|".join([*key, str(len(candidates))]).encode()).hexdigest()[:12]
             g = {
                 "id": motion_id,
                 "date": date,
                 "meeting_type": key[1],
                 "resolution": key[2],
-                "result": r.get("result", ""),
+                "result": key[3],
                 "voters": set(),
             }
-            open_groups[key] = g
+            candidates.append(g)
             motions.append(g)
         g["voters"].add(voter)
         ballots.append({"motion_id": g["id"], "voter": voter, "vote": r.get("vote", "")})

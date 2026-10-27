@@ -11,17 +11,31 @@ jobs:
       - uses: actions/checkout@v4
       - run: pip install -r requirements.txt
       - run: |
-          python collectors/votes.py > votes_stats.txt
-          python - >> votes_stats.txt <<'PY'
-          import csv, collections
-          m = list(csv.DictReader(open("data/votes/motions.csv")))
-          b = list(csv.DictReader(open("data/votes/ballots.csv")))
-          per = collections.defaultdict(collections.Counter)
-          for x in b: per[x["motion_id"]][x["vote"]] += 1
-          sizes = collections.Counter(sum(c.values()) for c in per.values())
-          print("ballots per motion", sorted(sizes.items())[:40])
-          print(collections.Counter(x["meeting_type"] for x in m).most_common())
+          mkdir -p dump4
+          python - > dump4/old_ids.txt <<'PY'
+          import sys, re; sys.path.insert(0, "collectors")
+          import jobs
+          from bs4 import BeautifulSoup
+          s = jobs.session()
+          ids = [315002, 315005, 315010, 314900, 314500, 314000, 313500, 313000, 312000, 311000, 310000, 308000, 305000, 302000, 300000, 295000, 290000]
+          for jid in ids:
+              url = f"https://recruiting.calgary.ca/psc/hcm/EMPLOYEE/HRMS/c/HRS_HRAM_FL.HRS_CG_SEARCH_FL.GBL?FOCUS=Applicant&Page=HRS_APP_JBPST_FL&JobOpeningId={jid}&PostingSeq=1&SiteId=1"
+              try:
+                  html = ""
+                  for _ in range(2):
+                      html = s.get(url, timeout=30).text
+                  text = BeautifulSoup(html, "html.parser").get_text("\n", strip=True)
+                  d = jobs.parse_detail(html)
+                  m = re.search(r"Job Title\n(.+)", text)
+                  print(jid, len(text), "TITLE=", m.group(1) if m else None, "| has_pay_block=", "Position and Pay Information" in text, d.get("department"), d.get("salary_min"), d.get("apply_by"))
+                  if jid in (314000, 300000):
+                      print("   TAIL:", text[-600:].replace("\n", " | "))
+              except Exception as e:
+                  print(jid, "ERR", e)
           PY
-          ls -la data/votes
+          curl -sS "http://web.archive.org/cdx/search/cdx?url=calgary.ca/careers*&from=2025&output=json&fl=timestamp,original,statuscode&filter=statuscode:200" -o dump4/cdx_careers.json || true
+          curl -sS "http://web.archive.org/cdx/search/cdx?url=www.calgary.ca/careers*&from=2025&output=json&fl=timestamp,original,statuscode&filter=statuscode:200" -o dump4/cdx_careers_www.json || true
+          curl -sS "http://web.archive.org/cdx/search/cdx?url=recruiting.calgary.ca/psc/hcm/*&from=2026&output=json&fl=timestamp,original,statuscode&limit=2000" -o dump4/cdx_recruiting.json || true
+          ls -la dump4
           git config user.name dbg; git config user.email dbg@users.noreply.github.com
-          git add votes_stats.txt data/votes; git commit -m "votes test [skip ci]"; git push
+          git add dump4; git commit -m "dump4 [skip ci]"; git push

@@ -9,21 +9,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: pip install -r requirements.txt
       - run: |
-          python - > debug_out.txt <<'PY'
-          import sys; sys.path.insert(0, "collectors")
-          import jobs
-          from bs4 import BeautifulSoup
-          s = jobs.session()
-          for jid in ["315083", "315216", "315150", "315500"]:
-              url = f"https://recruiting.calgary.ca/psc/hcm/EMPLOYEE/HRMS/c/HRS_HRAM_FL.HRS_CG_SEARCH_FL.GBL?FOCUS=Applicant&Page=HRS_APP_JBPST_FL&JobOpeningId={jid}&PostingSeq=1&SiteId=1"
-              for _ in range(2):
-                  r = s.get(url, timeout=30)
-              text = BeautifulSoup(r.text, "html.parser").get_text("\n", strip=True)
-              print("=" * 20, jid, len(text))
-              print(text[-3500:])
-          PY
-      - run: |
+          mkdir -p dump
+          UA="Mozilla/5.0 (compatible; TrackingOurCash-YYC/0.1; +https://github.com/TrackingOurCash/YYC)"
+          curl -sSL -A "$UA" https://calgary.ca/our-finances/civic-partners-funding.html -o dump/civic.html
+          curl -sSL -A "$UA" https://www.calgary.ca/social-services/funding/organization-allocations.html -o dump/fcss.html
+          curl -sSL -A "$UA" https://www.calgary.ca/service-lines/budget-overview.html -o dump/budget.html
+          curl -sSL -A "$UA" "https://www.calgary.ca/our-finances/2026-budget.html" -o dump/budget2026.html
+          curl -sSL -A "$UA" "https://data.calgary.ca/api/catalog/v1?domains=data.calgary.ca&limit=500" -o dump/catalog.json
+          ls -la dump
           git config user.name dbg; git config user.email dbg@users.noreply.github.com
-          git add debug_out.txt; git commit -m "debug output [skip ci]"; git push
+          git add dump; git commit -m "dump [skip ci]"; git push

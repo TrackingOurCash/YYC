@@ -1,0 +1,387 @@
+{
+  "id" : "n4di-6hi3",
+  "name" : "Compensation Disclosure List 2025",
+  "assetType" : "filter",
+  "attribution" : "The City of Calgary",
+  "averageRating" : 0,
+  "category" : "Government",
+  "createdAt" : 1750255643,
+  "description" : "The City’s compensation disclosure list includes position titles and base salary ranges as approved by Council in 2025. For more information see: <a href=\"https://www.calgary.ca/ca/city-manager/compensationdisclosure.html\">Compensation disclosure list</a>",
+  "diciBackend" : false,
+  "displayType" : "table",
+  "downloadCount" : 164,
+  "hideFromCatalog" : false,
+  "hideFromDataJson" : false,
+  "licenseId" : "SEE_TERMS_OF_USE",
+  "locked" : false,
+  "modifyingViewUid" : "9bze-mzx6",
+  "newBackend" : true,
+  "numberOfComments" : 0,
+  "oid" : 41389218,
+  "provenance" : "official",
+  "publicationAppendEnabled" : true,
+  "publicationDate" : 1750255720,
+  "publicationGroup" : 14339535,
+  "publicationStage" : "published",
+  "queryString" : "SELECT\n  `year`,\n  `position_title`,\n  `minimum_annual_base_rate`,\n  `maximum_annual_base_rate`\nWHERE caseless_one_of(`year`, \"2025\")\nORDER BY `year` ASC NULL LAST, `position_title` ASC NULL LAST",
+  "rowsUpdatedAt" : 1781704812,
+  "rowsUpdatedBy" : "644v-f32f",
+  "tableId" : 15391292,
+  "totalTimesRated" : 0,
+  "viewCount" : 2841,
+  "viewLastModified" : 1776984077,
+  "viewType" : "tabular",
+  "approvals" : [ {
+    "reviewedAt" : 1750255720,
+    "reviewedAutomatically" : true,
+    "state" : "approved",
+    "submissionId" : 6927203,
+    "submissionObject" : "public_audience_request",
+    "submissionOutcome" : "change_audience",
+    "submittedAt" : 1750255720,
+    "targetAudience" : "public",
+    "workflowId" : 2143,
+    "submissionDetails" : {
+      "permissionType" : "READ"
+    },
+    "submissionOutcomeApplication" : {
+      "endedAt" : 1750255720,
+      "failureCount" : 0,
+      "startedAt" : 1750255720,
+      "status" : "success"
+    },
+    "submitter" : {
+      "id" : "ikwz-m2v4",
+      "displayName" : "Open Data Administrator SE"
+    }
+  } ],
+  "clientContext" : {
+    "clientContextVariables" : [ ],
+    "inheritedVariables" : { }
+  },
+  "columns" : [ {
+    "id" : 612292834,
+    "name" : "Year",
+    "dataTypeName" : "text",
+    "description" : "",
+    "fieldName" : "year",
+    "position" : 1,
+    "renderTypeName" : "text",
+    "tableColumnId" : 50580221,
+    "width" : 303,
+    "cachedContents" : {
+      "non_null" : "1923",
+      "largest" : "2025",
+      "null" : "0",
+      "top" : [ {
+        "item" : "2025",
+        "count" : "1923"
+      } ],
+      "smallest" : "2025",
+      "count" : "1923",
+      "cardinality" : "1923"
+    },
+    "format" : { }
+  }, {
+    "id" : 612292835,
+    "name" : "Position Title",
+    "dataTypeName" : "text",
+    "description" : "",
+    "fieldName" : "position_title",
+    "position" : 2,
+    "renderTypeName" : "text",
+    "tableColumnId" : 50580222,
+    "width" : 389,
+    "cachedContents" : {
+      "non_null" : "1923",
+      "largest" : "Zookeeper 2",
+      "null" : "0",
+      "top" : [ {
+        "item" : "Recreation Program Specialist",
+        "count" : "2"
+      }, {
+        "item" : "Team Leader Fleet",
+        "count" : "1"
+      }, {
+        "item" : "Operational Excellence Program Manager",
+        "count" : "1"
+      }, {
+        "item" : "Coordinator Animal Care and Clinic Services",
+        "count" : "1"
+      }, {
+        "item" : "Technical Advisor",
+        "count" : "1"
+      }, {
+        "item" : "Supervisor Customer Service and Communications Liaison",
+        "count" : "1"
+      }, {
+        "item" : "Senior Department Accountant",
+        "count" : "1"
+      }, {
+        "item" : "Manager Community and Business Relations",
+        "count" : "1"
+      }, {
+        "item" : "Maintenance Operations Supervisor",
+        "count" : "1"
+      }, {
+        "item" : "Swamper to Equipment Operator Loader",
+        "count" : "1"
+      }, {
+        "item" : "Parks Crew Lead",
+        "count" : "1"
+      }, {
+        "item" : "Manager Risk and Compliance",
+        "count" : "1"
+      }, {
+        "item" : "Leader Court Coordination and Vehicle For Hire Licensing",
+        "count" : "1"
+      }, {
+        "item" : "Coordinator Engagement and Analysis",
+        "count" : "1"
+      }, {
+        "item" : "General Manager Community Services",
+        "count" : "1"
+      }, {
+        "item" : "Lawyer 3",
+        "count" : "1"
+      }, {
+        "item" : "Performance Management Technologist",
+        "count" : "1"
+      }, {
+        "item" : "Manager Enterprise Risk Management",
+        "count" : "1"
+      }, {
+        "item" : "Emergency Management Coordinator",
+        "count" : "1"
+      }, {
+        "item" : "Senior Technical Advisor",
+        "count" : "1"
+      } ],
+      "smallest" : "311 Business Advisor",
+      "count" : "1923",
+      "cardinality" : "1923"
+    },
+    "format" : { }
+  }, {
+    "id" : 612292836,
+    "name" : "Minimum Annual Base Rate",
+    "dataTypeName" : "number",
+    "description" : "",
+    "fieldName" : "minimum_annual_base_rate",
+    "position" : 3,
+    "renderTypeName" : "number",
+    "tableColumnId" : 50580223,
+    "width" : 302,
+    "cachedContents" : {
+      "non_null" : "1923",
+      "largest" : "391666",
+      "null" : "0",
+      "top" : [ {
+        "item" : "96522",
+        "count" : "348"
+      }, {
+        "item" : "85135",
+        "count" : "249"
+      }, {
+        "item" : "81463",
+        "count" : "130"
+      }, {
+        "item" : "77568",
+        "count" : "120"
+      }, {
+        "item" : "107411",
+        "count" : "115"
+      }, {
+        "item" : "85558",
+        "count" : "113"
+      }, {
+        "item" : "73128",
+        "count" : "111"
+      }, {
+        "item" : "68741",
+        "count" : "77"
+      }, {
+        "item" : "76725",
+        "count" : "59"
+      }, {
+        "item" : "121267",
+        "count" : "54"
+      }, {
+        "item" : "89762",
+        "count" : "41"
+      }, {
+        "item" : "70523",
+        "count" : "38"
+      }, {
+        "item" : "64519",
+        "count" : "36"
+      }, {
+        "item" : "131575",
+        "count" : "27"
+      }, {
+        "item" : "170000",
+        "count" : "25"
+      }, {
+        "item" : "67647",
+        "count" : "24"
+      }, {
+        "item" : "66809",
+        "count" : "18"
+      }, {
+        "item" : "60588",
+        "count" : "15"
+      }, {
+        "item" : "143500",
+        "count" : "15"
+      }, {
+        "item" : "74235",
+        "count" : "13"
+      } ],
+      "smallest" : "42050",
+      "count" : "1923",
+      "cardinality" : "1923"
+    },
+    "format" : {
+      "precisionStyle" : "standard",
+      "currencyStyle" : "USD",
+      "noCommas" : "false",
+      "precision" : "0",
+      "align" : "right"
+    }
+  }, {
+    "id" : 612292837,
+    "name" : "Maximum/Target Annual Base Rate",
+    "dataTypeName" : "number",
+    "description" : "",
+    "fieldName" : "maximum_annual_base_rate",
+    "position" : 4,
+    "renderTypeName" : "number",
+    "tableColumnId" : 50580224,
+    "width" : 863,
+    "cachedContents" : {
+      "non_null" : "1923",
+      "largest" : "475000",
+      "null" : "0",
+      "top" : [ {
+        "item" : "147834",
+        "count" : "348"
+      }, {
+        "item" : "128548",
+        "count" : "249"
+      }, {
+        "item" : "108909",
+        "count" : "124"
+      }, {
+        "item" : "103685",
+        "count" : "118"
+      }, {
+        "item" : "168991",
+        "count" : "115"
+      }, {
+        "item" : "97843",
+        "count" : "108"
+      }, {
+        "item" : "114369",
+        "count" : "105"
+      }, {
+        "item" : "91910",
+        "count" : "75"
+      }, {
+        "item" : "114222",
+        "count" : "59"
+      }, {
+        "item" : "193315",
+        "count" : "54"
+      }, {
+        "item" : "120120",
+        "count" : "40"
+      }, {
+        "item" : "78111",
+        "count" : "37"
+      }, {
+        "item" : "86323",
+        "count" : "35"
+      }, {
+        "item" : "209747",
+        "count" : "27"
+      }, {
+        "item" : "262500",
+        "count" : "25"
+      }, {
+        "item" : "100837",
+        "count" : "24"
+      }, {
+        "item" : "74060",
+        "count" : "18"
+      }, {
+        "item" : "81026",
+        "count" : "17"
+      }, {
+        "item" : "218500",
+        "count" : "15"
+      }, {
+        "item" : "118498",
+        "count" : "14"
+      } ],
+      "smallest" : "46800",
+      "count" : "1923",
+      "cardinality" : "1923"
+    },
+    "format" : {
+      "precisionStyle" : "standard",
+      "currencyStyle" : "USD",
+      "noCommas" : "false",
+      "precision" : "0",
+      "align" : "right"
+    }
+  } ],
+  "grants" : [ {
+    "inherited" : false,
+    "type" : "viewer",
+    "flags" : [ "public" ]
+  } ],
+  "license" : {
+    "name" : "See Terms of Use"
+  },
+  "metadata" : {
+    "custom_fields" : {
+      "License/Attribution" : {
+        "License URL" : "https://data.calgary.ca/d/Open-Data-Terms/u45n-7awa"
+      },
+      "Data Supplier" : {
+        "Organization" : "The City of Calgary",
+        "Business Unit" : "Human Resources"
+      },
+      "Geospatial Information" : {
+        "Dataset contains geospatial information" : "No"
+      }
+    },
+    "availableDisplayTypes" : [ "table", "fatrow", "page" ],
+    "renderTypeConfig" : {
+      "visible" : {
+        "table" : true
+      }
+    }
+  },
+  "owner" : {
+    "id" : "ikwz-m2v4",
+    "displayName" : "Open Data Administrator SE",
+    "screenName" : "Open Data Administrator SE",
+    "type" : "interactive",
+    "flags" : [ "acceptedEula", "mayBeStoriesCoOwner" ]
+  },
+  "query" : { },
+  "rights" : [ "read" ],
+  "tableAuthor" : {
+    "id" : "55bi-hyk4",
+    "displayName" : "Calgary Open Data",
+    "profileImageUrlLarge" : "/api/users/55bi-hyk4/profile_images/LARGE",
+    "profileImageUrlMedium" : "/api/users/55bi-hyk4/profile_images/THUMB",
+    "profileImageUrlSmall" : "/api/users/55bi-hyk4/profile_images/TINY",
+    "screenName" : "Calgary Open Data",
+    "type" : "interactive",
+    "flags" : [ "acceptedEula", "mayBeStoriesCoOwner" ]
+  },
+  "tags" : [ "pay", "compensation", "salary" ],
+  "flags" : [ "calculatedView", "ownerMayBeContacted", "restorable", "restorePossibleForType", "soqlBasedView" ]
+}

@@ -1,0 +1,305 @@
+{
+  "id" : "tz8z-hyaz",
+  "name" : "Ward Boundaries",
+  "assetType" : "dataset",
+  "attribution" : "The City of Calgary",
+  "averageRating" : 0,
+  "category" : "Government",
+  "createdAt" : 1505336091,
+  "description" : "A ward is the division of the city into electoral areas, each represented by one elected Councillor. Wards are a geographical division of the municipality and are referred to by a number defined in the bylaw. Divisions are determined under the authority of the Municipal Government Act and criteria in Council policy.",
+  "diciBackend" : false,
+  "displayType" : "table",
+  "downloadCount" : 1169,
+  "hideFromCatalog" : false,
+  "hideFromDataJson" : false,
+  "licenseId" : "SEE_TERMS_OF_USE",
+  "locked" : false,
+  "newBackend" : true,
+  "numberOfComments" : 0,
+  "oid" : 37879230,
+  "provenance" : "official",
+  "publicationAppendEnabled" : true,
+  "publicationDate" : 1635525797,
+  "publicationGroup" : 14460975,
+  "publicationStage" : "published",
+  "rowsUpdatedAt" : 1790863320,
+  "rowsUpdatedBy" : "55bi-hyk4",
+  "tableId" : 18491474,
+  "totalTimesRated" : 0,
+  "viewCount" : 3265,
+  "viewLastModified" : 1790863319,
+  "viewType" : "tabular",
+  "approvals" : [ {
+    "reviewedAt" : 1473715836,
+    "reviewedAutomatically" : true,
+    "state" : "approved",
+    "submissionId" : 4175981,
+    "submissionObject" : "public_audience_request",
+    "submissionOutcome" : "change_audience",
+    "submittedAt" : 1473715836,
+    "targetAudience" : "public",
+    "workflowId" : 2143,
+    "submissionDetails" : {
+      "permissionType" : "READ"
+    },
+    "submissionOutcomeApplication" : {
+      "failureCount" : 0,
+      "status" : "success"
+    },
+    "submitter" : {
+      "id" : "55bi-hyk4",
+      "displayName" : "Calgary Open Data"
+    }
+  } ],
+  "clientContext" : {
+    "clientContextVariables" : [ ],
+    "inheritedVariables" : { }
+  },
+  "columns" : [ {
+    "id" : 550916485,
+    "name" : "MULTIPOLYGON",
+    "dataTypeName" : "multipolygon",
+    "description" : "",
+    "fieldName" : "multipolygon",
+    "position" : 1,
+    "renderTypeName" : "multipolygon",
+    "tableColumnId" : 122968552,
+    "format" : { }
+  }, {
+    "id" : 550916486,
+    "name" : "COUNCILLOR",
+    "dataTypeName" : "text",
+    "fieldName" : "councillor",
+    "position" : 2,
+    "renderTypeName" : "text",
+    "tableColumnId" : 53242234,
+    "cachedContents" : {
+      "non_null" : "14",
+      "largest" : "Rob Ward",
+      "null" : "0",
+      "top" : [ {
+        "item" : "Dan McLean",
+        "count" : "1"
+      }, {
+        "item" : "Andrew Yule",
+        "count" : "1"
+      }, {
+        "item" : "Harrison M. Clark",
+        "count" : "1"
+      }, {
+        "item" : "Daniel James (DJ) Kelly",
+        "count" : "1"
+      }, {
+        "item" : "Jennifer Wyness",
+        "count" : "1"
+      }, {
+        "item" : "Kim Tyers",
+        "count" : "1"
+      }, {
+        "item" : "Rob Ward",
+        "count" : "1"
+      }, {
+        "item" : "Mike Jamieson",
+        "count" : "1"
+      }, {
+        "item" : "John Pantazopoulos",
+        "count" : "1"
+      }, {
+        "item" : "Myke Atkinson",
+        "count" : "1"
+      }, {
+        "item" : "Andre Chabot",
+        "count" : "1"
+      }, {
+        "item" : "Nathaniel Schmidt",
+        "count" : "1"
+      }, {
+        "item" : "Landon Johnston",
+        "count" : "1"
+      }, {
+        "item" : "Raj Dhaliwal",
+        "count" : "1"
+      } ],
+      "smallest" : "Andre Chabot",
+      "count" : "14",
+      "cardinality" : "14"
+    },
+    "format" : { }
+  }, {
+    "id" : 550916487,
+    "name" : "WARD_NUM",
+    "dataTypeName" : "number",
+    "fieldName" : "ward_num",
+    "position" : 3,
+    "renderTypeName" : "number",
+    "tableColumnId" : 53242235,
+    "cachedContents" : {
+      "non_null" : "14",
+      "largest" : "14",
+      "null" : "0",
+      "top" : [ {
+        "item" : "7",
+        "count" : "1"
+      }, {
+        "item" : "1",
+        "count" : "1"
+      }, {
+        "item" : "4",
+        "count" : "1"
+      }, {
+        "item" : "8",
+        "count" : "1"
+      }, {
+        "item" : "5",
+        "count" : "1"
+      }, {
+        "item" : "6",
+        "count" : "1"
+      }, {
+        "item" : "9",
+        "count" : "1"
+      }, {
+        "item" : "13",
+        "count" : "1"
+      }, {
+        "item" : "2",
+        "count" : "1"
+      }, {
+        "item" : "11",
+        "count" : "1"
+      }, {
+        "item" : "14",
+        "count" : "1"
+      }, {
+        "item" : "3",
+        "count" : "1"
+      }, {
+        "item" : "12",
+        "count" : "1"
+      }, {
+        "item" : "10",
+        "count" : "1"
+      } ],
+      "smallest" : "1",
+      "count" : "14",
+      "cardinality" : "14"
+    },
+    "format" : { }
+  }, {
+    "id" : 550916488,
+    "name" : "LABEL",
+    "dataTypeName" : "text",
+    "fieldName" : "label",
+    "position" : 4,
+    "renderTypeName" : "text",
+    "tableColumnId" : 53242236,
+    "cachedContents" : {
+      "non_null" : "14",
+      "largest" : "WARD 9",
+      "null" : "0",
+      "top" : [ {
+        "item" : "WARD 11",
+        "count" : "1"
+      }, {
+        "item" : "WARD 3",
+        "count" : "1"
+      }, {
+        "item" : "WARD 2",
+        "count" : "1"
+      }, {
+        "item" : "WARD 13",
+        "count" : "1"
+      }, {
+        "item" : "WARD 8",
+        "count" : "1"
+      }, {
+        "item" : "WARD 6",
+        "count" : "1"
+      }, {
+        "item" : "WARD 12",
+        "count" : "1"
+      }, {
+        "item" : "WARD 9",
+        "count" : "1"
+      }, {
+        "item" : "WARD 7",
+        "count" : "1"
+      }, {
+        "item" : "WARD 1",
+        "count" : "1"
+      }, {
+        "item" : "WARD 5",
+        "count" : "1"
+      }, {
+        "item" : "WARD 4",
+        "count" : "1"
+      }, {
+        "item" : "WARD 14",
+        "count" : "1"
+      }, {
+        "item" : "WARD 10",
+        "count" : "1"
+      } ],
+      "smallest" : "WARD 1",
+      "count" : "14",
+      "cardinality" : "14"
+    },
+    "format" : { }
+  } ],
+  "grants" : [ {
+    "inherited" : false,
+    "type" : "viewer",
+    "flags" : [ "public" ]
+  } ],
+  "license" : {
+    "name" : "See Terms of Use"
+  },
+  "metadata" : {
+    "custom_fields" : {
+      "License/Attribution" : {
+        "License URL" : "https://data.calgary.ca/d/Open-Data-Terms/u45n-7awa"
+      },
+      "Data Supplier" : {
+        "Organization" : "The City of Calgary",
+        "Business Unit" : "City Clerks"
+      },
+      "Time/Date" : {
+        "Temporal End Date" : "10/2021",
+        "How Data is Collected" : "manual",
+        "Temporal Start Date" : "10/16/2017",
+        "Date of Last Update" : "October 2021",
+        "Update Frequency" : "Irregular",
+        "Time Period Covered" : "October 16 2017- October 2021"
+      },
+      "Geospatial Information" : {
+        "Map Projection" : "EPSG:4326 WGS84",
+        "Dataset contains geospatial information" : "Yes"
+      }
+    },
+    "rowLabel" : "Ward",
+    "availableDisplayTypes" : [ "table", "fatrow", "page" ]
+  },
+  "owner" : {
+    "id" : "55bi-hyk4",
+    "displayName" : "Calgary Open Data",
+    "profileImageUrlLarge" : "/api/users/55bi-hyk4/profile_images/LARGE",
+    "profileImageUrlMedium" : "/api/users/55bi-hyk4/profile_images/THUMB",
+    "profileImageUrlSmall" : "/api/users/55bi-hyk4/profile_images/TINY",
+    "screenName" : "Calgary Open Data",
+    "type" : "interactive",
+    "flags" : [ "acceptedEula", "mayBeStoriesCoOwner" ]
+  },
+  "query" : { },
+  "rights" : [ "read" ],
+  "tableAuthor" : {
+    "id" : "55bi-hyk4",
+    "displayName" : "Calgary Open Data",
+    "profileImageUrlLarge" : "/api/users/55bi-hyk4/profile_images/LARGE",
+    "profileImageUrlMedium" : "/api/users/55bi-hyk4/profile_images/THUMB",
+    "profileImageUrlSmall" : "/api/users/55bi-hyk4/profile_images/TINY",
+    "screenName" : "Calgary Open Data",
+    "type" : "interactive",
+    "flags" : [ "acceptedEula", "mayBeStoriesCoOwner" ]
+  },
+  "flags" : [ "default", "ownerMayBeContacted", "restorable", "restorePossibleForType" ]
+}

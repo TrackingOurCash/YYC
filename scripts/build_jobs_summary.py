@@ -2,7 +2,10 @@
 
 Totals are by month first seen, by job category, by department (when the
 posting page gave one), and overall. Cost estimates use the midpoint of each
-posted pay range; hourly rates are annualised at 2,080 hours.
+posted pay range. Hourly rates are annualised from the posting's weekly
+hours (the City standard of 35 when a posting doesn't say). Temporary
+positions are counted at the same annual rate, so the cost is a yearly run
+rate, not the total paid over a fixed-length term.
 """
 
 from __future__ import annotations
@@ -17,7 +20,7 @@ ROOT = Path(__file__).resolve().parents[1]
 POSTINGS_CSV = ROOT / "data" / "jobs" / "postings.csv"
 OUT = ROOT / "site" / "data" / "jobs_summary.json"
 
-HOURS_PER_YEAR = 2080
+STANDARD_WEEKLY_HOURS = 35
 
 
 def annual_midpoint(row: dict) -> float | None:
@@ -27,20 +30,36 @@ def annual_midpoint(row: dict) -> float | None:
         return None
     mid = (lo + hi) / 2
     if row.get("pay_basis") == "hourly":
-        mid *= HOURS_PER_YEAR
+        try:
+            hours = float(row.get("hours_per_week") or STANDARD_WEEKLY_HOURS)
+        except ValueError:
+            hours = STANDARD_WEEKLY_HOURS
+        mid *= hours * 52
     return mid
 
 
-def positions(row: dict) -> int:
-    try:
-        return max(1, int(row.get("positions") or 1))
-    except ValueError:
-        return 1
+def positions(row: dict) -> tuple[int, int]:
+    """(permanent, temporary) positions; a posting counts as one if unstated."""
+    def num(key):
+        try:
+            return int(row.get(key) or 0)
+        except ValueError:
+            return 0
+
+    perm, temp = num("permanent_positions"), num("temporary_positions")
+    return (perm, temp) if perm + temp else (1, 0)
 
 
 def summarise(rows: list[dict]) -> dict:
     def bucket():
-        return {"postings": 0, "positions": 0, "est_annual_cost": 0.0, "with_pay": 0}
+        return {
+            "postings": 0,
+            "positions": 0,
+            "permanent": 0,
+            "temporary": 0,
+            "est_annual_cost": 0.0,
+            "with_pay": 0,
+        }
 
     by_month = defaultdict(bucket)
     by_category = defaultdict(bucket)
@@ -48,7 +67,8 @@ def summarise(rows: list[dict]) -> dict:
     total = bucket()
 
     for row in rows:
-        n = positions(row)
+        perm, temp = positions(row)
+        n = perm + temp
         cost = annual_midpoint(row)
         keys = [
             by_month[row["first_seen"][:7]],
@@ -59,6 +79,8 @@ def summarise(rows: list[dict]) -> dict:
         for b in keys:
             b["postings"] += 1
             b["positions"] += n
+            b["permanent"] += perm
+            b["temporary"] += temp
             if cost is not None:
                 b["with_pay"] += 1
                 b["est_annual_cost"] += cost * n

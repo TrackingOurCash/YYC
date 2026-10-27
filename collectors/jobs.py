@@ -37,6 +37,9 @@ USER_AGENT = (
     "+https://github.com/TrackingOurCash/YYC)"
 )
 
+# Bump when parse_detail changes so existing rows are re-read.
+DETAILS_VERSION = "2"
+
 FIELDS = [
     "job_id",
     "title",
@@ -46,17 +49,32 @@ FIELDS = [
     "last_seen",
     "url",
     "department",
+    "union",
+    "pay_grade",
     "salary_min",
     "salary_max",
-    "pay_basis",  # hourly | annual | ""
-    "union",
-    "employment_type",
-    "positions",
+    "pay_basis",  # hourly | annual
+    "hours_per_week",
+    "permanent_positions",
+    "temporary_positions",
+    "position_type",
+    "full_part_time",
+    "location",
+    "audience",
     "details_fetched",
+    "details_version",
 ]
 
+LISTING_FIELDS = {"job_id", "title", "category", "closing_date", "url"}
+TRACKING_FIELDS = {"first_seen", "last_seen", "details_fetched", "details_version"}
+DETAIL_FIELDS = [f for f in FIELDS if f not in LISTING_FIELDS | TRACKING_FIELDS]
+
 CLOSING_RE = re.compile(r"Closing\s+date:?\s*(\d{4}[/-]\d{2}[/-]\d{2})", re.I)
-MONEY_RE = re.compile(r"\$\s?([\d,]+(?:\.\d{1,2})?)")
+PAY_RE = re.compile(
+    r"\$\s?([\d,]+(?:\.\d+)?)(?:\s*(?:-|–|to)\s*\$?\s?([\d,]+(?:\.\d+)?))?"
+)
+POSITIONS_RE = re.compile(r"(\d+)\s+(Permanent|Regular|Temporary|Casual|Seasonal|Term)", re.I)
+HOURS_RE = re.compile(r"(\d+(?:\.\d+)?)[\s-]*hours?", re.I)
 
 
 def session() -> requests.Session:
@@ -100,43 +118,76 @@ def parse_listing(html: str, base_url: str = CAREERS_URL) -> list[dict]:
     return list(postings.values())
 
 
-def _label_value(text: str, *labels: str) -> str:
-    for label in labels:
-        m = re.search(rf"{label}\s*:?\s*(.+?)(?:\n|$)", text, re.I)
-        if m:
-            return m.group(1).strip()
-    return ""
+def _labelled(lines: list[str]) -> dict[str, str]:
+    """Pair "Label:" lines with the value line that follows them."""
+    out = {}
+    for i, line in enumerate(lines[:-1]):
+        if line.endswith(":") and len(line) < 40:
+            out.setdefault(line[:-1].strip().lower(), lines[i + 1].strip())
+    return out
 
 
 def parse_detail(html: str) -> dict:
-    """Best-effort extraction from a PeopleSoft posting page.
+    """Read the "Position and Pay Information" block of a PeopleSoft posting.
 
-    PeopleSoft pages vary by posting, so every field is optional.
+    The block is a run of "Label:" lines, each followed by its value:
+    Business Unit, Union, Position Type, Compensation, Hours of work,
+    Location, Audience. Every field is optional.
     """
-    soup = BeautifulSoup(html, "html.parser")
-    text = soup.get_text("\n", strip=True)
+    text = BeautifulSoup(html, "html.parser").get_text("\n", strip=True).replace("\xa0", " ")
     if "cookies enabled" in text.lower() and "sign in" in text.lower():
         return {}
+    # A stray tag sometimes splits the first letter of a label onto its own line.
+    text = re.sub(r"(?m)^(\w)\n", r"\1", text)
+    lines = text.split("\n")
 
-    out = {
-        "department": _label_value(text, "Business Unit", "Department", "Service Line"),
-        "union": _label_value(text, "Union", "Bargaining Unit"),
-        "employment_type": _label_value(
-            text, "Regular/Temporary", "Employment Type", "Job Type", "Position Type"
-        ),
-        "positions": _label_value(text, "Number of Positions", "Openings"),
+    # The header above the description has unlabelled pairs, e.g.
+    # "Full/Part Time" then "Full-Time".
+    lowered = [l.lower() for l in lines]
+    head = {
+        label: lines[lowered.index(label) + 1]
+        for label in ("full/part time", "regular/temporary")
+        if label in lowered[:-1]
     }
 
-    pay_line = _label_value(text, "Salary", "Pay Range", "Compensation", "Wage", "Rate of Pay")
-    amounts = [float(x.replace(",", "")) for x in MONEY_RE.findall(pay_line or text)]
-    if amounts:
-        lo, hi = min(amounts[:2]), max(amounts[:2])
+    marker = "Position and Pay Information"
+    if marker not in text:
+        return {"full_part_time": head.get("full/part time", "")} if head else {}
+    info = _labelled(text.split(marker, 1)[1].split("\n"))
+
+    out = {
+        "department": info.get("business unit", ""),
+        "union": info.get("union", ""),
+        "position_type": info.get("position type", "") or head.get("regular/temporary", ""),
+        "full_part_time": head.get("full/part time", ""),
+        "location": info.get("location", ""),
+        "audience": info.get("audience", ""),
+    }
+
+    counts = {"permanent": 0, "temporary": 0}
+    for n, kind in POSITIONS_RE.findall(out["position_type"]):
+        key = "permanent" if kind.lower() in ("permanent", "regular") else "temporary"
+        counts[key] += int(n)
+    if not any(counts.values()):
+        key = "temporary" if "temp" in out["position_type"].lower() else "permanent"
+        counts[key] = 1
+    out["permanent_positions"] = str(counts["permanent"])
+    out["temporary_positions"] = str(counts["temporary"])
+
+    comp = info.get("compensation", "")
+    m = PAY_RE.search(comp)
+    if m:
+        lo = float(m.group(1).replace(",", ""))
+        hi = float((m.group(2) or m.group(1)).replace(",", ""))
         out["salary_min"], out["salary_max"] = f"{lo:.2f}", f"{hi:.2f}"
-        context = (pay_line or text).lower()
-        if "hour" in context or hi < 200:
-            out["pay_basis"] = "hourly"
-        elif "annual" in context or "year" in context or hi > 10000:
-            out["pay_basis"] = "annual"
+        out["pay_grade"] = comp[: m.start()].strip()
+        lower = comp.lower()
+        out["pay_basis"] = "hourly" if "hour" in lower or hi < 500 else "annual"
+
+    h = HOURS_RE.search(info.get("hours of work", ""))
+    if h:
+        out["hours_per_week"] = h.group(1)
+
     return {k: v for k, v in out.items() if v}
 
 
@@ -194,11 +245,16 @@ def run(details: bool = True, today: str | None = None) -> dict:
 
     if details:
         for job_id, row in rows.items():
-            if row.get("details_fetched") or row["last_seen"] != today:
+            if row["last_seen"] != today:
+                continue
+            if row.get("details_fetched") and row.get("details_version") == DETAILS_VERSION:
                 continue
             try:
-                row.update(fetch_detail(s, row["url"]))
+                fields = fetch_detail(s, row["url"])
+                for key in DETAIL_FIELDS:
+                    row[key] = fields.get(key, "")
                 row["details_fetched"] = today
+                row["details_version"] = DETAILS_VERSION
             except requests.RequestException as e:
                 print(f"detail {job_id}: {e}", file=sys.stderr)
             time.sleep(1)

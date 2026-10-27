@@ -17,10 +17,10 @@ More sources (budget, Civic Partners and FCSS grants, ward office expenses, cont
 `collectors/jobs.py` reads the careers page every morning and keeps one row per posting in `data/jobs/postings.csv`:
 
 - The careers page shows no posting date, so `first_seen` (the first day the collector saw the posting) is used instead. Counts begin on the first day the collector ran.
-- Department, pay range, union and position count come from each posting's own page when it can be read. They're blank otherwise.
+- Department (business unit), union, pay grade and range, weekly hours, and the number of permanent and temporary positions come from the "Position and Pay Information" block on each posting's own page.
 - A raw copy of each day's list is saved in `data/jobs/snapshots/`.
 
-`scripts/build_jobs_summary.py` turns that table into `site/data/jobs_summary.json`, with totals by month, job category, department and overall. Estimated annual cost uses the midpoint of each posted pay range. Hourly rates are multiplied by 2,080 hours.
+`scripts/build_jobs_summary.py` turns that table into `site/data/jobs_summary.json`, with totals by month, job category, department and overall. Estimated annual cost uses the midpoint of each posted pay range times the number of positions. Hourly rates are annualised from the posting's weekly hours (35 if not stated). Temporary positions count at the same annual rate, so the figure is a yearly run rate, not a total over the term.
 
 ## Running locally
 

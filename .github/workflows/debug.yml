@@ -22,7 +22,7 @@ jobs:
                   r = s.get(url, timeout=30)
               text = BeautifulSoup(r.text, "html.parser").get_text("\n", strip=True)
               print("=" * 20, jid, len(text))
-              print(text[:6000])
+              print(text[-3500:])
           PY
       - run: |
           git config user.name dbg; git config user.email dbg@users.noreply.github.com

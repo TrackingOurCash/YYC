@@ -57,8 +57,35 @@
   </section>
 
   <section class="card" style="margin-top:16px">
+    <h2>Follow councillors</h2>
+    <p class="sub">Pick one or more members to see how they voted on each motion in view, side by side. You can also select a member in the chart below.</p>
+    <div class="chips" id="chips" role="group" aria-label="Councillors"></div>
+    <div id="picked" hidden>
+      <div class="filters" style="margin:16px 0 8px">
+        <label>Show motions
+          <select id="f-their">
+            <option value="">All they voted on</option>
+            <option value="no">Where any of them voted No</option>
+            <option value="yes">Where any of them voted Yes</option>
+            <option value="absent">Where any of them was absent</option>
+            <option value="split">Where they voted differently</option>
+            <option value="losing">Where any of them was on the losing side</option>
+          </select>
+        </label>
+        <button class="load-more" id="clear" style="margin:0 0 2px">Clear selection</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Councillor</th><th class="num">Votes cast</th><th class="num">Yes</th><th class="num">No</th><th class="num">Voted No</th><th class="num">Absent</th><th class="num">On the losing side</th></tr></thead>
+          <tbody id="picked-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="card" style="margin-top:16px">
     <h2>How often each member voted No</h2>
-    <p class="sub">Share of each member's Yes and No votes that were No, on the motions in view. Members with fewer than 10 votes in view aren't shown. Hover a row for counts.</p>
+    <p class="sub">Share of each member's Yes and No votes that were No, on the motions in view. Members with fewer than 10 votes in view aren't shown. Hover a row for counts; select one to follow that member.</p>
     <div class="hbars" id="c-members"></div>
   </section>
 
@@ -91,9 +118,13 @@
   const { $, money, num, pct, dayName, el, hbars, table, onResize } = YYC;
   const TERMS = { "2017": ["2020-10-07", "2021-10-18"], "2021": ["2021-10-18", "2025-10-20"], "2025": ["2025-10-20", "9999"] };
   let voters = [], types = [], motions = [];
-  const state = { term: "2025", meeting: "council", money: "money", q: "", sort: "date", dir: -1, shown: 100 };
+  const state = { term: "2025", meeting: "council", money: "money", q: "", their: "", picked: [], sort: "date", dir: -1, shown: 100 };
 
-  function filtered() {
+  // A member's vote on a motion: "Yes", "No", "Absent", or "" when they weren't a voter.
+  const voteOf = (m, i) => (m.yes.includes(i) ? "Yes" : m.no.includes(i) ? "No" : m.absent.includes(i) ? "Absent" : "");
+  const losing = (m, i) => { const v = voteOf(m, i); return (v === "Yes" && !m.carried) || (v === "No" && m.carried); };
+
+  function inScope() {
     const [from, to] = state.term ? TERMS[state.term] : ["", "9999"];
     const q = state.q.trim().toLowerCase();
     return motions.filter((m) =>
@@ -101,6 +132,62 @@
       (!state.meeting || m.council) &&
       (!state.money || m.money) &&
       (!q || m.text.toLowerCase().includes(q)));
+  }
+  function filtered() {
+    const rows = inScope();
+    const P = state.picked;
+    if (!P.length) return rows;
+    return rows.filter((m) => {
+      const votes = P.map((i) => voteOf(m, i));
+      if (votes.every((v) => !v)) return false;
+      switch (state.their) {
+        case "no": return votes.includes("No");
+        case "yes": return votes.includes("Yes");
+        case "absent": return votes.includes("Absent");
+        case "split": return votes.includes("Yes") && votes.includes("No");
+        case "losing": return P.some((i) => losing(m, i));
+        default: return true;
+      }
+    });
+  }
+
+  function togglePick(i) {
+    state.picked = state.picked.includes(i) ? state.picked.filter((x) => x !== i) : [...state.picked, i];
+    state.shown = 100;
+    render();
+  }
+
+  function renderChips() {
+    // Everyone with a vote in the selected term and meetings, current members first by name.
+    const seen = new Set();
+    for (const m of inScope()) for (const i of [...m.yes, ...m.no, ...m.absent]) seen.add(i);
+    for (const i of state.picked) seen.add(i);
+    const list = [...seen].sort((a, b) => voters[a].localeCompare(voters[b]));
+    $("chips").replaceChildren(...list.map((i) => {
+      const b = el("button", { className: "chip", type: "button" }, voters[i]);
+      b.setAttribute("aria-pressed", state.picked.includes(i) ? "true" : "false");
+      b.addEventListener("click", () => togglePick(i));
+      return b;
+    }));
+    if (!list.length) $("chips").append(el("span", { className: "sub" }, "No members voted on the motions in view."));
+  }
+
+  function renderPicked() {
+    $("picked").hidden = !state.picked.length;
+    const rows = inScope();
+    $("picked-body").replaceChildren(...state.picked.map((i) => {
+      let yes = 0, no = 0, absent = 0, lost = 0;
+      for (const m of rows) {
+        const v = voteOf(m, i);
+        if (v === "Yes") yes++; else if (v === "No") no++; else if (v === "Absent") absent++;
+        if (losing(m, i)) lost++;
+      }
+      const cast = yes + no;
+      const tr = el("tr");
+      const cells = [voters[i], num(cast), num(yes), num(no), cast ? pct(no / cast) : "–", num(absent), cast ? pct(lost / cast) : "–"];
+      cells.forEach((c, k) => tr.append(el("td", { className: k ? "num" : "" }, c)));
+      return tr;
+    }));
   }
 
   function renderStats(rows) {
@@ -122,15 +209,23 @@
       for (const i of m.no) c[i].no++;
       for (const i of m.absent) c[i].absent++;
     }
-    const list = c.map((v, i) => ({ name: voters[i], ...v, cast: v.yes + v.no }))
+    const list = c.map((v, i) => ({ name: voters[i], i, ...v, cast: v.yes + v.no }))
       .filter((d) => d.cast >= 10)
       .map((d) => ({
         name: d.name,
+        i: d.i,
         value: d.no / d.cast,
         tip: () => [["Voted No", `${pct(d.no / d.cast)} (${num(d.no)})`], ["Voted Yes", num(d.yes)], ["Absent", num(d.absent)]],
       }))
       .sort((a, b) => b.value - a.value);
     hbars($("c-members"), list, { format: pct, empty: "No member has 10 or more votes on these motions." });
+    [...$("c-members").children].forEach((row, k) => {
+      if (!list[k]) return;
+      row.classList.add("pick");
+      const pick = () => togglePick(list[k].i);
+      row.addEventListener("click", pick);
+      row.addEventListener("keydown", (e) => e.key === "Enter" && pick());
+    });
   }
 
   const names = (idx) => idx.map((i) => voters[i]).join(", ");
@@ -163,16 +258,26 @@
     { key: "no", label: "No", num: true, value: (m) => m.no.length, render: (m) => num(m.no.length) },
     { key: "noNames", label: "Voted No", value: (m) => names(m.no), render: noNames },
   ];
+  function voteCell(m, i) {
+    const v = voteOf(m, i);
+    return el("span", { className: v === "No" ? "vote-no" : v === "Absent" ? "vote-away" : "" }, v || "–");
+  }
   function renderTable(rows) {
-    table($("t-head"), $("t-body"), rows, COLS, state, () => { state.shown = 100; renderTable(filtered()); }, { limit: state.shown });
+    // With members picked, their votes replace the Voted No column.
+    const cols = state.picked.length
+      ? [...COLS.slice(0, -1), ...state.picked.map((i) => ({ key: `v${i}`, label: voters[i], value: (m) => voteOf(m, i), render: (m) => voteCell(m, i) }))]
+      : COLS;
+    table($("t-head"), $("t-body"), rows, cols, state, () => { state.shown = 100; renderTable(filtered()); }, { limit: state.shown });
     $("more").hidden = rows.length <= state.shown;
     $("t-sub").textContent = `Showing ${num(Math.min(rows.length, state.shown))} of ${num(rows.length)} motion${rows.length === 1 ? "" : "s"}. Select a column to sort.`;
   }
 
   function render() {
     const rows = filtered();
+    renderChips();
+    renderPicked();
     renderStats(rows);
-    renderMembers(rows);
+    renderMembers(inScope());
     renderTable(rows);
   }
 
@@ -186,7 +291,8 @@
       }));
       $("latest").textContent = dayName(motions.reduce((m, x) => (x.date > m ? x.date : m), ""));
       const bind = (id, key, evt = "change") => $(id).addEventListener(evt, (e) => { state[key] = e.target.value; state.shown = 100; render(); });
-      bind("f-term", "term"); bind("f-meeting", "meeting"); bind("f-money", "money"); bind("f-q", "q", "input");
+      bind("f-term", "term"); bind("f-meeting", "meeting"); bind("f-money", "money"); bind("f-q", "q", "input"); bind("f-their", "their");
+      $("clear").addEventListener("click", () => { state.picked = []; state.their = ""; $("f-their").value = ""; state.shown = 100; render(); });
       $("more").addEventListener("click", () => { state.shown += 100; renderTable(filtered()); });
       render();
     })

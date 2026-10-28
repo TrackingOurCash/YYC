@@ -7,8 +7,8 @@
   "permanent": 120,
   "temporary": 65,
   "unknown_type": 3024,
-  "est_annual_cost": 132681323,
-  "with_pay": 1176
+  "est_annual_cost": 125501356,
+  "with_pay": 1187
  },
  "by_month": {
   "2024-01": {
@@ -17,8 +17,8 @@
    "permanent": 0,
    "temporary": 0,
    "unknown_type": 73,
-   "est_annual_cost": 3531428,
-   "with_pay": 34
+   "est_annual_cost": 3622241,
+   "with_pay": 38
   },
   "2024-02": {
    "postings": 277,
@@ -26,8 +26,8 @@
    "permanent": 0,
    "temporary": 0,
    "unknown_type": 277,
-   "est_annual_cost": 6537334,
-   "with_pay": 62
+   "est_annual_cost": 6639998,
+   "with_pay": 70
   },
   "2024-03": {
    "postings": 77,
@@ -35,8 +35,8 @@
    "permanent": 0,
    "temporary": 0,
    "unknown_type": 77,
-   "est_annual_cost": 3370390,
-   "with_pay": 30
+   "est_annual_cost": 3040487,
+   "with_pay": 31
   },
   "2024-05": {
    "postings": 135,
@@ -44,8 +44,8 @@
    "permanent": 0,
    "temporary": 0,
    "unknown_type": 135,
-   "est_annual_cost": 7208716,
-   "with_pay": 69
+   "est_annual_cost": 6073948,
+   "with_pay": 64
   },
   "2024-07": {
    "postings": 119,
@@ -53,8 +53,8 @@
    "permanent": 0,
    "temporary": 0,
    "unknown_type": 119,
-   "est_annual_cost": 4796737,
-   "with_pay": 44
+   "est_annual_cost": 4565621,
+   "with_pay": 47
   },
   "2024-08": {
    "postings": 94,
@@ -62,8 +62,8 @@
    "permanent": 0,
    "temporary": 0,
    "unknown_type": 94,
-   "est_annual_cost": 3518548,
-   "with_pay": 34
+   "est_annual_cost": 3540079,
+   "with_pay": 38
   },
   "2024-09": {
    "postings": 99,
@@ -71,8 +71,8 @@
    "permanent": 0,
    "temporary": 0,
    "unknown_type": 99,
-   "est_annual_cost": 4814368,
-   "with_pay": 44
+   "est_annual_cost": 4100336,
+   "with_pay": 43
   },
   "2024-10": {
    "postings": 63,
@@ -80,8 +80,8 @@
    "permanent": 0,
    "temporary": 0,
    "unknown_type": 63,
-   "est_annual_cost": 2271900,
-   "with_pay": 21
+   "est_annual_cost": 1967208,
+   "with_pay": 20
   },
   "2024-11": {
    "postings": 68,
@@ -89,8 +89,8 @@
    "permanent": 0,
    "temporary": 0,
    "unknown_type": 68,
-   "est_annual_cost": 3064116,
-   "with_pay": 29
+   "est_annual_cost": 2013812,
+   "with_pay": 23
   },
   "2024-12": {
    "postings": 62,
@@ -98,8 +98,8 @@
    "permanent": 0,
    "temporary": 0,
    "unknown_type": 62,
-   "est_annual_cost": 2726646,
-   "with_pay": 28
+   "est_annual_cost": 2170640,
+   "with_pay": 26
   },
   "2025-01": {
    "postings": 68,
@@ -107,7 +107,7 @@
    "permanent": 0,
    "temporary": 0,
    "unknown_type": 68,
-   "est_annual_cost": 2859071,
+   "est_annual_cost": 2725174,
    "with_pay": 27
   },
   "2025-02": {
@@ -116,8 +116,8 @@
    "permanent": 0,
    "temporary": 0,
    "unknown_type": 239,
-   "est_annual_cost": 3801875,
-   "with_pay": 35
+   "est_annual_cost": 3318096,
+   "with_pay": 33
   },
   "2025-03": {
    "postings": 158,
@@ -125,8 +125,8 @@
    "permanent": 0,
    "temporary": 0,
    "unknown_type": 158,
-   "est_annual_cost": 7806051,
-   "with_pay": 71
+   "est_annual_cost": 7121516,
+   "with_pay": 72
   },
   "2025-04": {
    "postings": 62,
@@ -134,7 +134,7 @@
    "permanent": 0,
    "temporary": 0,
    "unknown_type": 62,
-   "est_annual_cost": 2498170,
+   "est_annual_cost": 2341164,
    "with_pay": 25
   },
   "2025-05": {
@@ -143,7 +143,7 @@
    "permanent": 0,
    "temporary": 0,
    "unknown_type": 96,
-   "est_annual_cost": 4911064,
+   "est_annual_cost": 4235098,
    "with_pay": 43
   },
   "2025-06": {
@@ -152,8 +152,8 @@
    "permanent": 0,
    "temporary": 0,
    "unknown_type": 97,
-   "est_annual_cost": 4451767,
-   "with_pay": 40
+   "est_annual_cost": 3953175,
+   "with_pay": 38
   },
   "2025-07": {
    "postings": 40,
@@ -161,8 +161,8 @@
    "permanent": 0,
    "temporary": 0,
    "unknown_type": 40,
-   "est_annual_cost": 2169770,
-   "with_pay": 21
+   "est_annual_cost": 1876084,
+   "with_pay": 20
   },
   "2025-08": {
    "postings": 93,
@@ -170,7 +170,7 @@
    "permanent": 0,
    "temporary": 0,
    "unknown_type": 93,
-   "est_annual_cost": 4590019,
+   "est_annual_cost": 4249432,
    "with_pay": 42
   },
   "2025-09": {
@@ -179,8 +179,8 @@
    "permanent": 0,
    "temporary": 0,
    "unknown_type": 88,
-   "est_annual_cost": 4850183,
-   "with_pay": 43
+   "est_annual_cost": 4091039,
+   "with_pay": 40
   },
   "2025-11": {
    "postings": 51,
@@ -188,8 +188,8 @@
    "permanent": 0,
    "temporary": 0,
    "unknown_type": 51,
-   "est_annual_cost": 2754986,
-   "with_pay": 25
+   "est_annual_cost": 1992336,
+   "with_pay": 20
   },
   "2025-12": {
    "postings": 38,
@@ -197,8 +197,8 @@
    "permanent": 0,
    "temporary": 0,
    "unknown_type": 38,
-   "est_annual_cost": 944406,
-   "with_pay": 9
+   "est_annual_cost": 954561,
+   "with_pay": 10
   },
   "2026-01": {
    "postings": 252,
@@ -206,8 +206,8 @@
    "permanent": 0,
    "temporary": 0,
    "unknown_type": 252,
-   "est_annual_cost": 2143743,
-   "with_pay": 20
+   "est_annual_cost": 2343671,
+   "with_pay": 22
   },
   "2026-03": {
    "postings": 93,
@@ -215,8 +215,8 @@
    "permanent": 0,
    "temporary": 0,
    "unknown_type": 93,
-   "est_annual_cost": 3142350,
-   "with_pay": 32
+   "est_annual_cost": 3549536,
+   "with_pay": 36
   },
   "2026-04": {
    "postings": 101,
@@ -224,8 +224,8 @@
    "permanent": 27,
    "temporary": 16,
    "unknown_type": 80,
-   "est_annual_cost": 7948981,
-   "with_pay": 54
+   "est_annual_cost": 8071159,
+   "with_pay": 55
   },
   "2026-05": {
    "postings": 98,
@@ -233,8 +233,8 @@
    "permanent": 33,
    "temporary": 14,
    "unknown_type": 63,
-   "est_annual_cost": 8077138,
-   "with_pay": 59
+   "est_annual_cost": 8177102,
+   "with_pay": 60
   },
   "2026-06": {
    "postings": 123,
@@ -242,8 +242,8 @@
    "permanent": 0,
    "temporary": 0,
    "unknown_type": 123,
-   "est_annual_cost": 5354081,
-   "with_pay": 51
+   "est_annual_cost": 5535333,
+   "with_pay": 53
   },
   "2026-07": {
    "postings": 90,
@@ -251,8 +251,8 @@
    "permanent": 0,
    "temporary": 0,
    "unknown_type": 90,
-   "est_annual_cost": 3982971,
-   "with_pay": 35
+   "est_annual_cost": 4278013,
+   "with_pay": 38
   },
   "2026-08": {
    "postings": 41,
@@ -269,8 +269,8 @@
    "permanent": 0,
    "temporary": 1,
    "unknown_type": 137,
-   "est_annual_cost": 6547356,
-   "with_pay": 62
+   "est_annual_cost": 6756912,
+   "with_pay": 64
   },
   "2026-10": {
    "postings": 108,
@@ -278,8 +278,8 @@
    "permanent": 60,
    "temporary": 34,
    "unknown_type": 48,
-   "est_annual_cost": 10621334,
-   "with_pay": 72
+   "est_annual_cost": 10811761,
+   "with_pay": 74
   }
  },
  "by_category": {
@@ -289,8 +289,8 @@
    "permanent": 0,
    "temporary": 0,
    "unknown_type": 579,
-   "est_annual_cost": 27028272,
-   "with_pay": 256
+   "est_annual_cost": 24899686,
+   "with_pay": 261
   },
   "Apprentice/Student": {
    "postings": 485,
@@ -307,8 +307,8 @@
    "permanent": 22,
    "temporary": 26,
    "unknown_type": 324,
-   "est_annual_cost": 17555913,
-   "with_pay": 164
+   "est_annual_cost": 18307973,
+   "with_pay": 173
   },
   "Science/Technical": {
    "postings": 203,
@@ -316,8 +316,8 @@
    "permanent": 8,
    "temporary": 10,
    "unknown_type": 194,
-   "est_annual_cost": 13836265,
-   "with_pay": 128
+   "est_annual_cost": 13707562,
+   "with_pay": 135
   },
   "Information Technology": {
    "postings": 164,
@@ -325,8 +325,8 @@
    "permanent": 4,
    "temporary": 2,
    "unknown_type": 159,
-   "est_annual_cost": 6420580,
-   "with_pay": 62
+   "est_annual_cost": 6266998,
+   "with_pay": 63
   },
   "Leisure Services": {
    "postings": 149,
@@ -334,7 +334,7 @@
    "permanent": 6,
    "temporary": 0,
    "unknown_type": 143,
-   "est_annual_cost": 3210964,
+   "est_annual_cost": 3055997,
    "with_pay": 42
   },
   "Engineering and Geoscience": {
@@ -343,8 +343,8 @@
    "permanent": 22,
    "temporary": 7,
    "unknown_type": 122,
-   "est_annual_cost": 6839893,
-   "with_pay": 43
+   "est_annual_cost": 6153490,
+   "with_pay": 39
   },
   "Labour/Operations Support": {
    "postings": 142,
@@ -352,8 +352,8 @@
    "permanent": 30,
    "temporary": 0,
    "unknown_type": 136,
-   "est_annual_cost": 6085985,
-   "with_pay": 51
+   "est_annual_cost": 5582846,
+   "with_pay": 49
   },
   "Engineering Services": {
    "postings": 119,
@@ -361,8 +361,8 @@
    "permanent": 0,
    "temporary": 0,
    "unknown_type": 119,
-   "est_annual_cost": 5217527,
-   "with_pay": 34
+   "est_annual_cost": 3779636,
+   "with_pay": 28
   },
   "Trades": {
    "postings": 101,
@@ -370,7 +370,7 @@
    "permanent": 2,
    "temporary": 3,
    "unknown_type": 97,
-   "est_annual_cost": 3228526,
+   "est_annual_cost": 3109462,
    "with_pay": 27
   },
   "Finance/Taxation": {
@@ -379,8 +379,8 @@
    "permanent": 0,
    "temporary": 0,
    "unknown_type": 79,
-   "est_annual_cost": 3111981,
-   "with_pay": 28
+   "est_annual_cost": 3502807,
+   "with_pay": 36
   },
   "Human Resources": {
    "postings": 72,
@@ -388,8 +388,8 @@
    "permanent": 0,
    "temporary": 3,
    "unknown_type": 70,
-   "est_annual_cost": 2424929,
-   "with_pay": 21
+   "est_annual_cost": 2023824,
+   "with_pay": 18
   },
   "Planning": {
    "postings": 63,
@@ -397,8 +397,8 @@
    "permanent": 0,
    "temporary": 1,
    "unknown_type": 62,
-   "est_annual_cost": 5632285,
-   "with_pay": 50
+   "est_annual_cost": 4867646,
+   "with_pay": 47
   },
   "Accounting/Finance": {
    "postings": 61,
@@ -406,8 +406,8 @@
    "permanent": 1,
    "temporary": 5,
    "unknown_type": 57,
-   "est_annual_cost": 3370567,
-   "with_pay": 33
+   "est_annual_cost": 3775054,
+   "with_pay": 36
   },
   "Public Sfty/Regltry/Enforcmt": {
    "postings": 58,
@@ -415,8 +415,8 @@
    "permanent": 7,
    "temporary": 1,
    "unknown_type": 52,
-   "est_annual_cost": 2891267,
-   "with_pay": 23
+   "est_annual_cost": 2971602,
+   "with_pay": 27
   },
   "Social Science/Services": {
    "postings": 56,
@@ -424,8 +424,8 @@
    "permanent": 0,
    "temporary": 0,
    "unknown_type": 56,
-   "est_annual_cost": 3922080,
-   "with_pay": 38
+   "est_annual_cost": 3359403,
+   "with_pay": 35
   },
   "General Management": {
    "postings": 55,
@@ -433,8 +433,8 @@
    "permanent": 4,
    "temporary": 2,
    "unknown_type": 49,
-   "est_annual_cost": 4647281,
-   "with_pay": 33
+   "est_annual_cost": 4284935,
+   "with_pay": 32
   },
   "Social and Human Sciences": {
    "postings": 44,
@@ -442,8 +442,8 @@
    "permanent": 5,
    "temporary": 3,
    "unknown_type": 39,
-   "est_annual_cost": 3592967,
-   "with_pay": 31
+   "est_annual_cost": 3450377,
+   "with_pay": 30
   },
   "Communications/Marketing": {
    "postings": 44,
@@ -451,8 +451,8 @@
    "permanent": 0,
    "temporary": 0,
    "unknown_type": 44,
-   "est_annual_cost": 2811927,
-   "with_pay": 28
+   "est_annual_cost": 2511324,
+   "with_pay": 27
   },
   "Legal": {
    "postings": 30,
@@ -460,7 +460,7 @@
    "permanent": 4,
    "temporary": 1,
    "unknown_type": 28,
-   "est_annual_cost": 696338,
+   "est_annual_cost": 696337,
    "with_pay": 3
   },
   "Corp Affairs/Communications": {
@@ -469,8 +469,8 @@
    "permanent": 0,
    "temporary": 1,
    "unknown_type": 28,
-   "est_annual_cost": 2041500,
-   "with_pay": 19
+   "est_annual_cost": 2148391,
+   "with_pay": 20
   },
   "Property/Asset  Management": {
    "postings": 20,
@@ -478,7 +478,7 @@
    "permanent": 0,
    "temporary": 0,
    "unknown_type": 20,
-   "est_annual_cost": 2060596,
+   "est_annual_cost": 1842320,
    "with_pay": 18
   },
   "Public Transit": {
@@ -487,7 +487,7 @@
    "permanent": 0,
    "temporary": 0,
    "unknown_type": 19,
-   "est_annual_cost": 591228,
+   "est_annual_cost": 574401,
    "with_pay": 9
   },
   "Real Estate and Facilities": {
@@ -496,7 +496,7 @@
    "permanent": 1,
    "temporary": 0,
    "unknown_type": 16,
-   "est_annual_cost": 775253,
+   "est_annual_cost": 748602,
    "with_pay": 8
   },
   "Project/Program Management": {
@@ -505,8 +505,8 @@
    "permanent": 0,
    "temporary": 0,
    "unknown_type": 14,
-   "est_annual_cost": 969222,
-   "with_pay": 7
+   "est_annual_cost": 839142,
+   "with_pay": 6
   },
   "Executive": {
    "postings": 11,
@@ -514,8 +514,8 @@
    "permanent": 0,
    "temporary": 0,
    "unknown_type": 11,
-   "est_annual_cost": 2003113,
-   "with_pay": 7
+   "est_annual_cost": 1484213,
+   "with_pay": 6
   },
   "Risk and Security Management": {
    "postings": 8,
@@ -532,8 +532,8 @@
    "permanent": 2,
    "temporary": 0,
    "unknown_type": 4,
-   "est_annual_cost": 628463,
-   "with_pay": 4
+   "est_annual_cost": 478829,
+   "with_pay": 3
   },
   "Data Science and Analytics": {
    "postings": 4,
@@ -541,7 +541,7 @@
    "permanent": 1,
    "temporary": 0,
    "unknown_type": 3,
-   "est_annual_cost": 429348,
+   "est_annual_cost": 421446,
    "with_pay": 3
   },
   "Supply Chain and Logistics": {
@@ -588,8 +588,8 @@
    "permanent": 0,
    "temporary": 0,
    "unknown_type": 3024,
-   "est_annual_cost": 114221699,
-   "with_pay": 1063
+   "est_annual_cost": 107041732,
+   "with_pay": 1074
   },
   "Water Services": {
    "postings": 15,

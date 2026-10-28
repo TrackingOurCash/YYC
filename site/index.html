@@ -39,7 +39,7 @@
       <div class="more">See how each member voted →</div>
     </a>
     <a class="card stat" href="jobs.html">
-      <div class="label">Estimated annual cost of jobs posted</div>
+      <div class="label" id="j-label">Yearly pay of jobs posted</div>
       <div class="value" id="j-value">–</div>
       <div class="note" id="j-note"></div>
       <div class="more">See every posting →</div>
@@ -62,7 +62,7 @@
 <script src="assets/common.js"></script>
 <script>
 (() => {
-  const { $, money, num, dayName } = YYC;
+  const { $, money, num } = YYC;
   fetch("data/budget.json", { cache: "no-cache" }).then((r) => r.json()).then((rows) => {
     const year = Math.max(...rows.filter((r) => r.fund === "operating" && r.status === "Approved").map((r) => r.year));
     const sum = (fund) => rows.filter((r) => r.fund === fund && r.year === year && r.status === "Approved").reduce((s, r) => s + r.amount, 0);
@@ -85,11 +85,13 @@
     const split = ms.filter(([, , , , , , yes, no]) => yes.length && no.length).length;
     $("v-note").textContent = `${num(split)} with at least one No vote, since the October 2025 election`;
   }).catch(() => {});
-  fetch("data/postings.json", { cache: "no-cache" }).then((r) => r.json()).then((ps) => {
-    const since = ps.reduce((m, p) => (!m || p.first_seen < m ? p.first_seen : m), "");
+  fetch("data/postings.json", { cache: "no-cache" }).then((r) => r.json()).then((all) => {
+    const year = all.reduce((m, p) => (p.first_seen > m ? p.first_seen : m), "").slice(0, 4);
+    const ps = all.filter((p) => p.first_seen.startsWith(year));
     const positions = ps.reduce((s, p) => s + p.permanent + p.temporary + (p.unknown || 0), 0);
+    $("j-label").textContent = `Yearly pay of jobs posted in ${year}`;
     $("j-value").textContent = money(ps.reduce((s, p) => s + (p.est_annual_cost || 0), 0));
-    $("j-note").textContent = `${num(ps.length)} postings, ${num(positions)} positions since ${dayName(since)}`;
+    $("j-note").textContent = `${num(ps.length)} postings, ${num(positions)} positions. Mostly refilling existing jobs.`;
   }).catch(() => {});
 })();
 </script>

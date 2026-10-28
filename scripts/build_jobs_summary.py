@@ -12,7 +12,8 @@ over a fixed-length term.
 
 Where pay comes from, in order:
   posting      the posting's own "Position and Pay Information" block
-  salary list  the City's compensation disclosure list for the same title
+  salary list  the City's compensation disclosure list for the same title,
+               from the year the job was posted
   same title   another posting with the same title that did show pay
 Postings matched by none of these have no cost.
 """
@@ -75,28 +76,23 @@ def posted_annual_midpoint(row: dict) -> float | None:
     return mid
 
 
-def load_salary_list() -> dict[str, float]:
-    """Title key -> annual midpoint, from the latest year of the list."""
+def load_salary_list() -> dict[int, dict[str, float]]:
+    """Year -> title key -> annual midpoint."""
     if not COMPENSATION_CSV.exists():
         return {}
+    out: dict[int, dict[str, float]] = defaultdict(dict)
     with COMPENSATION_CSV.open(newline="") as f:
-        rows = list(csv.DictReader(f))
-    if not rows:
-        return {}
-    latest = max(r["year"] for r in rows)
-    out = {}
-    for r in rows:
-        if r["year"] != latest:
-            continue
-        try:
-            mid = (float(r["minimum_annual_base_rate"]) + float(r["maximum_annual_base_rate"])) / 2
-        except ValueError:
-            continue
-        key = title_key(r["position_title"])
-        out[key] = mid
-        # Some list titles carry a trailing " CH" code that postings don't.
-        if key.endswith(" ch"):
-            out.setdefault(key[:-3], mid)
+        for r in csv.DictReader(f):
+            try:
+                mid = (float(r["minimum_annual_base_rate"]) + float(r["maximum_annual_base_rate"])) / 2
+                year = int(r["year"][:4])
+            except ValueError:
+                continue
+            key = title_key(r["position_title"])
+            out[year][key] = mid
+            # Some list titles carry a trailing " CH" code that postings don't.
+            if key.endswith(" ch"):
+                out[year].setdefault(key[:-3], mid)
     return out
 
 
@@ -114,8 +110,14 @@ class PayEstimator:
         if mid is not None:
             return mid, "posting"
         key = title_key(row["title"])
-        if key in self.salary_list:
-            return self.salary_list[key], "salary list"
+        # The list for the year the job was posted, or the year before; older
+        # lists carry retired titles and out-of-date pay.
+        year = min(int(row["first_seen"][:4]), max(self.salary_list, default=0))
+        for y in (year, year - 1):
+            if y not in self.salary_list:
+                continue
+            if key in self.salary_list[y]:
+                return self.salary_list[y][key], "salary list"
         if self.by_title.get(key):
             seen = self.by_title[key]
             return sum(seen) / len(seen), "same title"

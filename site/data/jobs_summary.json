@@ -4,9 +4,9 @@
  "total": {
   "postings": 3145,
   "positions": 3464,
-  "permanent": 312,
-  "temporary": 311,
-  "unknown_type": 2841,
+  "permanent": 309,
+  "temporary": 310,
+  "unknown_type": 2845,
   "est_annual_cost": 159598876,
   "with_pay": 1413
  },
@@ -113,8 +113,8 @@
   "2025-02": {
    "postings": 239,
    "positions": 272,
-   "permanent": 6,
-   "temporary": 49,
+   "permanent": 5,
+   "temporary": 50,
    "unknown_type": 217,
    "est_annual_cost": 6458146,
    "with_pay": 55
@@ -176,8 +176,8 @@
   "2025-09": {
    "postings": 88,
    "positions": 124,
-   "permanent": 43,
-   "temporary": 14,
+   "permanent": 42,
+   "temporary": 15,
    "unknown_type": 67,
    "est_annual_cost": 6347887,
    "with_pay": 55
@@ -212,8 +212,8 @@
   "2026-03": {
    "postings": 93,
    "positions": 107,
-   "permanent": 19,
-   "temporary": 12,
+   "permanent": 18,
+   "temporary": 13,
    "unknown_type": 76,
    "est_annual_cost": 6598485,
    "with_pay": 51
@@ -276,8 +276,8 @@
    "postings": 112,
    "positions": 146,
    "permanent": 58,
-   "temporary": 40,
-   "unknown_type": 48,
+   "temporary": 36,
+   "unknown_type": 52,
    "est_annual_cost": 11358346,
    "with_pay": 79
   }
@@ -286,8 +286,8 @@
   "Administrative/Business Serv": {
    "postings": 579,
    "positions": 615,
-   "permanent": 19,
-   "temporary": 43,
+   "permanent": 18,
+   "temporary": 44,
    "unknown_type": 553,
    "est_annual_cost": 30909308,
    "with_pay": 305
@@ -331,9 +331,9 @@
   "Leisure Services": {
    "postings": 150,
    "positions": 179,
-   "permanent": 2,
-   "temporary": 57,
-   "unknown_type": 120,
+   "permanent": 0,
+   "temporary": 55,
+   "unknown_type": 124,
    "est_annual_cost": 5832058,
    "with_pay": 81
   },
@@ -594,9 +594,9 @@
   "Recreation and Social Programs": {
    "postings": 32,
    "positions": 61,
-   "permanent": 3,
-   "temporary": 58,
-   "unknown_type": 0,
+   "permanent": 1,
+   "temporary": 56,
+   "unknown_type": 4,
    "est_annual_cost": 2783577,
    "with_pay": 32
   },
@@ -918,8 +918,8 @@
   "People, Innovation and Collaboration Services": {
    "postings": 2,
    "positions": 3,
-   "permanent": 1,
-   "temporary": 2,
+   "permanent": 0,
+   "temporary": 3,
    "unknown_type": 0,
    "est_annual_cost": 284169,
    "with_pay": 2

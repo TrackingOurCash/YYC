@@ -8,11 +8,15 @@ it can:
 - every posting listed in an archived copy of the careers page since
   --since (default Jan 1 of this year), dated by the first capture that
   shows it ("seen by" rather than the true posting date), and
-- department, pay and position counts from any archived copy of that
-  posting's own page.
+- department, pay, permanent/temporary and position counts from any
+  archived copy of that posting's own page, under any of the job site's
+  paths. Closed postings no longer load on the City's job site, and an
+  archived copy taken after a posting closed is a blank search page, so
+  up to TRIES copies are tried per posting, earliest first.
 
 Rows are merged into data/jobs/postings.csv with source=archive. Rows the
-daily collector already has are left alone. Safe to re-run.
+daily collector already has are left alone, except that an archive row
+missing its details gets them when a later run finds them. Safe to re-run.
 
 Usage: python scripts/backfill_jobs_from_archive.py [--since 2026-01-01]
 """
@@ -33,10 +37,11 @@ import jobs  # noqa: E402
 
 CDX = "http://web.archive.org/cdx/search/cdx"
 RAW = "http://web.archive.org/web/{ts}id_/{url}"
+TRIES = 3
 
 
-def cdx(s: requests.Session, url: str, since: str) -> list[list[str]]:
-    params = {"url": url, "from": since.replace("-", ""), "output": "json", "fl": "timestamp,original", "filter": "statuscode:200"}
+def cdx(s: requests.Session, url: str, since: str, **extra) -> list[list[str]]:
+    params = {"url": url, "from": since.replace("-", ""), "output": "json", "fl": "timestamp,original", "filter": "statuscode:200", **extra}
     for attempt in range(4):
         r = s.get(CDX, params=params, timeout=120)
         if r.status_code == 200 and r.text.strip():
@@ -86,30 +91,36 @@ def main() -> None:
         time.sleep(1)
     print(f"{len(captures)} careers page captures, {len(found)} postings", file=sys.stderr)
 
-    # 2. Archived copies of individual posting pages.
-    detail_caps: dict[str, tuple[str, str]] = {}
-    for ts, url in cdx(s, "recruiting.calgary.ca/psc/hcm/*", args.since):
-        m = re.search(r"JobOpeningId=(\d+)", url)
+    # 2. Archived copies of individual posting pages, anywhere on the job site.
+    detail_caps: dict[str, list[tuple[str, str]]] = {}
+    for ts, url in sorted(cdx(s, "recruiting.calgary.ca", args.since, matchType="domain")):
+        m = re.search(r"JobOpeningId=(\d+)", url, re.I)
         if m:
-            detail_caps.setdefault(m.group(1), (ts, url))
-    with_details = 0
-    for job_id, (ts, url) in sorted(detail_caps.items()):
+            detail_caps.setdefault(m.group(1), []).append((ts, url))
+    details: dict[str, dict] = {}
+    tried = 0
+    for job_id, caps in sorted(detail_caps.items()):
         if job_id in rows and rows[job_id].get("details_fetched"):
             continue
-        html = fetch(s, ts, url)
-        fields = jobs.parse_detail(html) if html else {}
-        if not fields.get("department"):
-            continue
-        day = f"{ts[:4]}-{ts[4:6]}-{ts[6:8]}"
-        row = found.setdefault(job_id, {"job_id": job_id, "title": "", "category": "", "closing_date": "", "url": "", "first_seen": day, "last_seen": day})
-        row.update(fields)
-        row["details_fetched"] = day
-        row["details_version"] = jobs.DETAILS_VERSION
-        with_details += 1
-        time.sleep(1)
-    print(f"{len(detail_caps)} archived posting pages, {with_details} with pay details", file=sys.stderr)
+        if job_id not in rows and job_id not in found:
+            continue  # no listing entry, so no title to show
+        tried += 1
+        for ts, url in caps[:TRIES]:
+            html = fetch(s, ts, url)
+            fields = jobs.parse_detail(html) if html else {}
+            time.sleep(1)
+            if fields.get("department") or fields.get("position_type"):
+                details[job_id] = {**fields, "details_fetched": f"{ts[:4]}-{ts[4:6]}-{ts[6:8]}", "details_version": jobs.DETAILS_VERSION}
+                break
+    print(f"{len(detail_caps)} postings with archived pages, {tried} needing details, {len(details)} found", file=sys.stderr)
 
-    added = moved = 0
+    added = moved = filled = 0
+    for job_id, fields in details.items():
+        if job_id in rows:
+            rows[job_id].update(fields)
+            filled += 1
+        else:
+            found[job_id].update(fields)
     for job_id, row in found.items():
         if job_id in rows:
             # An earlier capture can push back the date of a posting that
@@ -126,7 +137,7 @@ def main() -> None:
         rows[job_id] = row
         added += 1
     jobs.save_postings(rows)
-    print(f"added {added} postings from the archive, moved {moved} to an earlier first-seen date; {len(rows)} tracked in total")
+    print(f"added {added} postings from the archive, filled in details for {filled}, moved {moved} to an earlier first-seen date; {len(rows)} tracked in total")
 
 
 if __name__ == "__main__":

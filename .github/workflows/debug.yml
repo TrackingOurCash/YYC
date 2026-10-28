@@ -9,8 +9,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
       - run: |
-          true
-          python .github/scripts/dump8.py
+          python .github/scripts/dump9.py
           git config user.name dbg; git config user.email dbg@users.noreply.github.com
-          git add dump8; git commit -m "dump8 [skip ci]"; git push
+          git add dump9; git commit -m "dump9 [skip ci]"; git push

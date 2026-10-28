@@ -12,8 +12,8 @@
   --s2: #eb6834;
   --s3: #1baf7a;
   /* Job position types: permanent, temporary, not known. */
-  --perm: #e34948;
-  --temp: #2a78d6;
+  --perm: #8e2a3f;
+  --temp: #20509f;
   --unk: #898781;
   /* One colour per year wherever bars stand for a year; earlier years are grey. */
   --y2024: #0b98b8;
@@ -37,8 +37,8 @@
     --s1: #3987e5;
     --s2: #d95926;
     --s3: #199e70;
-    --perm: #e66767;
-    --temp: #3987e5;
+    --perm: #b04359;
+    --temp: #3d6cc8;
     --unk: #6b6a65;
     --y2024: #12a0bd;
     --y2025: #b02f8a;
@@ -61,8 +61,8 @@
   --s1: #3987e5;
   --s2: #d95926;
   --s3: #199e70;
-  --perm: #e66767;
-  --temp: #3987e5;
+  --perm: #b04359;
+  --temp: #3d6cc8;
   --unk: #6b6a65;
   --y2024: #12a0bd;
   --y2025: #b02f8a;

@@ -1,0 +1,420 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Calgary city staff</title>
+<meta name="description" content="How many full-time positions the City of Calgary budgets, what it pays in salaries, wages and benefits, and which departments are adding positions.">
+<link rel="stylesheet" href="assets/site.css">
+<script src="assets/theme.js"></script>
+<style>
+  :root { --plan: color-mix(in srgb, var(--s1) 45%, var(--surface)); }
+  .growth { min-width: 640px; }
+  .growth td:first-child { min-width: 15rem; }
+  .full { margin-top: 16px; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <div class="crumb"><a href="https://trackingourcash.github.io/">Tracking Our Cash</a> / Calgary</div>
+    <h1>City staff and payroll</h1>
+    <p>How many full-time positions the City of Calgary has, what it pays its staff, and which parts of the City are adding positions. From the City's annual financial reports and its budget.</p>
+    <nav class="tabs" aria-label="Sections">
+      <a href="./">Overview</a><a href="jobs.html">City jobs</a><a href="staff.html" aria-current="page">City staff</a><a href="budget.html">Budget</a><a href="grants.html">Grants</a><a href="wards.html">Wards</a><a href="votes.html">Council votes</a>
+    </nav>
+  </header>
+
+  <section class="hero" aria-label="Totals" style="margin-top:24px">
+    <div class="card stat big">
+      <div class="label" id="s-total-label">Budgeted full-time positions</div>
+      <div class="value" id="s-total">–</div>
+      <div class="note" id="s-total-note"></div>
+    </div>
+    <div class="card stat"><div class="label" id="s-added-label">Added</div><div class="value" id="s-added">–</div><div class="note" id="s-added-note"></div></div>
+    <div class="card stat"><div class="label" id="s-pay-label">Payroll</div><div class="value" id="s-pay">–</div><div class="note" id="s-pay-note"></div></div>
+    <div class="card stat"><div class="label" id="s-per-label">Payroll per position</div><div class="value" id="s-per">–</div><div class="note" id="s-per-note"></div></div>
+  </section>
+
+  <section class="card full">
+    <h2>Full-time positions per year</h2>
+    <p class="sub" id="c-fte-sub"></p>
+    <div class="legend" id="lg-fte">
+      <span style="--c:var(--s1)">City</span><span style="--c:var(--plan)">City, budgeted</span><span style="--c:var(--s2)">Related authorities</span><span style="--c:var(--unk)">City and related authorities, not split</span>
+    </div>
+    <svg id="c-fte" role="img" aria-label="Full-time positions per year" width="100%" height="260"></svg>
+  </section>
+
+  <section class="grid charts" style="margin-top:16px">
+    <div class="card">
+      <h2>Positions added each year</h2>
+      <p class="sub">Change from the year before. Before 2016 the change includes related authorities, because the City didn't report them separately.</p>
+      <div class="legend"><span style="--c:var(--s1)">Added</span><span style="--c:var(--plan)">Added, budgeted</span><span style="--c:var(--s2)">Cut</span></div>
+      <svg id="c-added" role="img" aria-label="Positions added each year" width="100%" height="240"></svg>
+    </div>
+    <div class="card">
+      <h2>Positions per 1,000 Calgarians</h2>
+      <p class="sub">City and related authorities, as the annual reports give it.</p>
+      <svg id="c-per1000" role="img" aria-label="Positions per 1,000 Calgarians" width="100%" height="240"></svg>
+    </div>
+  </section>
+
+  <section class="card full">
+    <h2>Payroll per year</h2>
+    <p class="sub">Salaries, wages and benefits for the City and its related authorities, from the audited financial statements. Hover a year for payroll per position.</p>
+    <svg id="c-pay" role="img" aria-label="Payroll per year" width="100%" height="240"></svg>
+  </section>
+
+  <section class="card full">
+    <h2>How fast it's growing</h2>
+    <p class="sub" id="t-growth-sub"></p>
+    <div class="table-wrap">
+      <table class="growth">
+        <thead><tr id="t-growth-head"></tr></thead>
+        <tbody id="t-growth-body"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <h2 style="margin-top:32px;font-size:20px">By department and business unit</h2>
+  <p class="sub" id="dept-sub" style="margin-top:4px"></p>
+  <div class="filters" role="group" aria-label="Filters" style="margin-top:8px">
+    <label>Year
+      <select id="f-year"></select>
+    </label>
+    <label>Compare with
+      <select id="f-compare"></select>
+    </label>
+    <label>Department
+      <select id="f-dept"><option value="">All departments</option></select>
+    </label>
+  </div>
+
+  <section class="grid charts">
+    <div class="card">
+      <h2 id="c-dept-title">Positions by department</h2>
+      <p class="sub">Hover a row for its change and its management and union positions. Select a row to see only that department.</p>
+      <div class="hbars" id="c-dept"></div>
+    </div>
+    <div class="card">
+      <h2 id="c-type-title">Management and union positions</h2>
+      <p class="sub" id="c-type-sub"></p>
+      <div class="legend" id="lg-type"></div>
+      <svg id="c-type" role="img" aria-label="Positions by type" width="100%" height="240"></svg>
+    </div>
+  </section>
+
+  <section class="card full">
+    <h2 id="c-units-title">Where positions were added or cut</h2>
+    <p class="sub" id="c-units-sub"></p>
+    <div class="legend"><span style="--c:var(--s1)">Added</span><span style="--c:var(--s2)">Cut</span></div>
+    <div class="hbars" id="c-units"></div>
+  </section>
+
+  <section class="card full">
+    <h2>Business units</h2>
+    <p class="sub" id="t-sub"></p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr id="t-head"></tr></thead>
+        <tbody id="t-body"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer>
+    <p><strong>How the numbers work</strong></p>
+    <ul>
+      <li>A full-time position (the City calls it a full-time equivalent, or FTE) is 35 to 40 hours of work a week. One person or several part-time people can fill it, so these are positions, not a count of people. The annual reports give the same counts for 2023 to 2025 as the budget does, so they appear to be budgeted positions rather than the number of people on payroll.</li>
+      <li>"City" covers every City department, including the Calgary Police Service, council offices and the City Auditor. It leaves out ENMAX. Related authorities are organizations the City controls but runs at arm's length, such as the Calgary Public Library, Calgary Economic Development, Calgary Municipal Land Corporation and Calgary Arts Development. Annual reports before 2019 gave one total for both, so years before 2015 can't be split.</li>
+      <li>Payroll is "salaries, wages and benefits" in the City's consolidated financial statements. It covers the City and its related authorities, everyone paid (including temporary and seasonal staff and overtime), and benefits such as pension contributions. Payroll per position is payroll divided by positions, so it's a rough average, not anyone's salary.</li>
+      <li>Annual reports sometimes restate earlier years. Each year here uses the figure from the newest report that has it.</li>
+      <li>Department and business unit figures come from the budget, which starts at 2023 because the City reorganized its departments in 2022. The City rounds each line, so business units can differ from their department's total by a position or two.</li>
+      <li>"City administration" is every department except the Police Service, Council, Civic Partners and Corporate Programs. Its positions are split into management exempt (managers and other staff outside a union) and union and other. The budget shows about 490 fewer management exempt and 1,370 more union positions in 2025 without saying why.</li>
+      <li>The City's own <a href="https://www.calgary.ca/our-finances/workforce-management.html">workforce page</a> counts City administration only (no police, council, Civic Partners, on-call staff or students): 12.9 positions per 1,000 people on November 30, 2024, down from 14 ten years earlier.</li>
+      <li id="note-reported" hidden></li>
+      <li>The proposed 2027–2030 budget is due on November 10, 2026. The daily collection checks the budget pages and will add it when it's published.</li>
+    </ul>
+    <p>Data: City of Calgary <a href="https://www.calgary.ca/our-finances/annual-reports.html">Annual Financial Reports</a> 2010 to 2025 and the <a id="budget-link" href="https://www.calgary.ca/our-finances/2026-budget.html">2026 budget as approved</a>. Code: <a href="https://github.com/TrackingOurCash/YYC">github.com/TrackingOurCash/YYC</a>.</p>
+    <p class="sources-link"><a href="sources.html">Sources: where every dataset on this site comes from →</a></p>
+  </footer>
+</main>
+
+<script src="assets/common.js"></script>
+<script>
+(() => {
+  const { $, money, num, el, hbars, dbars, columns, line, table, fillSelect, onResize } = YYC;
+  let hist = [], bud = null;
+  const state = { year: 0, compare: 0, dept: "", sort: "change", dir: -1 };
+
+  const signed = (v) => (v > 0 ? "+" : v < 0 ? "−" : "") + num(Math.abs(v));
+  const change = (a, b) => (a ? (b - a) / a : null);
+  const signedPct = (v) => (v == null || !isFinite(v) ? "–" : (v > 0 ? "+" : v < 0 ? "−" : "") + (Math.abs(v) * 100).toFixed(1) + "%");
+  const billions = (v) => (v ? `$${(v / 1e9).toFixed(v % 1e9 ? 1 : 0)}B` : "$0");
+  const thousands = (v) => `$${Math.round(v / 1000)}K`;
+
+  // One row per year: the annual reports, then budget years beyond them.
+  const byYear = new Map();
+  const lastReport = () => hist[hist.length - 1].year;
+  const bi = (y) => bud.years.indexOf(y);
+  const isBudget = (y) => y > lastReport();
+  const row = (y) => byYear.get(y);
+
+  function netChange(y) {
+    const cur = row(y), prev = row(y - 1);
+    if (!cur || !prev) return null;
+    if (cur.city != null && prev.city != null) return { v: cur.city - prev.city, a: prev.city, b: cur.city, basis: "City" };
+    if (cur.combined != null && prev.combined != null) return { v: cur.combined - prev.combined, a: prev.combined, b: cur.combined, basis: "City and related authorities" };
+    return null;
+  }
+
+  function renderHero() {
+    const n = bud.years.length - 1, y = bud.years[n];
+    const admin = bud.admin_exempt[n] + bud.admin_union[n];
+    const outside = bud.departments.filter((d) => d.exempt == null && d.fte[n] >= 10);
+    $("s-total-label").textContent = `Budgeted full-time positions, ${y}`;
+    $("s-total").textContent = num(bud.total[n]);
+    const WHERE = { "Calgary Police Service": "in the Police Service", Council: "in council offices and the City Auditor's Office", "Civic Partners": "for Civic Partners" };
+    const parts = [`${num(admin)} in City administration`, ...outside.map((d) => `${num(d.fte[n])} ${WHERE[d.name] || `in ${d.name}`}`)];
+    $("s-total-note").textContent = parts.slice(0, -1).join(", ") + " and " + parts[parts.length - 1] + ".";
+    $("s-added-label").textContent = `Added for ${y}`;
+    $("s-added").textContent = signed(bud.total[n] - bud.total[n - 1]);
+    $("s-added-note").textContent = `${signedPct(change(bud.total[n - 1], bud.total[n]))} on ${bud.years[n - 1]}'s budget.`;
+    const last = hist[hist.length - 1], prev = row(last.year - 1);
+    $("s-pay-label").textContent = `Payroll, ${last.year}`;
+    $("s-pay").textContent = money(last.payroll);
+    $("s-pay-note").textContent = `Salaries, wages and benefits, ${signedPct(change(prev && prev.payroll, last.payroll))} on ${last.year - 1}.`;
+    $("s-per-label").textContent = `Payroll per position, ${last.year}`;
+    $("s-per").textContent = thousands(last.payroll / last.combined);
+    $("s-per-note").textContent = `Payroll divided by ${num(last.combined)} positions, including related authorities.`;
+  }
+
+  function renderGrowthCharts() {
+    const years = [...byYear.keys()];
+    const first = years[0], split = hist.find((h) => h.city != null);
+    $("c-fte-sub").textContent = `${first} to ${years[years.length - 1]}. The last ${years.filter(isBudget).length > 1 ? "years are" : "year is"} the approved budget. ` +
+      (split ? `Related authorities are reported separately from ${split.year}.` : "");
+    columns($("c-fte"), years, [
+      { label: "City", color: "var(--s1)", values: years.map((y) => (!isBudget(y) ? row(y).city : null)) },
+      { label: "City, budgeted", color: "var(--plan)", values: years.map((y) => (isBudget(y) ? row(y).city : null)) },
+      { label: "Related authorities", color: "var(--s2)", values: years.map((y) => row(y).related) },
+      { label: "City and related authorities", color: "var(--unk)", values: years.map((y) => (row(y).city == null ? row(y).combined : null)) },
+    ], {
+      stacked: true, totalLabels: false, height: 260,
+      tip: (i) => {
+        const r = row(years[i]), c = netChange(years[i]);
+        const rows = [];
+        if (r.city != null) rows.push([isBudget(years[i]) ? "City, budgeted" : "City", num(r.city)]);
+        if (r.related != null) rows.push(["Related authorities", num(r.related)]);
+        if (r.combined != null) rows.push([r.city != null ? "Both" : "City and related authorities", num(r.combined)]);
+        if (c) rows.push(["Change from year before", `${signed(c.v)} (${signedPct(c.v / c.a)})`]);
+        if (r.per_1000 != null) rows.push(["Per 1,000 Calgarians", r.per_1000.toFixed(1)]);
+        return rows;
+      },
+    });
+
+    const cy = years.slice(1);
+    const changes = cy.map(netChange);
+    columns($("c-added"), cy, [{
+      label: "Positions added", values: changes.map((c) => (c ? c.v : null)),
+      colorOf: (v, i) => (v < 0 ? "var(--s2)" : isBudget(cy[i]) ? "var(--plan)" : "var(--s1)"),
+    }], {
+      format: signed, tickFormat: (v) => signed(v),
+      tip: (i) => {
+        const c = changes[i];
+        if (!c) return [["Change", "Not available"]];
+        return [["Change", `${signed(c.v)} (${signedPct(c.v / c.a)})`], ["Positions", `${num(c.a)} to ${num(c.b)}`], ["Counted", c.basis]];
+      },
+    });
+
+    const py = hist.filter((h) => h.per_1000 != null).map((h) => h.year);
+    line($("c-per1000"), py, [{ label: "Per 1,000 Calgarians", color: "var(--s1)", values: py.map((y) => row(y).per_1000) }], {
+      format: (v) => v.toFixed(1),
+      tip: (i) => {
+        const r = row(py[i]);
+        const rows = [["City and related authorities", r.per_1000.toFixed(2)]];
+        if (r.per_1000_city != null) rows.push(["City alone", r.per_1000_city.toFixed(2)]);
+        return rows;
+      },
+    });
+
+    const pay = hist.filter((h) => h.payroll != null).map((h) => h.year);
+    columns($("c-pay"), pay, [{ label: "Payroll", color: "var(--s3)", values: pay.map((y) => row(y).payroll) }], {
+      format: money, tickFormat: billions,
+      tip: (i) => {
+        const r = row(pay[i]), p = row(pay[i] - 1);
+        const rows = [["Payroll", money(r.payroll)]];
+        if (p && p.payroll) rows.push(["Change from year before", signedPct(change(p.payroll, r.payroll))]);
+        if (r.combined) rows.push(["Per position", thousands(r.payroll / r.combined)]);
+        return rows;
+      },
+    });
+  }
+
+  function renderGrowthTable() {
+    const last = lastReport(), span = 10;
+    const cols = [last - span, last - 5, last - 1, last];
+    const measures = [
+      { name: "Full-time positions, City", value: (r) => r.city, fmt: num },
+      { name: "Full-time positions, with related authorities", value: (r) => r.combined, fmt: num },
+      { name: "Payroll", value: (r) => r.payroll, fmt: money },
+      { name: "Payroll per position", value: (r) => (r.payroll && r.combined ? r.payroll / r.combined : null), fmt: thousands },
+      { name: "Positions per 1,000 Calgarians", value: (r) => r.per_1000, fmt: (v) => v.toFixed(1) },
+    ];
+    $("t-growth-sub").textContent = `Annual report figures. "Per year" is the average yearly growth over the ${span} years from ${last - span} to ${last}.`;
+    $("t-growth-head").replaceChildren(el("th", {}, ""), ...cols.map((y) => el("th", { className: "num" }, String(y))),
+      el("th", { className: "num" }, `Since ${last - span}`), el("th", { className: "num" }, "Per year"));
+    $("t-growth-body").replaceChildren(...measures.map((m) => {
+      const v = cols.map((y) => (row(y) ? m.value(row(y)) : null));
+      const a = v[0], b = v[v.length - 1];
+      const tr = el("tr");
+      tr.append(el("td", {}, m.name), ...v.map((x) => el("td", { className: "num" }, x == null ? "–" : m.fmt(x))),
+        el("td", { className: "num" }, a && b ? signedPct(change(a, b)) : "–"),
+        el("td", { className: "num" }, a && b ? signedPct(Math.pow(b / a, 1 / span) - 1) : "–"));
+      return tr;
+    }));
+  }
+
+  // Departments and business units, from the budget.
+  const depts = () => bud.departments.filter((d) => !state.dept || d.name === state.dept);
+  function units() {
+    return depts().flatMap((d) => d.units.map((u) => ({ ...u, dept: d.name })));
+  }
+
+  function renderDepts() {
+    const yi = bi(state.year), ci = bi(state.compare);
+    const items = bud.departments.filter((d) => d.fte[yi] > 0).sort((a, b) => b.fte[yi] - a.fte[yi]).map((d) => ({
+      name: d.name, value: d.fte[yi],
+      tip: () => {
+        const rows = [["Positions", num(d.fte[yi])], [`Change since ${state.compare}`, `${signed(d.fte[yi] - d.fte[ci])} (${signedPct(change(d.fte[ci], d.fte[yi]))})`]];
+        if (d.exempt) rows.push(["Management exempt", num(d.exempt[yi])], ["Union and other", num(d.union[yi])]);
+        else rows.push(["City administration", "No, counted outside it"]);
+        return rows;
+      },
+    }));
+    $("c-dept-title").textContent = `Positions by department, ${state.year}`;
+    hbars($("c-dept"), items, { format: num });
+    [...$("c-dept").children].forEach((rowEl, i) => {
+      const name = items[i].name;
+      rowEl.classList.add("pick");
+      if (state.dept === name) rowEl.style.background = "var(--hover)";
+      const pick = () => { state.dept = state.dept === name ? "" : name; $("f-dept").value = state.dept; renderSelection(); };
+      rowEl.addEventListener("click", pick);
+      rowEl.addEventListener("keydown", (e) => e.key === "Enter" && pick());
+    });
+  }
+
+  function renderTypes() {
+    const ys = bud.years;
+    const d = state.dept ? bud.departments.find((x) => x.name === state.dept) : null;
+    let series;
+    if (!d) {
+      series = [
+        { label: "Management exempt", color: "var(--s1)", values: bud.admin_exempt },
+        { label: "Union and other", color: "var(--s2)", values: bud.admin_union },
+        { label: "Outside City administration", color: "var(--unk)", values: bud.outside },
+      ];
+      $("c-type-sub").textContent = "All City positions. Police, council offices and Civic Partners are outside City administration and aren't split.";
+    } else if (d.exempt) {
+      series = [
+        { label: "Management exempt", color: "var(--s1)", values: d.exempt },
+        { label: "Union and other", color: "var(--s2)", values: d.union },
+      ];
+      $("c-type-sub").textContent = "Management exempt and union positions in this department.";
+    } else {
+      series = [{ label: "Outside City administration", color: "var(--unk)", values: d.fte }];
+      $("c-type-sub").textContent = `${d.name} is outside City administration, so the budget doesn't split its positions.`;
+    }
+    $("c-type-title").textContent = state.dept ? `Positions by type, ${state.dept}` : "Positions by type";
+    $("lg-type").replaceChildren(...series.map((s) => { const sp = el("span", {}, s.label); sp.style.setProperty("--c", s.color); return sp; }));
+    columns($("c-type"), ys, series, { stacked: true, format: num });
+  }
+
+  function renderUnits() {
+    const yi = bi(state.year), ci = bi(state.compare);
+    const list = units().map((u) => ({ ...u, from: u.fte[ci], to: u.fte[yi], change: u.fte[yi] - u.fte[ci] }));
+    const moved = list.filter((u) => u.change).sort((a, b) => b.change - a.change);
+    const added = moved.filter((u) => u.change > 0).reduce((s, u) => s + u.change, 0);
+    const cut = moved.filter((u) => u.change < 0).reduce((s, u) => s - u.change, 0);
+    $("c-units-title").textContent = `Where positions were added or cut, ${state.compare} to ${state.year}`;
+    $("c-units-sub").textContent = `Business units${state.dept ? ` in ${state.dept}` : ""}: ${num(added)} positions added and ${num(cut)} cut. Units with no change aren't shown.`;
+    dbars($("c-units"), moved.map((u) => ({
+      name: u.name, value: u.change,
+      tip: () => [["Change", `${signed(u.change)} (${u.from ? signedPct(u.change / u.from) : "new"})`], ["Positions", `${num(u.from)} to ${num(u.to)}`], ["Department", u.dept]],
+    })), { format: signed, empty: "No business unit changed between these years." });
+
+    const cols = [
+      { key: "name", label: "Business unit", value: (u) => u.name },
+      { key: "dept", label: "Department", value: (u) => u.dept },
+      ...bud.years.map((y, i) => ({ key: "y" + y, label: String(y), num: true, value: (u) => u.fte[i], render: (u) => num(u.fte[i]) })),
+      { key: "change", label: `Change ${state.compare}–${String(state.year).slice(2)}`, num: true, value: (u) => u.change, render: (u) => signed(u.change) },
+      { key: "pct", label: "% change", num: true, value: (u) => (u.from ? u.change / u.from : u.to ? Infinity : 0), render: (u) => (u.from ? signedPct(u.change / u.from) : u.to ? "new" : "–") },
+    ];
+    table($("t-head"), $("t-body"), list, cols, state, () => renderUnits());
+    $("t-sub").textContent = `${num(list.length)} business units${state.dept ? ` in ${state.dept}` : ""}. Select a column to sort.`;
+  }
+
+  function renderSelection() {
+    renderDepts();
+    renderTypes();
+    renderUnits();
+  }
+
+  function fillCompare() {
+    const s = $("f-compare");
+    s.replaceChildren();
+    const earlier = bud.years.filter((y) => y < state.year).sort((a, b) => b - a);
+    fillSelect("f-compare", earlier);
+    if (!earlier.includes(state.compare)) state.compare = earlier[0];
+    s.value = String(state.compare);
+  }
+
+  function renderAll() {
+    renderGrowthCharts();
+    renderSelection();
+  }
+
+  fetch("data/workforce.json", { cache: "no-cache" })
+    .then((r) => r.json())
+    .then((d) => {
+      hist = d.history;
+      bud = d.budget;
+      for (const h of hist) byYear.set(h.year, h);
+      bud.years.forEach((y, i) => { if (!byYear.has(y)) byYear.set(y, { year: y, city: bud.total[i], related: null, combined: null, per_1000: null, payroll: null }); });
+      $("budget-link").href = bud.url;
+      // Say where the budget's own City administration rows don't match its departments.
+      if (bud.reported) {
+        const gaps = [];
+        bud.years.forEach((y, i) => {
+          for (const [key, what] of [["admin_union", "union and other"], ["admin_exempt", "management exempt"]]) {
+            const diff = bud.reported[key][i] - bud[key][i];
+            if (Math.abs(diff) > 3) gaps.push(`the ${y} City administration ${what} total is ${num(Math.abs(diff))} ${diff < 0 ? "lower" : "higher"} than its departments add up to (${num(bud.reported[key][i])} against ${num(bud[key][i])})`);
+          }
+        });
+        if (gaps.length) {
+          $("note-reported").hidden = false;
+          $("note-reported").textContent = `In the budget's summary table, ${gaps.join("; ")}. This page uses the departments' figures, which match the budget's overall total.`;
+        }
+      }
+      $("dept-sub").textContent = `Budgeted positions from the ${bud.years[bud.years.length - 1]} budget, which covers ${bud.years[0]} to ${bud.years[bud.years.length - 1]} in the City's current departments.`;
+      state.year = bud.years[bud.years.length - 1];
+      fillSelect("f-year", [...bud.years].reverse().filter((y) => y > bud.years[0]));
+      $("f-year").value = String(state.year);
+      state.compare = state.year - 1;
+      fillCompare();
+      fillSelect("f-dept", bud.departments.map((x) => x.name));
+      $("f-year").addEventListener("change", (e) => { state.year = +e.target.value; fillCompare(); renderSelection(); });
+      $("f-compare").addEventListener("change", (e) => { state.compare = +e.target.value; renderSelection(); });
+      $("f-dept").addEventListener("change", (e) => { state.dept = e.target.value; renderSelection(); });
+      renderHero();
+      renderGrowthTable();
+      renderAll();
+      onResize(renderAll);
+    })
+    .catch(() => {
+      $("c-fte-sub").textContent = "Couldn't load the staff data. Try reloading the page.";
+    });
+})();
+</script>
+</body>
+</html>

@@ -26,7 +26,7 @@
     <h1>Sources</h1>
     <p>Every number on this site comes from something the City of Calgary publishes. This page lists each source, what we take from it, and where our copy lives so you can check it yourself.</p>
     <nav class="tabs" aria-label="Sections">
-      <a href="./">Overview</a><a href="jobs.html">City jobs</a><a href="budget.html">Budget</a><a href="grants.html">Grants</a><a href="wards.html">Wards</a><a href="votes.html">Council votes</a>
+      <a href="./">Overview</a><a href="jobs.html">City jobs</a><a href="staff.html">City staff</a><a href="budget.html">Budget</a><a href="grants.html">Grants</a><a href="wards.html">Wards</a><a href="votes.html">Council votes</a>
     </nav>
   </header>
 
@@ -64,6 +64,28 @@
             <td>The salary range for every City position title, 2014 onwards, used to estimate pay when a posting doesn't show it</td>
             <td>Daily (the City updates it yearly)</td>
             <td><a href="https://github.com/TrackingOurCash/YYC/blob/main/data/jobs/compensation.csv"><code>data/jobs/compensation.csv</code></a><br>Code: <a href="https://github.com/TrackingOurCash/YYC/blob/main/collectors/compensation.py"><code>collectors/compensation.py</code></a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>City staff and payroll</h2>
+    <div class="table-wrap">
+      <table class="src">
+        <thead><tr><th>Source</th><th>What we take from it</th><th>How often</th><th>Our copy</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><a href="https://www.calgary.ca/our-finances/annual-reports.html">Annual Financial Reports</a><br><span class="sub">calgary.ca, one PDF per year, 2010 onwards (each covers five years, so figures go back to 2006)</span></td>
+            <td>Salaries, wages and benefits from "Expenses by object", and full-time equivalents (City and related authorities) and full-time equivalents per 1,000 people from "Demographic and other information"</td>
+            <td>Checked daily; a new report comes out each spring</td>
+            <td rowspan="2"><a href="https://github.com/TrackingOurCash/YYC/blob/main/data/workforce/annual_reports.csv"><code>data/workforce/annual_reports.csv</code></a>, <a href="https://github.com/TrackingOurCash/YYC/blob/main/data/workforce/budget_fte.csv"><code>data/workforce/budget_fte.csv</code></a>, list of documents read in <a href="https://github.com/TrackingOurCash/YYC/blob/main/data/workforce/documents.csv"><code>data/workforce/documents.csv</code></a><br>Code: <a href="https://github.com/TrackingOurCash/YYC/blob/main/collectors/workforce.py"><code>collectors/workforce.py</code></a></td>
+          </tr>
+          <tr>
+            <td><a href="https://www.calgary.ca/content/dam/www/cfod/finance/documents/plans-budgets-and-financial-reports/2023-2026-service-plans-budgets/2026-budget-as-approved-dec-3-2025.pdf">2026 Budget as approved, December 3, 2025</a><br><span class="sub">calgary.ca, PDF</span></td>
+            <td>Budgeted full-time equivalents for 2023 to 2026 by department and business unit, and management exempt and union positions by department</td>
+            <td>Checked daily for new budget documents, such as the 2027–2030 budget</td>
           </tr>
         </tbody>
       </table>

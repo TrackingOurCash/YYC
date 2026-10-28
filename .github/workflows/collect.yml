@@ -36,6 +36,8 @@ jobs:
         run: python collectors/ward_boundaries.py
       - name: Ward office budgets and expenses
         run: python collectors/ward_expenses.py
+      - name: City staff and payroll (annual reports and budget)
+        run: python collectors/workforce.py
       - name: Build dashboard data
         run: |
           python scripts/build_jobs_summary.py
@@ -43,6 +45,7 @@ jobs:
           python scripts/build_votes.py
           python scripts/build_grants.py
           python scripts/build_wards.py
+          python scripts/build_workforce.py
       - name: Commit changes
         run: |
           git config user.name "yyc-collector"

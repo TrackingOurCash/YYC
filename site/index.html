@@ -15,7 +15,7 @@
     <h1>Where Calgary's money goes</h1>
     <p>What the City of Calgary commits to spend, collected from the City's own public data and updated every morning.</p>
     <nav class="tabs" aria-label="Sections">
-      <a href="./" aria-current="page">Overview</a><a href="jobs.html">City jobs</a><a href="budget.html">Budget</a><a href="grants.html">Grants</a><a href="wards.html">Wards</a><a href="votes.html">Council votes</a>
+      <a href="./" aria-current="page">Overview</a><a href="jobs.html">City jobs</a><a href="staff.html">City staff</a><a href="budget.html">Budget</a><a href="grants.html">Grants</a><a href="wards.html">Wards</a><a href="votes.html">Council votes</a>
     </nav>
   </header>
 
@@ -43,6 +43,12 @@
       <div class="value" id="v-value">–</div>
       <div class="note" id="v-note"></div>
       <div class="more">See how each member voted →</div>
+    </a>
+    <a class="card stat" href="staff.html">
+      <div class="label" id="st-label">Budgeted City positions</div>
+      <div class="value" id="st-value">–</div>
+      <div class="note" id="st-note"></div>
+      <div class="more">See staff and payroll by year →</div>
     </a>
     <a class="card stat" href="jobs.html">
       <div class="label" id="j-label">Yearly pay of jobs posted</div>
@@ -102,6 +108,12 @@
     $("v-value").textContent = num(ms.length);
     const split = ms.filter(([, , , , , , yes, no]) => yes.length && no.length).length;
     $("v-note").textContent = `${num(split)} with at least one No vote, since the October 2025 election`;
+  }).catch(() => {});
+  fetch("data/workforce.json", { cache: "no-cache" }).then((r) => r.json()).then((d) => {
+    const b = d.budget, n = b.years.length - 1, last = d.history[d.history.length - 1];
+    $("st-label").textContent = `Budgeted full-time City positions, ${b.years[n]}`;
+    $("st-value").textContent = num(b.total[n]);
+    $("st-note").textContent = `${b.total[n] > b.total[n - 1] ? "Up" : "Down"} ${num(Math.abs(b.total[n] - b.total[n - 1]))} on ${b.years[n - 1]}. Payroll was ${money(last.payroll)} in ${last.year}.`;
   }).catch(() => {});
   fetch("data/postings.json", { cache: "no-cache" }).then((r) => r.json()).then((all) => {
     const year = all.reduce((m, p) => (p.first_seen > m ? p.first_seen : m), "").slice(0, 4);

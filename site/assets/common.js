@@ -1,5 +1,5 @@
 // Shared helpers for the Calgary dashboard pages: formatting, safe DOM
-// building, one tooltip, and the two chart forms the pages use.
+// building, one tooltip, and the chart forms the pages use.
 window.YYC = (() => {
   const $ = (id) => document.getElementById(id);
 
@@ -73,9 +73,16 @@ window.YYC = (() => {
     }
   }
 
+  // A tick step of 1, 2, 2.5 or 5 times a power of ten giving at most 5 steps.
+  function niceStep(range) {
+    const mag = Math.pow(10, Math.floor(Math.log10(range)));
+    return [1, 2, 2.5, 5, 10, 20, 25, 50, 100].map((k) => (k * mag) / 10).find((s) => range / s <= 5);
+  }
+
   // Columns in an SVG: one category per x, series stacked or side by side.
-  // series: [{label, color, values: [...]}]; values may be null (no data).
-  function columns(svg, cats, series, { stacked = false, format = num, catLabel = String, height = 240 } = {}) {
+  // series: [{label, color, values: [...], colorOf?(v, i)}]; values may be
+  // null (no data). Side-by-side columns may be negative.
+  function columns(svg, cats, series, { stacked = false, format = num, tickFormat = format, catLabel = String, height = 240, totalLabels = true, tip } = {}) {
     svg.replaceChildren();
     const W = svg.clientWidth || 360, H = height, L = 56, R = 8, T = 20, B = 26;
     svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
@@ -84,16 +91,17 @@ window.YYC = (() => {
       ? series.reduce((s, se) => s + (se.values[i] || 0), 0)
       : Math.max(0, ...series.map((se) => se.values[i] || 0)));
     const maxV = Math.max(1, ...totals);
-    const mag = Math.pow(10, Math.floor(Math.log10(maxV)));
-    const tickStep = [1, 2, 2.5, 5, 10].map((k) => k * mag).find((s) => maxV / s <= 5);
+    const minV = stacked ? 0 : Math.min(0, ...series.flatMap((se) => se.values.filter((v) => v != null)));
+    const tickStep = niceStep(maxV - minV);
     const top = Math.ceil(maxV / tickStep) * tickStep;
-    const y = (v) => T + (H - T - B) * (1 - v / top);
+    const bottom = Math.floor(minV / tickStep) * tickStep;
+    const y = (v) => T + (H - T - B) * (top - v) / (top - bottom);
 
     const grid = svgEl("g", { class: "grid" });
-    for (let v = 0; v <= top + 1e-9; v += tickStep) {
-      if (v > 0) grid.append(svgEl("line", { x1: L, x2: W - R, y1: y(v), y2: y(v) }));
+    for (let v = bottom; v <= top + 1e-9; v += tickStep) {
+      if (Math.abs(v) > 1e-9) grid.append(svgEl("line", { x1: L, x2: W - R, y1: y(v), y2: y(v) }));
       const t = svgEl("text", { x: L - 6, y: y(v) + 4, "text-anchor": "end" });
-      t.textContent = format(v);
+      t.textContent = tickFormat(Math.abs(v) < 1e-9 ? 0 : v);
       svg.append(t);
     }
     svg.append(grid, svgEl("line", { class: "base", x1: L, x2: W - R, y1: y(0), y2: y(0) }));
@@ -105,6 +113,10 @@ window.YYC = (() => {
     const topRounded = (x, y0, w, h, r) => {
       r = Math.max(0, Math.min(r, h, w / 2));
       return `M${x},${y0 + h}V${y0 + r}Q${x},${y0} ${x + r},${y0}H${x + w - r}Q${x + w},${y0} ${x + w},${y0 + r}V${y0 + h}Z`;
+    };
+    const bottomRounded = (x, y0, w, h, r) => {
+      r = Math.max(0, Math.min(r, h, w / 2));
+      return `M${x},${y0}V${y0 + h - r}Q${x},${y0 + h} ${x + r},${y0 + h}H${x + w - r}Q${x + w},${y0 + h} ${x + w},${y0 + h - r}V${y0}Z`;
     };
     const labelEvery = Math.ceil(cats.length / Math.max(1, Math.floor((W - L - R) / 56)));
 
@@ -125,7 +137,7 @@ window.YYC = (() => {
             ? svgEl("path", { d: topRounded(cx - groupW / 2, y1, groupW, h, 4) })
             : svgEl("rect", { x: cx - groupW / 2, y: y1, width: groupW, height: h });
           shape.setAttribute("class", "seg");
-          shape.setAttribute("fill", series[k].color);
+          shape.setAttribute("fill", series[k].colorOf ? series[k].colorOf(v, i) : series[k].color);
           col.append(shape);
           acc += v;
         });
@@ -134,11 +146,13 @@ window.YYC = (() => {
           const v = se.values[i];
           if (!v) return;
           const x = cx - groupW / 2 + k * (barW + 2);
-          col.append(svgEl("path", { d: topRounded(x, y(v), barW, y(0) - y(v), 4), class: "seg", fill: se.color }));
+          const fill = se.colorOf ? se.colorOf(v, i) : se.color;
+          const d = v > 0 ? topRounded(x, y(v), barW, y(0) - y(v), 4) : bottomRounded(x, y(0), barW, y(v) - y(0), 4);
+          col.append(svgEl("path", { d, class: "seg", fill }));
         });
       }
       // Total labels only where the column is wide enough to keep them apart.
-      if (stacked && totals[i] && band >= 34) {
+      if (stacked && totalLabels && totals[i] && band >= 34) {
         const t = svgEl("text", { x: cx, y: y(totals[i]) - 6, "text-anchor": "middle", class: "lbl" });
         t.textContent = format(totals[i]);
         col.append(t);
@@ -150,9 +164,92 @@ window.YYC = (() => {
       }
       const rows = series.filter((se) => se.values[i] != null).map((se) => [se.label, format(se.values[i])]);
       col.setAttribute("aria-label", `${catLabel(c)}: ` + rows.map((r) => r.join(" ")).join(", "));
-      hover(col, catLabel(c), () => (stacked && series.length > 1 ? [...rows, ["Total", format(totals[i])]] : rows));
+      hover(col, catLabel(c), () => (tip ? tip(i) : stacked && series.length > 1 ? [...rows, ["Total", format(totals[i])]] : rows));
       svg.append(col);
     });
+  }
+
+  // Lines in an SVG for values that don't start at zero, such as rates.
+  // A hover band per category shows a crosshair and the values.
+  function line(svg, cats, series, { format = num, catLabel = String, height = 220, tip } = {}) {
+    svg.replaceChildren();
+    const W = svg.clientWidth || 360, H = height, L = 44, R = 40, T = 16, B = 26;
+    svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
+    svg.setAttribute("height", H);
+    const vals = series.flatMap((se) => se.values.filter((v) => v != null));
+    if (!vals.length) return;
+    const lo = Math.min(...vals), hi = Math.max(...vals);
+    const step = niceStep(Math.max(hi - lo, 1e-6) * 1.2);
+    const bottom = Math.floor(lo / step) * step, top = Math.ceil(hi / step) * step;
+    const y = (v) => T + (H - T - B) * (top - v) / (top - bottom || 1);
+    const band = (W - L - R) / Math.max(1, cats.length);
+    const x = (i) => L + band * i + band / 2;
+
+    const grid = svgEl("g", { class: "grid" });
+    for (let v = bottom; v <= top + 1e-9; v += step) {
+      grid.append(svgEl("line", { x1: L, x2: W - R, y1: y(v), y2: y(v) }));
+      const t = svgEl("text", { x: L - 6, y: y(v) + 4, "text-anchor": "end" });
+      t.textContent = format(v);
+      svg.append(t);
+    }
+    svg.append(grid);
+    const labelEvery = Math.ceil(cats.length / Math.max(1, Math.floor((W - L - R) / 56)));
+    cats.forEach((c, i) => {
+      if (i % labelEvery) return;
+      const t = svgEl("text", { x: x(i), y: H - 8, "text-anchor": "middle" });
+      t.textContent = catLabel(c);
+      svg.append(t);
+    });
+    for (const se of series) {
+      let d = "";
+      se.values.forEach((v, i) => { if (v != null) d += `${d && se.values[i - 1] != null ? "L" : "M"}${x(i)},${y(v)}`; });
+      svg.append(svgEl("path", { d, class: "line", stroke: se.color }));
+      const last = se.values.reduce((li, v, i) => (v != null ? i : li), -1);
+      if (last >= 0) {
+        svg.append(svgEl("circle", { cx: x(last), cy: y(se.values[last]), r: 4, fill: se.color, class: "dot" }));
+        const t = svgEl("text", { x: x(last) + 8, y: y(se.values[last]) + 4, class: "lbl" });
+        t.textContent = format(se.values[last]);
+        svg.append(t);
+      }
+    }
+    cats.forEach((c, i) => {
+      const g = svgEl("g", { class: "col" });
+      g.append(svgEl("rect", { x: L + band * i, y: T, width: band, height: H - T - B, fill: "transparent" }));
+      g.append(svgEl("line", { class: "hl", x1: x(i), x2: x(i), y1: T, y2: H - B }));
+      for (const se of series) {
+        if (se.values[i] != null) g.append(svgEl("circle", { class: "hl dot", cx: x(i), cy: y(se.values[i]), r: 4, fill: se.color }));
+      }
+      const rows = series.filter((se) => se.values[i] != null).map((se) => [se.label, format(se.values[i])]);
+      g.setAttribute("aria-label", `${catLabel(c)}: ` + rows.map((r) => r.join(" ")).join(", "));
+      hover(g, catLabel(c), () => (tip ? tip(i) : rows));
+      svg.append(g);
+    });
+  }
+
+  // Horizontal bars that grow right for gains and left for losses, as HTML
+  // rows: [{name, value, tip: () => rows}].
+  function dbars(host, items, { format = num, empty = "Nothing matches these filters." } = {}) {
+    host.replaceChildren();
+    if (!items.length) {
+      host.append(el("div", { className: "empty" }, empty));
+      return;
+    }
+    const pos = Math.max(0, ...items.map((d) => d.value)), neg = Math.max(0, ...items.map((d) => -d.value));
+    const span = pos + neg || 1, zero = (100 * neg) / span;
+    for (const d of items) {
+      const row = el("div", { className: "hbar dbar" });
+      const track = el("div", { className: "track" });
+      track.style.setProperty("--zero", zero + "%");
+      const fill = el("div", { className: "fill " + (d.value < 0 ? "neg" : "pos") });
+      const w = (100 * Math.abs(d.value)) / span;
+      fill.style.left = (d.value < 0 ? zero - w : zero) + "%";
+      fill.style.width = w + "%";
+      track.append(fill);
+      row.append(el("div", { className: "name", title: d.name }, d.name), track, el("div", { className: "val" }, format(d.value)));
+      row.setAttribute("aria-label", `${d.name}: ${format(d.value)}`);
+      if (d.tip) hover(row, d.name, d.tip);
+      host.append(row);
+    }
   }
 
   // Sortable table. cols: [{key, label, num, value(row), render(row) -> Node|string}]
@@ -202,5 +299,5 @@ window.YYC = (() => {
     window.addEventListener("resize", () => { clearTimeout(t); t = setTimeout(fn, 150); });
   }
 
-  return { $, money, moneyFull, num, pct, monthName, dayName, el, svgEl, hover, hbars, columns, table, fillSelect, onResize };
+  return { $, money, moneyFull, num, pct, monthName, dayName, el, svgEl, hover, hbars, dbars, columns, line, table, fillSelect, onResize };
 })();

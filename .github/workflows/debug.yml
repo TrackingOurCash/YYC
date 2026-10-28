@@ -10,6 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: |
-          python .github/scripts/dump6.py
+          sudo apt-get install -y poppler-utils >/dev/null
+          python .github/scripts/dump7.py
           git config user.name dbg; git config user.email dbg@users.noreply.github.com
-          git add dump6; git commit -m "dump6 [skip ci]"; git push
+          git add dump7; git commit -m "dump7 [skip ci]"; git push

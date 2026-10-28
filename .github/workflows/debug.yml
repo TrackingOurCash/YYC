@@ -10,8 +10,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: |
-          mkdir -p dump5
-          curl -sSL "https://data.calgary.ca/resource/9bze-mzx6.json?\$limit=50000&\$where=year>='2025'" -o dump5/comp.json
-          ls -la dump5
+          python .github/scripts/dump6.py
           git config user.name dbg; git config user.email dbg@users.noreply.github.com
-          git add dump5; git commit -m "dump5 [skip ci]"; git push
+          git add dump6; git commit -m "dump6 [skip ci]"; git push

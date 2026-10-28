@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Tracking Calgary's cash</title>
-<meta name="description" content="What the City of Calgary commits to spend: its budget, the jobs it posts, and the council votes behind them.">
+<meta name="description" content="What the City of Calgary commits to spend: its budget, the jobs it posts, the grants it gives and the council votes behind them.">
 <link rel="stylesheet" href="assets/site.css">
 <script src="assets/theme.js"></script>
 </head>
@@ -15,7 +15,7 @@
     <h1>Where Calgary's money goes</h1>
     <p>What the City of Calgary commits to spend, collected from the City's own public data and updated every morning.</p>
     <nav class="tabs" aria-label="Sections">
-      <a href="./" aria-current="page">Overview</a><a href="jobs.html">City jobs</a><a href="budget.html">Budget</a><a href="votes.html">Council votes</a>
+      <a href="./" aria-current="page">Overview</a><a href="jobs.html">City jobs</a><a href="budget.html">Budget</a><a href="grants.html">Grants</a><a href="votes.html">Council votes</a>
     </nav>
   </header>
 
@@ -25,6 +25,12 @@
       <div class="value" id="b-value">–</div>
       <div class="note" id="b-note"></div>
       <div class="more">See the budget by department →</div>
+    </a>
+    <a class="card stat" href="grants.html">
+      <div class="label" id="g-label">Grants to named organizations</div>
+      <div class="value" id="g-value">–</div>
+      <div class="note" id="g-note"></div>
+      <div class="more">See who gets them →</div>
     </a>
     <a class="card stat" href="votes.html">
       <div class="label">Council motions mentioning money this term</div>
@@ -43,7 +49,7 @@
   <section class="card" style="margin-top:16px">
     <h2>Coming next</h2>
     <ul class="sub" style="margin:8px 0 0; padding-left:18px">
-      <li>Grants: who gets Civic Partners and FCSS funding, by name and amount</li>
+      <li>Who the grant recipients are: charities, community associations, City-created bodies</li>
       <li>Ward map: ward office spending and capital projects by ward</li>
     </ul>
   </section>
@@ -63,6 +69,14 @@
     $("b-label").textContent = `${year} operating budget`;
     $("b-value").textContent = money(sum("operating"));
     $("b-note").textContent = `Plus ${money(sum("capital"))} in capital`;
+  }).catch(() => {});
+  fetch("data/grants.json", { cache: "no-cache" }).then((r) => r.json()).then((d) => {
+    const year = new Date().getFullYear();
+    const rows = d.rows.filter(([, , , y]) => y === year);
+    const orgs = new Set(rows.map(([o]) => o));
+    $("g-label").textContent = `${year} grants to named organizations`;
+    $("g-value").textContent = money(rows.reduce((s, r) => s + r[6], 0));
+    $("g-note").textContent = `Civic Partners and FCSS, to ${num(orgs.size)} recipients`;
   }).catch(() => {});
   fetch("data/votes.json", { cache: "no-cache" }).then((r) => r.json()).then((d) => {
     const types = d.meeting_types;

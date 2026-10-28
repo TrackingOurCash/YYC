@@ -137,7 +137,8 @@ window.YYC = (() => {
           col.append(svgEl("path", { d: topRounded(x, y(v), barW, y(0) - y(v), 4), class: "seg", fill: se.color }));
         });
       }
-      if (stacked && totals[i]) {
+      // Total labels only where the column is wide enough to keep them apart.
+      if (stacked && totals[i] && band >= 34) {
         const t = svgEl("text", { x: cx, y: y(totals[i]) - 6, "text-anchor": "middle", class: "lbl" });
         t.textContent = format(totals[i]);
         col.append(t);

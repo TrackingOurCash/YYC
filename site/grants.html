@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Calgary city grants</title>
+<meta name="description" content="Who receives City of Calgary Civic Partners and FCSS grants, by organization, program and year.">
+<link rel="stylesheet" href="assets/site.css">
+<script src="assets/theme.js"></script>
+</head>
+<body>
+<main>
+  <header>
+    <div class="crumb"><a href="https://trackingourcash.github.io/">Tracking Our Cash</a> / Calgary</div>
+    <h1>Who gets City grants</h1>
+    <p>Every organization the City names as receiving a <a href="https://www.calgary.ca/our-finances/civic-partners-funding.html">Civic Partners</a> grant or <a href="https://www.calgary.ca/social-services/funding/organization-allocations.html">Family &amp; Community Support Services (FCSS)</a> funding, collected from calgary.ca every morning.</p>
+    <nav class="tabs" aria-label="Sections">
+      <a href="./">Overview</a><a href="jobs.html">City jobs</a><a href="budget.html">Budget</a><a href="grants.html" aria-current="page">Grants</a><a href="votes.html">Council votes</a>
+    </nav>
+  </header>
+
+  <div class="filters" role="group" aria-label="Filters">
+    <label>Grant
+      <select id="f-program"><option value="">All grants</option></select>
+    </label>
+    <label>Year
+      <select id="f-year"></select>
+    </label>
+    <label>Search recipients
+      <input type="search" id="f-q" placeholder="e.g. Library, Zoo, seniors">
+    </label>
+  </div>
+
+  <section class="hero" aria-label="Totals">
+    <div class="card stat big">
+      <div class="label" id="s-total-label">Grants</div>
+      <div class="value" id="s-total">–</div>
+      <div class="note" id="s-total-note"></div>
+    </div>
+    <div class="card stat"><div class="label">Recipients</div><div class="value" id="s-orgs">–</div><div class="note" id="s-orgs-note"></div></div>
+    <div class="card stat"><div class="label">Largest recipient's share</div><div class="value" id="s-top">–</div><div class="note" id="s-top-note"></div></div>
+    <div class="card stat"><div class="label">Share to the 10 largest</div><div class="value" id="s-top10">–</div></div>
+  </section>
+
+  <section class="grid charts" style="margin-top:16px">
+    <div class="card">
+      <h2 id="c-orgs-title">Largest recipients</h2>
+      <p class="sub">Hover a row for its share and grants. Select a row to see only that recipient.</p>
+      <div class="hbars" id="c-orgs"></div>
+    </div>
+    <div class="card">
+      <h2>By year</h2>
+      <p class="sub" id="c-years-sub"></p>
+      <div class="legend" id="lg-years"><span style="--c:var(--s1)">Civic Partners</span><span style="--c:var(--s2)">FCSS</span></div>
+      <svg id="c-years" role="img" aria-label="Grants by year" width="100%" height="240"></svg>
+    </div>
+  </section>
+
+  <section class="card" style="margin-top:16px">
+    <h2>Grants</h2>
+    <p class="sub" id="t-sub"></p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr id="t-head"></tr></thead>
+        <tbody id="t-body"></tbody>
+      </table>
+    </div>
+    <button class="load-more" id="more" hidden>Show 100 more</button>
+  </section>
+
+  <footer>
+    <p><strong>How the numbers work</strong></p>
+    <ul>
+      <li>Civic Partners are organizations that run City-owned facilities or services at arm's length, such as the Library, the Zoo and Calgary Arts Development. The City lists four kinds of grant to them: operating, capital, community safety and innovation.</li>
+      <li>Calgary Arts Development passes at least 75% of its grant on to arts groups, so some of its money reaches other organizations.</li>
+      <li>FCSS is funded jointly by the Province of Alberta and the City and pays for preventive social programs run by local agencies. The 2027 and 2028 amounts cover only the programs funded for those years so far.</li>
+      <li>The City's pages only show the current funding years: for Civic Partners, the last year's actual amount and this year's budget. This site keeps every year it has collected, and when a budget year later gets an actual figure, the actual replaces it.</li>
+      <li>Recipient names are spelled differently from year to year on the City's pages. They're merged under the most recent spelling.</li>
+    </ul>
+    <p>Data: <a href="https://www.calgary.ca/our-finances/civic-partners-funding.html">Civic Partners funding</a> and <a href="https://www.calgary.ca/social-services/funding/organization-allocations.html">FCSS funding allocations</a> on calgary.ca. Code: <a href="https://github.com/TrackingOurCash/YYC">github.com/TrackingOurCash/YYC</a>.</p>
+  </footer>
+</main>
+
+<script src="assets/common.js"></script>
+<script>
+(() => {
+  const { $, money, moneyFull, num, pct, el, hbars, columns, table, onResize } = YYC;
+  let all = [], programs = [];
+  const state = { program: "", year: "", q: "", sort: "amount", dir: -1, shown: 100 };
+  const FIGURE = { actual: "Actual", budget: "Approved budget", allocated: "Allocated" };
+  const TOP = 15;
+
+  const grantName = (p) => (p.source === "FCSS" ? "FCSS" : `Civic Partners ${p.name.replace(/ grant$/, "").toLowerCase()}`);
+  const inScope = (r) =>
+    (state.program === "" || (state.program === "Civic Partners" ? r.source === "Civic Partners" : r.programIdx === +state.program)) &&
+    (!state.q || r.org.toLowerCase().includes(state.q.toLowerCase()));
+  const filtered = () => all.filter((r) => inScope(r) && (!state.year || r.year === +state.year));
+  const scopeText = () => {
+    const sel = $("f-program");
+    return sel.options[sel.selectedIndex].text;
+  };
+
+  function byOrg(rows) {
+    const m = new Map();
+    for (const r of rows) {
+      const o = m.get(r.org) || { value: 0, grants: new Set() };
+      o.value += r.amount;
+      o.grants.add(r.grant);
+      m.set(r.org, o);
+    }
+    return [...m.entries()].map(([name, o]) => ({ name, ...o })).sort((a, b) => b.value - a.value);
+  }
+
+  function renderStats(rows) {
+    const total = rows.reduce((s, r) => s + r.amount, 0);
+    const orgs = byOrg(rows);
+    $("s-total-label").textContent = `${state.year || "All years"}: ${scopeText()}`;
+    $("s-total").textContent = total ? money(total) : "None";
+    $("s-total-note").textContent = `${num(rows.length)} grant${rows.length === 1 ? "" : "s"}${state.q ? ` to recipients matching "${state.q}"` : ""}.`;
+    $("s-orgs").textContent = num(orgs.length);
+    $("s-orgs-note").textContent = "";
+    $("s-top").textContent = orgs.length && total ? pct(orgs[0].value / total) : "–";
+    $("s-top-note").textContent = orgs.length ? orgs[0].name : "";
+    $("s-top10").textContent = orgs.length > 10 && total ? pct(orgs.slice(0, 10).reduce((s, o) => s + o.value, 0) / total) : "–";
+  }
+
+  function renderOrgs(rows) {
+    const total = rows.reduce((s, r) => s + r.amount, 0);
+    const orgs = byOrg(rows);
+    const items = orgs.slice(0, TOP).map((o) => ({
+      name: o.name, value: o.value,
+      tip: () => [["Amount", moneyFull(o.value)], ["Share", total ? pct(o.value / total) : "–"], ["Grants", [...o.grants].join(", ")]],
+    }));
+    const rest = orgs.slice(TOP);
+    if (rest.length) {
+      const v = rest.reduce((s, o) => s + o.value, 0);
+      items.push({ name: `${num(rest.length)} other recipients`, value: v, other: true, tip: () => [["Amount", moneyFull(v)], ["Share", total ? pct(v / total) : "–"]] });
+    }
+    $("c-orgs-title").textContent = `Largest recipients${state.year ? ` in ${state.year}` : ", all years"}`;
+    hbars($("c-orgs"), items, { empty: "No grants match these filters." });
+    // Selecting a recipient narrows the page to it.
+    [...$("c-orgs").children].forEach((row, i) => {
+      if (!items[i] || items[i].other) return;
+      row.style.cursor = "pointer";
+      const pick = () => { state.q = items[i].name; $("f-q").value = items[i].name; render(); };
+      row.addEventListener("click", pick);
+      row.addEventListener("keydown", (e) => e.key === "Enter" && pick());
+    });
+  }
+
+  function renderYears() {
+    const rows = all.filter(inScope);
+    const years = [...new Set(all.map((r) => r.year))].sort();
+    const sum = (y, source) => rows.filter((r) => r.year === y && r.source === source).reduce((s, r) => s + r.amount, 0) || null;
+    const sources = ["Civic Partners", "FCSS"].filter((s) => rows.some((r) => r.source === s));
+    $("lg-years").hidden = sources.length < 2;
+    $("c-years-sub").textContent = `${scopeText()}${state.q ? `, recipients matching "${state.q}"` : ""}. The City lists only a few years for each grant, so years are not complete.`;
+    columns($("c-years"), years, [
+      { label: "Civic Partners", color: "var(--s1)", values: years.map((y) => sum(y, "Civic Partners")) },
+      { label: "FCSS", color: "var(--s2)", values: years.map((y) => sum(y, "FCSS")) },
+    ], { stacked: true, format: (v) => (v >= 1e7 ? `$${Math.round(v / 1e6)}M` : money(v)) });
+  }
+
+  const COLS = [
+    { key: "org", label: "Recipient", value: (r) => r.org },
+    { key: "grant", label: "Grant", value: (r) => r.grant },
+    { key: "funded", label: "Program or project", value: (r) => r.funded || "–" },
+    { key: "year", label: "Year", num: true, desc: true, value: (r) => r.year },
+    { key: "figure", label: "Figure", value: (r) => r.figure },
+    { key: "amount", label: "Amount", num: true, value: (r) => r.amount, render: (r) => moneyFull(r.amount) },
+  ];
+  function renderTable(rows) {
+    table($("t-head"), $("t-body"), rows, COLS, state, () => { state.shown = 100; renderTable(filtered()); }, { limit: state.shown });
+    $("more").hidden = rows.length <= state.shown;
+    $("t-sub").textContent = `${num(rows.length)} grant${rows.length === 1 ? "" : "s"}. Select a column to sort.`;
+  }
+
+  function render() {
+    state.shown = 100;
+    const rows = filtered();
+    renderStats(rows);
+    renderOrgs(rows);
+    renderYears();
+    renderTable(rows);
+  }
+
+  fetch("data/grants.json", { cache: "no-cache" })
+    .then((r) => r.json())
+    .then((d) => {
+      programs = d.programs;
+      all = d.rows.map(([org, p, funded, year, period, status, amount]) => ({
+        org: d.orgs[org], programIdx: p, source: programs[p].source, grant: grantName(programs[p]),
+        funded, year, amount, figure: FIGURE[status] + (period ? ` (${period} only)` : ""),
+      }));
+      const prog = $("f-program");
+      prog.append(el("option", { value: "Civic Partners" }, "All Civic Partners grants"));
+      programs.forEach((p, i) => prog.append(el("option", { value: String(i) }, grantName(p))));
+      const years = [...new Set(all.map((r) => r.year))].sort((a, b) => b - a);
+      const thisYear = new Date().getFullYear();
+      state.year = String(years.includes(thisYear) ? thisYear : years.find((y) => y <= thisYear) ?? years[0]);
+      for (const y of years) $("f-year").append(el("option", { value: String(y) }, String(y)));
+      $("f-year").append(el("option", { value: "" }, "All years"));
+      $("f-year").value = state.year;
+      const bind = (id, key, evt = "change") => $(id).addEventListener(evt, (e) => { state[key] = e.target.value.trim(); render(); });
+      bind("f-program", "program"); bind("f-year", "year"); bind("f-q", "q", "input");
+      $("more").addEventListener("click", () => { state.shown += 100; renderTable(filtered()); });
+      render();
+      onResize(renderYears);
+    })
+    .catch(() => {
+      $("t-sub").textContent = "Couldn't load the grants data. Try reloading the page.";
+    });
+})();
+</script>
+</body>
+</html>

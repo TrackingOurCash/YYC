@@ -12,8 +12,10 @@ Part of [Tracking Our Cash](https://trackingourcash.github.io). The Calgary dash
 | Salary range for each City position title | [Compensation Disclosure List](https://data.calgary.ca/d/9bze-mzx6) on Open Calgary | Daily (the City updates it about once a year) |
 | Operating and capital budget, 2023 to 2032 | [Calgary Open Budget](https://data.calgary.ca/d/fqax-i3nz) on Open Calgary | Daily (the City updates it about once a year) |
 | Council and committee votes since October 2020 | [Council and Committee Votes](https://data.calgary.ca/d/ruq3-99hx) on Open Calgary | Daily |
+| Civic Partners grants (operating, capital, community safety, innovation) by organization | [Civic Partners funding](https://www.calgary.ca/our-finances/civic-partners-funding.html) on calgary.ca | Daily (the City updates it about once a year) |
+| FCSS grants by organization and funded program, 2021 onwards | [FCSS funding allocations](https://www.calgary.ca/social-services/funding/organization-allocations.html) on calgary.ca | Daily (the City updates it each funding cycle) |
 
-Civic Partners and FCSS grants, and ward-level spending come next.
+Ward-level spending comes next.
 
 ## Job postings
 
@@ -37,6 +39,10 @@ Postings from before the collector started are rebuilt by `scripts/backfill_jobs
 
 `collectors/votes.py` downloads every recorded vote (about 55,000 rows, one per member per vote) and groups them into motions, since the City's data has no motion number. It writes `data/votes/motions.csv` (one row per motion, flagged when the text mentions money, with the largest dollar figure in the text) and `data/votes/ballots.csv` (one row per member per motion). `scripts/build_votes.py` packs both into `site/data/votes.json`.
 
+## Grants
+
+`collectors/grants.py` reads the tables on the Civic Partners and FCSS pages into `data/grants/grants.csv`, one row per organization, grant, funded program, year and figure (actual, approved budget or allocated). The pages only show the current funding years, so rows that drop off the page are kept, with the first and last day each was seen. `scripts/build_grants.py` writes `site/data/grants.json`: it merges recipient names that are spelled differently from year to year, moves capital project names into the funded program column, and keeps the actual amount where a year has both a budget and an actual.
+
 ## Running locally
 
 ```sh
@@ -45,13 +51,15 @@ python collectors/jobs.py
 python collectors/budget.py
 python collectors/votes.py
 python collectors/compensation.py
+python collectors/grants.py
 python scripts/build_jobs_summary.py
 python scripts/build_budget.py
 python scripts/build_votes.py
+python scripts/build_grants.py
 ```
 
 The GitHub Action in `.github/workflows/collect.yml` runs all of these every day at 13:00 UTC and commits any changes. `.github/workflows/pages.yml` then publishes `site/` to GitHub Pages.
 
 ## Dashboard
 
-`site/` is a static site with no build step: `index.html` (overview), `jobs.html`, `budget.html` and `votes.html`, sharing `assets/site.css` and `assets/common.js`. Each page reads its JSON from `site/data/` and works out every total in the browser, so a page's filters apply to its totals, charts and table together. To preview it locally, run `python -m http.server -d site` and open http://localhost:8000.
+`site/` is a static site with no build step: `index.html` (overview), `jobs.html`, `budget.html`, `grants.html` and `votes.html`, sharing `assets/site.css` and `assets/common.js`. Each page reads its JSON from `site/data/` and works out every total in the browser, so a page's filters apply to its totals, charts and table together. To preview it locally, run `python -m http.server -d site` and open http://localhost:8000.

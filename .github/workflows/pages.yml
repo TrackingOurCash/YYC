@@ -5,7 +5,7 @@ on:
     branches: [main]
     paths: ["site/**"]
   workflow_run:
-    workflows: ["Collect Calgary data"]
+    workflows: ["Collect Calgary data", "Backfill jobs from the Internet Archive"]
     types: [completed]
   workflow_dispatch:
 

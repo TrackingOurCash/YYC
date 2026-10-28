@@ -2,13 +2,13 @@
  "generated": "2026-10-28",
  "tracking_since": "2024-01-05",
  "total": {
-  "postings": 3141,
-  "positions": 3209,
-  "permanent": 120,
-  "temporary": 65,
+  "postings": 3145,
+  "positions": 3213,
+  "permanent": 122,
+  "temporary": 67,
   "unknown_type": 3024,
-  "est_annual_cost": 125501356,
-  "with_pay": 1187
+  "est_annual_cost": 126068840,
+  "with_pay": 1192
  },
  "by_month": {
   "2024-01": {
@@ -71,8 +71,8 @@
    "permanent": 0,
    "temporary": 0,
    "unknown_type": 99,
-   "est_annual_cost": 4100336,
-   "with_pay": 43
+   "est_annual_cost": 4226176,
+   "with_pay": 44
   },
   "2024-10": {
    "postings": 63,
@@ -273,13 +273,13 @@
    "with_pay": 64
   },
   "2026-10": {
-   "postings": 108,
-   "positions": 142,
-   "permanent": 60,
-   "temporary": 34,
+   "postings": 112,
+   "positions": 146,
+   "permanent": 62,
+   "temporary": 36,
    "unknown_type": 48,
-   "est_annual_cost": 10811761,
-   "with_pay": 74
+   "est_annual_cost": 11253405,
+   "with_pay": 78
   }
  },
  "by_category": {
@@ -329,22 +329,22 @@
    "with_pay": 63
   },
   "Leisure Services": {
-   "postings": 149,
-   "positions": 149,
-   "permanent": 6,
+   "postings": 150,
+   "positions": 150,
+   "permanent": 7,
    "temporary": 0,
    "unknown_type": 143,
-   "est_annual_cost": 3055997,
-   "with_pay": 42
+   "est_annual_cost": 3092270,
+   "with_pay": 43
   },
   "Engineering and Geoscience": {
-   "postings": 145,
-   "positions": 151,
+   "postings": 146,
+   "positions": 152,
    "permanent": 22,
-   "temporary": 7,
+   "temporary": 8,
    "unknown_type": 122,
-   "est_annual_cost": 6153490,
-   "with_pay": 39
+   "est_annual_cost": 6283387,
+   "with_pay": 40
   },
   "Labour/Operations Support": {
    "postings": 142,
@@ -365,13 +365,13 @@
    "with_pay": 28
   },
   "Trades": {
-   "postings": 101,
-   "positions": 102,
+   "postings": 102,
+   "positions": 103,
    "permanent": 2,
-   "temporary": 3,
+   "temporary": 4,
    "unknown_type": 97,
-   "est_annual_cost": 3109462,
-   "with_pay": 27
+   "est_annual_cost": 3361142,
+   "with_pay": 29
   },
   "Finance/Taxation": {
    "postings": 79,
@@ -418,6 +418,15 @@
    "est_annual_cost": 2971602,
    "with_pay": 27
   },
+  "General Management": {
+   "postings": 56,
+   "positions": 56,
+   "permanent": 5,
+   "temporary": 2,
+   "unknown_type": 49,
+   "est_annual_cost": 4434569,
+   "with_pay": 33
+  },
   "Social Science/Services": {
    "postings": 56,
    "positions": 56,
@@ -426,15 +435,6 @@
    "unknown_type": 56,
    "est_annual_cost": 3359403,
    "with_pay": 35
-  },
-  "General Management": {
-   "postings": 55,
-   "positions": 55,
-   "permanent": 4,
-   "temporary": 2,
-   "unknown_type": 49,
-   "est_annual_cost": 4284935,
-   "with_pay": 32
   },
   "Social and Human Sciences": {
    "postings": 44,
@@ -588,17 +588,17 @@
    "permanent": 0,
    "temporary": 0,
    "unknown_type": 3024,
-   "est_annual_cost": 107041732,
-   "with_pay": 1074
+   "est_annual_cost": 107167572,
+   "with_pay": 1075
   },
   "Water Services": {
-   "postings": 15,
-   "positions": 39,
+   "postings": 16,
+   "positions": 40,
    "permanent": 34,
-   "temporary": 5,
+   "temporary": 6,
    "unknown_type": 0,
-   "est_annual_cost": 3341155,
-   "with_pay": 15
+   "est_annual_cost": 3466995,
+   "with_pay": 16
   },
   "Mobility": {
    "postings": 12,
@@ -627,6 +627,15 @@
    "est_annual_cost": 1144585,
    "with_pay": 8
   },
+  "Recreation and Social Programs": {
+   "postings": 7,
+   "positions": 7,
+   "permanent": 7,
+   "temporary": 0,
+   "unknown_type": 0,
+   "est_annual_cost": 435593,
+   "with_pay": 7
+  },
   "Human Resources": {
    "postings": 6,
    "positions": 11,
@@ -635,15 +644,6 @@
    "unknown_type": 0,
    "est_annual_cost": 1035612,
    "with_pay": 6
-  },
-  "Recreation and Social Programs": {
-   "postings": 5,
-   "positions": 5,
-   "permanent": 5,
-   "temporary": 0,
-   "unknown_type": 0,
-   "est_annual_cost": 249686,
-   "with_pay": 5
   },
   "Project Development": {
    "postings": 5,
@@ -788,6 +788,15 @@
    "unknown_type": 0,
    "est_annual_cost": 237944,
    "with_pay": 2
+  },
+  "Waste & Recycling Services": {
+   "postings": 1,
+   "positions": 1,
+   "permanent": 0,
+   "temporary": 1,
+   "unknown_type": 0,
+   "est_annual_cost": 129897,
+   "with_pay": 1
   },
   "Operational Services": {
    "postings": 1,

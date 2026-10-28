@@ -15,7 +15,7 @@
  },
  {
   "job_id": "315525",
-  "title": "Junior Business Analyst, Part-Time",
+  "title": "Junior Business Analyst, Part-Time - AMENDMENT",
   "category": "Accounting/Finance",
   "closing_date": "2026-11-02",
   "url": "https://recruiting.calgary.ca/psc/hcm/EMPLOYEE/HRMS/c/HRS_HRAM_FL.HRS_CG_SEARCH_FL.GBL?FOCUS=Applicant&Page=HRS_APP_JBPST_FL&JobOpeningId=315525&PostingSeq=1&SiteId=1"
@@ -203,6 +203,13 @@
   "url": "https://recruiting.calgary.ca/psc/hcm/EMPLOYEE/HRMS/c/HRS_HRAM_FL.HRS_CG_SEARCH_FL.GBL?FOCUS=Applicant&Page=HRS_APP_JBPST_FL&JobOpeningId=315523&PostingSeq=1&SiteId=1"
  },
  {
+  "job_id": "315505",
+  "title": "Project Engineer",
+  "category": "Engineering and Geoscience",
+  "closing_date": "2026-11-16",
+  "url": "https://recruiting.calgary.ca/psc/hcm/EMPLOYEE/HRMS/c/HRS_HRAM_FL.HRS_CG_SEARCH_FL.GBL?FOCUS=Applicant&Page=HRS_APP_JBPST_FL&JobOpeningId=315505&PostingSeq=1&SiteId=1"
+ },
+ {
   "job_id": "315083",
   "title": "Traffic Engineer - AMENDMENT",
   "category": "Engineering and Geoscience",
@@ -236,6 +243,13 @@
   "category": "General Management",
   "closing_date": "2026-11-02",
   "url": "https://recruiting.calgary.ca/psc/hcm/EMPLOYEE/HRMS/c/HRS_HRAM_FL.HRS_CG_SEARCH_FL.GBL?FOCUS=Applicant&Page=HRS_APP_JBPST_FL&JobOpeningId=315458&PostingSeq=1&SiteId=1"
+ },
+ {
+  "job_id": "315554",
+  "title": "Leader, Recreation Programs",
+  "category": "General Management",
+  "closing_date": "2026-11-05",
+  "url": "https://recruiting.calgary.ca/psc/hcm/EMPLOYEE/HRMS/c/HRS_HRAM_FL.HRS_CG_SEARCH_FL.GBL?FOCUS=Applicant&Page=HRS_APP_JBPST_FL&JobOpeningId=315554&PostingSeq=1&SiteId=1"
  },
  {
   "job_id": "315442",
@@ -313,6 +327,13 @@
   "category": "Leisure Services",
   "closing_date": "2026-11-02",
   "url": "https://recruiting.calgary.ca/psc/hcm/EMPLOYEE/HRMS/c/HRS_HRAM_FL.HRS_CG_SEARCH_FL.GBL?FOCUS=Applicant&Page=HRS_APP_JBPST_FL&JobOpeningId=315251&PostingSeq=1&SiteId=1"
+ },
+ {
+  "job_id": "315541",
+  "title": "Recreation Leader - Calgary AfterSchool Programs",
+  "category": "Leisure Services",
+  "closing_date": "2026-12-11",
+  "url": "https://recruiting.calgary.ca/psc/hcm/EMPLOYEE/HRMS/c/HRS_HRAM_FL.HRS_CG_SEARCH_FL.GBL?FOCUS=Applicant&Page=HRS_APP_JBPST_FL&JobOpeningId=315541&PostingSeq=1&SiteId=1"
  },
  {
   "job_id": "315483",
@@ -418,5 +439,12 @@
   "category": "Trades",
   "closing_date": "2026-11-09",
   "url": "https://recruiting.calgary.ca/psc/hcm/EMPLOYEE/HRMS/c/HRS_HRAM_FL.HRS_CG_SEARCH_FL.GBL?FOCUS=Applicant&Page=HRS_APP_JBPST_FL&JobOpeningId=315543&PostingSeq=1&SiteId=1"
+ },
+ {
+  "job_id": "315561",
+  "title": "Journeyperson Instrumentation Technician",
+  "category": "Trades",
+  "closing_date": "2026-11-09",
+  "url": "https://recruiting.calgary.ca/psc/hcm/EMPLOYEE/HRMS/c/HRS_HRAM_FL.HRS_CG_SEARCH_FL.GBL?FOCUS=Applicant&Page=HRS_APP_JBPST_FL&JobOpeningId=315561&PostingSeq=1&SiteId=1"
  }
 ]

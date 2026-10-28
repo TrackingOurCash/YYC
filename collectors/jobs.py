@@ -38,7 +38,7 @@ USER_AGENT = (
 )
 
 # Bump when parse_detail changes so existing rows are re-read.
-DETAILS_VERSION = "2"
+DETAILS_VERSION = "3"
 
 FIELDS = [
     "job_id",
@@ -59,6 +59,7 @@ FIELDS = [
     "temporary_positions",
     "position_type",
     "full_part_time",
+    "regular_temporary",
     "location",
     "audience",
     "details_fetched",
@@ -119,13 +120,49 @@ def parse_listing(html: str, base_url: str = CAREERS_URL) -> list[dict]:
     return list(postings.values())
 
 
+# The labels of the "Position and Pay Information" block.
+LABELS = ("business unit", "union", "position type", "compensation", "hours of work", "location", "audience")
+
+
 def _labelled(lines: list[str]) -> dict[str, str]:
-    """Pair "Label:" lines with the value line that follows them."""
+    """Pair "Label:" lines with the value line that follows them, or read
+    "Label: value" when both are on one line (as in archived copies)."""
     out = {}
-    for i, line in enumerate(lines[:-1]):
-        if line.endswith(":") and len(line) < 40:
-            out.setdefault(line[:-1].strip().lower(), lines[i + 1].strip())
+    for i, line in enumerate(lines):
+        label, sep, value = line.partition(":")
+        if not sep or len(label) >= 40:
+            continue
+        if value.strip():
+            out.setdefault(label.strip().lower(), value.strip())
+        elif i + 1 < len(lines):
+            out.setdefault(label.strip().lower(), lines[i + 1].strip())
     return out
+
+
+def position_counts(position_type: str, regular_temporary: str = "") -> tuple[int, int]:
+    """(permanent, temporary) positions, going by what the posting says.
+
+    A "Position Type" that counts them wins, e.g. "1 Permanent & 3
+    Temporary (up to 18 months)". Otherwise the posting's "Regular/Temporary"
+    field decides, then a plain "Permanent" or "Temporary" in Position Type,
+    and the posting counts as one position of that kind. On-call only
+    describes the hours (transit on-call jobs can be regular and near
+    full-time), so it doesn't decide either way, and a pool such as "Up to
+    10 On-Call" counts as one position. A posting that says neither is (0, 0)
+    and shows as unlisted.
+    """
+    counts = {"permanent": 0, "temporary": 0}
+    for n, kind in POSITIONS_RE.findall(position_type):
+        key = "permanent" if kind.lower() in ("permanent", "regular") else "temporary"
+        counts[key] += int(n)
+    if any(counts.values()):
+        return counts["permanent"], counts["temporary"]
+    for said in (regular_temporary, position_type):
+        if re.search(r"\btemp|\bseasonal\b|\bterm\b|\bcasual\b", said, re.I):
+            return 0, 1
+        if re.search(r"\bregular\b|\bpermanent\b", said, re.I):
+            return 1, 0
+    return 0, 0
 
 
 def parse_detail(html: str) -> dict:
@@ -143,37 +180,41 @@ def parse_detail(html: str) -> dict:
     lines = text.split("\n")
 
     # The header above the description has unlabelled pairs, e.g.
-    # "Full/Part Time" then "Full-Time".
-    lowered = [l.lower() for l in lines]
-    head = {
-        label: lines[lowered.index(label) + 1]
-        for label in ("full/part time", "regular/temporary")
-        if label in lowered[:-1]
-    }
+    # "Full/Part Time" then "Full-Time", or "Label: value" on one line.
+    head = {}
+    for i, line in enumerate(lines):
+        for label in ("full/part time", "regular/temporary"):
+            if not line.lower().startswith(label):
+                continue
+            value = line[len(label):].lstrip(" :")
+            if not value and i + 1 < len(lines) and line.lower().rstrip(" :") == label:
+                value = lines[i + 1]
+            if value:
+                head.setdefault(label, value.strip())
 
     marker = "Position and Pay Information"
-    if marker not in text:
-        return {"full_part_time": head.get("full/part time", "")} if head else {}
-    info = _labelled(text.split(marker, 1)[1].split("\n"))
+    if marker in text:
+        info = _labelled(text.split(marker, 1)[1].split("\n"))
+    else:
+        # Archived copies have no heading over the block; read its labels
+        # from anywhere on the page.
+        info = {k: v for k, v in _labelled(lines).items() if k in LABELS}
+    if not info.get("business unit") and not info.get("position type"):
+        return {"full_part_time": head.get("full/part time", ""), "regular_temporary": head.get("regular/temporary", "")} if head else {}
 
     out = {
         "department": info.get("business unit", ""),
         "union": info.get("union", ""),
         "position_type": info.get("position type", "") or head.get("regular/temporary", ""),
         "full_part_time": head.get("full/part time", ""),
+        "regular_temporary": head.get("regular/temporary", ""),
         "location": info.get("location", ""),
         "audience": info.get("audience", ""),
     }
 
-    counts = {"permanent": 0, "temporary": 0}
-    for n, kind in POSITIONS_RE.findall(out["position_type"]):
-        key = "permanent" if kind.lower() in ("permanent", "regular") else "temporary"
-        counts[key] += int(n)
-    if not any(counts.values()):
-        key = "temporary" if "temp" in out["position_type"].lower() else "permanent"
-        counts[key] = 1
-    out["permanent_positions"] = str(counts["permanent"])
-    out["temporary_positions"] = str(counts["temporary"])
+    perm, temp = position_counts(out["position_type"], out["regular_temporary"])
+    out["permanent_positions"] = str(perm)
+    out["temporary_positions"] = str(temp)
 
     comp = info.get("compensation", "")
     m = PAY_RE.search(comp)
@@ -213,6 +254,12 @@ def load_postings() -> dict[str, dict]:
 
 def save_postings(rows: dict[str, dict]) -> None:
     DATA.mkdir(parents=True, exist_ok=True)
+    # Keep the counts in step with position_counts, including for postings
+    # read under older rules whose pages can't be read again.
+    for row in rows.values():
+        if row.get("details_fetched"):
+            perm, temp = position_counts(row.get("position_type", ""), row.get("regular_temporary", ""))
+            row["permanent_positions"], row["temporary_positions"] = str(perm), str(temp)
     ordered = sorted(rows.values(), key=lambda r: (r["first_seen"], int(r["job_id"])))
     with POSTINGS_CSV.open("w", newline="") as f:
         w = csv.DictWriter(f, fieldnames=FIELDS, extrasaction="ignore")

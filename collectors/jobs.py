@@ -63,10 +63,11 @@ FIELDS = [
     "audience",
     "details_fetched",
     "details_version",
+    "source",  # "" from the daily collector, "archive" from the backfill
 ]
 
 LISTING_FIELDS = {"job_id", "title", "category", "closing_date", "url"}
-TRACKING_FIELDS = {"first_seen", "last_seen", "details_fetched", "details_version"}
+TRACKING_FIELDS = {"first_seen", "last_seen", "details_fetched", "details_version", "source"}
 DETAIL_FIELDS = [f for f in FIELDS if f not in LISTING_FIELDS | TRACKING_FIELDS]
 
 CLOSING_RE = re.compile(r"Closing\s+date:?\s*(\d{4}[/-]\d{2}[/-]\d{2})", re.I)
@@ -251,6 +252,11 @@ def run(details: bool = True, today: str | None = None) -> dict:
                 continue
             try:
                 fields = fetch_detail(s, row["url"])
+                if not fields:
+                    # Likely a sign-in or maintenance page; try again tomorrow
+                    # while the posting is still open.
+                    print(f"detail {job_id}: nothing readable on the page", file=sys.stderr)
+                    continue
                 for key in DETAIL_FIELDS:
                     row[key] = fields.get(key, "")
                 row["details_fetched"] = today

@@ -40,7 +40,7 @@ ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "data" / "votes"
 PORTAL = "https://pub-calgary.escribemeetings.com"
 USER_AGENT = "Mozilla/5.0 (compatible; TrackingOurCash-YYC/0.1; +https://github.com/TrackingOurCash/YYC)"
-TITLES = re.compile(r"^(?:Deputy Mayor|Acting Mayor|Mayor|Councillor|Commissioner|Citizen Member|Member)\s+", re.I)
+TITLES = re.compile(r"^(?:Deputy Mayor|Acting Mayor|Mayor|Councillor|Commissioner|Citizen Member|Member|General Manager|Director)\s+", re.I)
 
 
 def dataset_state() -> tuple[str, set[str], dict[str, str]]:
@@ -50,14 +50,20 @@ def dataset_state() -> tuple[str, set[str], dict[str, str]]:
         motions = {m["id"]: m for m in csv.DictReader(f)}
     latest = max(m["date"] for m in motions.values())
     types = {m["meeting_type"] for m in motions.values()}
-    # Names as the dataset spells them, from the last year of votes.
+    # Names as the dataset spells them, preferring the last year of votes so
+    # a surname shared with a past member goes to the current one.
     since = (dt.date.fromisoformat(latest) - dt.timedelta(days=365)).isoformat()
-    names: dict[str, set[str]] = {}
+    recent: dict[str, set[str]] = {}
+    ever: dict[str, set[str]] = {}
     with (OUT / "ballots.csv").open(newline="") as f:
         for b in csv.DictReader(f):
+            surname = b["voter"].split()[-1].lower()
+            ever.setdefault(surname, set()).add(b["voter"])
             if motions[b["motion_id"]]["date"] >= since:
-                names.setdefault(b["voter"].split()[-1].lower(), set()).add(b["voter"])
-    return latest, types, {k: next(iter(v)) for k, v in names.items() if len(v) == 1}
+                recent.setdefault(surname, set()).add(b["voter"])
+    by_surname = {k: next(iter(v)) for k, v in ever.items() if len(v) == 1}
+    by_surname.update({k: next(iter(v)) for k, v in recent.items() if len(v) == 1})
+    return latest, types, by_surname
 
 
 def meetings(s: requests.Session, start: str, end: str) -> list[dict]:
@@ -77,12 +83,25 @@ def voters(cell: str, by_surname: dict[str, str]) -> list[str]:
     return out
 
 
+def rich_text(el) -> str:
+    """Motion text the way the dataset writes it: numbered list items, one
+    space between paragraphs, none added around bold or italic words."""
+    for ol in el.select("ol"):
+        for n, item in enumerate(ol.find_all("li", recursive=False), int(ol.get("start") or 1)):
+            item.insert(0, f"{n}. ")
+    for block in el.select("p, li, br, div, tr"):
+        block.append(" ")
+    return clean(el.get_text().replace("\u200b", ""))
+
+
 def parse_minutes(html: str, by_surname: dict[str, str]) -> list[dict]:
-    """Every motion in the minutes that has a recorded vote."""
+    """Every motion in the minutes that has its own wording and a recorded
+    vote. Motions with no wording (adopting minutes or receiving a report
+    from the agenda as it stands) are left out, as the dataset leaves them out."""
     out = []
     for li in BeautifulSoup(html, "html.parser").select("li.AgendaItemMotion"):
         result = clean(li.select_one("div.MotionResult").get_text(" ") if li.select_one("div.MotionResult") else "")
-        text = li.select_one("div.MotionText")
+        text = rich_text(li.select_one("div.MotionText")) if li.select_one("div.MotionText") else ""
         votes = {"Yes": [], "No": []}
         for row in li.select("table.MotionVoters tr"):
             label, users = row.select_one("td.VoterVote"), row.select("td.VotesUsers")
@@ -94,7 +113,7 @@ def parse_minutes(html: str, by_surname: dict[str, str]) -> list[dict]:
                 votes[key] += voters(users[0].get_text(" "), by_surname)
         if not result or not text or not (votes["Yes"] or votes["No"]):
             continue
-        out.append({"resolution": clean(text.get_text(" ")), "result": result, "votes": votes})
+        out.append({"resolution": text, "result": result, "votes": votes})
     return out
 
 

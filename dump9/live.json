@@ -1,0 +1,164 @@
+[
+ {
+  "job_id": "308575",
+  "first_seen": "2024-01-05",
+  "status": 200,
+  "len": 352003,
+  "title": "Careers",
+  "fields": {},
+  "text": " var totalTimeoutMilliseconds = 2073600000; var warningTimeoutMilliseconds = 2073600000; var timeOutURL = 'https://recruiting.calgary.ca/psc/hcm/EMPLOYEE/HRMS/?cmd=expire'; var timeoutWarningPageURL = 'https://recruiting.calgary.ca/psc/hcm/EMPLOYEE/HRMS/s/WEBLIB_TIMEOUT.PT_TIMEOUTWARNING.FieldFormula.IScript_TIMEOUTWARNING'; var sRCRequestURL = 'https://recruiting.calgary.ca/psc/hcm/EMPLOYEE/HRMS/s/WEBLIB_PTRC.ISCRIPT1.FieldFormula.IScript_RC_REQUEST'; Careers try { document.domain = \"calgary.ca\"; } catch(err) {;} var winName='win0'; var winParent = null; var modalID = null; var modalZoomName "
+ },
+ {
+  "job_id": "309069",
+  "first_seen": "2024-02-04",
+  "status": 200,
+  "len": 351131,
+  "title": "Careers",
+  "fields": {},
+  "text": " var totalTimeoutMilliseconds = 2073600000; var warningTimeoutMilliseconds = 2073600000; var timeOutURL = 'https://recruiting.calgary.ca/psc/hcm/EMPLOYEE/HRMS/?cmd=expire'; var timeoutWarningPageURL = 'https://recruiting.calgary.ca/psc/hcm/EMPLOYEE/HRMS/s/WEBLIB_TIMEOUT.PT_TIMEOUTWARNING.FieldFormula.IScript_TIMEOUTWARNING'; var sRCRequestURL = 'https://recruiting.calgary.ca/psc/hcm/EMPLOYEE/HRMS/s/WEBLIB_PTRC.ISCRIPT1.FieldFormula.IScript_RC_REQUEST'; Careers try { document.domain = \"calgary.ca\"; } catch(err) {;} var winName='win0'; var winParent = null; var modalID = null; var modalZoomName "
+ },
+ {
+  "job_id": "309426",
+  "first_seen": "2024-03-03",
+  "status": 200,
+  "len": 351131,
+  "title": "Careers",
+  "fields": {},
+  "text": " var totalTimeoutMilliseconds = 2073600000; var warningTimeoutMilliseconds = 2073600000; var timeOutURL = 'https://recruiting.calgary.ca/psc/hcm/EMPLOYEE/HRMS/?cmd=expire'; var timeoutWarningPageURL = 'https://recruiting.calgary.ca/psc/hcm/EMPLOYEE/HRMS/s/WEBLIB_TIMEOUT.PT_TIMEOUTWARNING.FieldFormula.IScript_TIMEOUTWARNING'; var sRCRequestURL = 'https://recruiting.calgary.ca/psc/hcm/EMPLOYEE/HRMS/s/WEBLIB_PTRC.ISCRIPT1.FieldFormula.IScript_RC_REQUEST'; Careers try { document.domain = \"calgary.ca\"; } catch(err) {;} var winName='win0'; var winParent = null; var modalID = null; var modalZoomName "
+ },
+ {
+  "job_id": "309944",
+  "first_seen": "2024-05-26",
+  "status": 200,
+  "len": 351131,
+  "title": "Careers",
+  "fields": {},
+  "text": " var totalTimeoutMilliseconds = 2073600000; var warningTimeoutMilliseconds = 2073600000; var timeOutURL = 'https://recruiting.calgary.ca/psc/hcm/EMPLOYEE/HRMS/?cmd=expire'; var timeoutWarningPageURL = 'https://recruiting.calgary.ca/psc/hcm/EMPLOYEE/HRMS/s/WEBLIB_TIMEOUT.PT_TIMEOUTWARNING.FieldFormula.IScript_TIMEOUTWARNING'; var sRCRequestURL = 'https://recruiting.calgary.ca/psc/hcm/EMPLOYEE/HRMS/s/WEBLIB_PTRC.ISCRIPT1.FieldFormula.IScript_RC_REQUEST'; Careers try { document.domain = \"calgary.ca\"; } catch(err) {;} var winName='win0'; var winParent = null; var modalID = null; var modalZoomName "
+ },
+ {
+  "job_id": "310336",
+  "first_seen": "2024-08-09",
+  "status": 200,
+  "len": 351133,
+  "title": "Careers",
+  "fields": {},
+  "text": " var totalTimeoutMilliseconds = 2073600000; var warningTimeoutMilliseconds = 2073600000; var timeOutURL = 'https://recruiting.calgary.ca/psc/hcm/EMPLOYEE/HRMS/?cmd=expire'; var timeoutWarningPageURL = 'https://recruiting.calgary.ca/psc/hcm/EMPLOYEE/HRMS/s/WEBLIB_TIMEOUT.PT_TIMEOUTWARNING.FieldFormula.IScript_TIMEOUTWARNING'; var sRCRequestURL = 'https://recruiting.calgary.ca/psc/hcm/EMPLOYEE/HRMS/s/WEBLIB_PTRC.ISCRIPT1.FieldFormula.IScript_RC_REQUEST'; Careers try { document.domain = \"calgary.ca\"; } catch(err) {;} var winName='win0'; var winParent = null; var modalID = null; var modalZoomName "
+ },
+ {
+  "job_id": "310603",
+  "first_seen": "2024-10-08",
+  "status": 200,
+  "len": 351133,
+  "title": "Careers",
+  "fields": {},
+  "text": " var totalTimeoutMilliseconds = 2073600000; var warningTimeoutMilliseconds = 2073600000; var timeOutURL = 'https://recruiting.calgary.ca/psc/hcm/EMPLOYEE/HRMS/?cmd=expire'; var timeoutWarningPageURL = 'https://recruiting.calgary.ca/psc/hcm/EMPLOYEE/HRMS/s/WEBLIB_TIMEOUT.PT_TIMEOUTWARNING.FieldFormula.IScript_TIMEOUTWARNING'; var sRCRequestURL = 'https://recruiting.calgary.ca/psc/hcm/EMPLOYEE/HRMS/s/WEBLIB_PTRC.ISCRIPT1.FieldFormula.IScript_RC_REQUEST'; Careers try { document.domain = \"calgary.ca\"; } catch(err) {;} var winName='win0'; var winParent = null; var modalID = null; var modalZoomName "
+ },
+ {
+  "job_id": "310876",
+  "first_seen": "2025-01-18",
+  "status": 200,
+  "len": 351133,
+  "title": "Careers",
+  "fields": {},
+  "text": " var totalTimeoutMilliseconds = 2073600000; var warningTimeoutMilliseconds = 2073600000; var timeOutURL = 'https://recruiting.calgary.ca/psc/hcm/EMPLOYEE/HRMS/?cmd=expire'; var timeoutWarningPageURL = 'https://recruiting.calgary.ca/psc/hcm/EMPLOYEE/HRMS/s/WEBLIB_TIMEOUT.PT_TIMEOUTWARNING.FieldFormula.IScript_TIMEOUTWARNING'; var sRCRequestURL = 'https://recruiting.calgary.ca/psc/hcm/EMPLOYEE/HRMS/s/WEBLIB_PTRC.ISCRIPT1.FieldFormula.IScript_RC_REQUEST'; Careers try { document.domain = \"calgary.ca\"; } catch(err) {;} var winName='win0'; var winParent = null; var modalID = null; var modalZoomName "
+ },
+ {
+  "job_id": "311151",
+  "first_seen": "2025-02-07",
+  "status": 200,
+  "len": 351133,
+  "title": "Careers",
+  "fields": {},
+  "text": " var totalTimeoutMilliseconds = 2073600000; var warningTimeoutMilliseconds = 2073600000; var timeOutURL = 'https://recruiting.calgary.ca/psc/hcm/EMPLOYEE/HRMS/?cmd=expire'; var timeoutWarningPageURL = 'https://recruiting.calgary.ca/psc/hcm/EMPLOYEE/HRMS/s/WEBLIB_TIMEOUT.PT_TIMEOUTWARNING.FieldFormula.IScript_TIMEOUTWARNING'; var sRCRequestURL = 'https://recruiting.calgary.ca/psc/hcm/EMPLOYEE/HRMS/s/WEBLIB_PTRC.ISCRIPT1.FieldFormula.IScript_RC_REQUEST'; Careers try { document.domain = \"calgary.ca\"; } catch(err) {;} var winName='win0'; var winParent = null; var modalID = null; var modalZoomName "
+ },
+ {
+  "job_id": "311620",
+  "first_seen": "2025-03-10",
+  "status": 200,
+  "len": 351133,
+  "title": "Careers",
+  "fields": {},
+  "text": " var totalTimeoutMilliseconds = 2073600000; var warningTimeoutMilliseconds = 2073600000; var timeOutURL = 'https://recruiting.calgary.ca/psc/hcm/EMPLOYEE/HRMS/?cmd=expire'; var timeoutWarningPageURL = 'https://recruiting.calgary.ca/psc/hcm/EMPLOYEE/HRMS/s/WEBLIB_TIMEOUT.PT_TIMEOUTWARNING.FieldFormula.IScript_TIMEOUTWARNING'; var sRCRequestURL = 'https://recruiting.calgary.ca/psc/hcm/EMPLOYEE/HRMS/s/WEBLIB_PTRC.ISCRIPT1.FieldFormula.IScript_RC_REQUEST'; Careers try { document.domain = \"calgary.ca\"; } catch(err) {;} var winName='win0'; var winParent = null; var modalID = null; var modalZoomName "
+ },
+ {
+  "job_id": "311898",
+  "first_seen": "2025-04-20",
+  "status": 200,
+  "len": 351133,
+  "title": "Careers",
+  "fields": {},
+  "text": " var totalTimeoutMilliseconds = 2073600000; var warningTimeoutMilliseconds = 2073600000; var timeOutURL = 'https://recruiting.calgary.ca/psc/hcm/EMPLOYEE/HRMS/?cmd=expire'; var timeoutWarningPageURL = 'https://recruiting.calgary.ca/psc/hcm/EMPLOYEE/HRMS/s/WEBLIB_TIMEOUT.PT_TIMEOUTWARNING.FieldFormula.IScript_TIMEOUTWARNING'; var sRCRequestURL = 'https://recruiting.calgary.ca/psc/hcm/EMPLOYEE/HRMS/s/WEBLIB_PTRC.ISCRIPT1.FieldFormula.IScript_RC_REQUEST'; Careers try { document.domain = \"calgary.ca\"; } catch(err) {;} var winName='win0'; var winParent = null; var modalID = null; var modalZoomName "
+ },
+ {
+  "job_id": "312212",
+  "first_seen": "2025-06-16",
+  "status": 200,
+  "len": 351133,
+  "title": "Careers",
+  "fields": {},
+  "text": " var totalTimeoutMilliseconds = 2073600000; var warningTimeoutMilliseconds = 2073600000; var timeOutURL = 'https://recruiting.calgary.ca/psc/hcm/EMPLOYEE/HRMS/?cmd=expire'; var timeoutWarningPageURL = 'https://recruiting.calgary.ca/psc/hcm/EMPLOYEE/HRMS/s/WEBLIB_TIMEOUT.PT_TIMEOUTWARNING.FieldFormula.IScript_TIMEOUTWARNING'; var sRCRequestURL = 'https://recruiting.calgary.ca/psc/hcm/EMPLOYEE/HRMS/s/WEBLIB_PTRC.ISCRIPT1.FieldFormula.IScript_RC_REQUEST'; Careers try { document.domain = \"calgary.ca\"; } catch(err) {;} var winName='win0'; var winParent = null; var modalID = null; var modalZoomName "
+ },
+ {
+  "job_id": "312453",
+  "first_seen": "2025-09-13",
+  "status": 200,
+  "len": 351133,
+  "title": "Careers",
+  "fields": {},
+  "text": " var totalTimeoutMilliseconds = 2073600000; var warningTimeoutMilliseconds = 2073600000; var timeOutURL = 'https://recruiting.calgary.ca/psc/hcm/EMPLOYEE/HRMS/?cmd=expire'; var timeoutWarningPageURL = 'https://recruiting.calgary.ca/psc/hcm/EMPLOYEE/HRMS/s/WEBLIB_TIMEOUT.PT_TIMEOUTWARNING.FieldFormula.IScript_TIMEOUTWARNING'; var sRCRequestURL = 'https://recruiting.calgary.ca/psc/hcm/EMPLOYEE/HRMS/s/WEBLIB_PTRC.ISCRIPT1.FieldFormula.IScript_RC_REQUEST'; Careers try { document.domain = \"calgary.ca\"; } catch(err) {;} var winName='win0'; var winParent = null; var modalID = null; var modalZoomName "
+ },
+ {
+  "job_id": "312964",
+  "first_seen": "2026-01-29",
+  "status": 200,
+  "len": 351133,
+  "title": "Careers",
+  "fields": {},
+  "text": " var totalTimeoutMilliseconds = 2073600000; var warningTimeoutMilliseconds = 2073600000; var timeOutURL = 'https://recruiting.calgary.ca/psc/hcm/EMPLOYEE/HRMS/?cmd=expire'; var timeoutWarningPageURL = 'https://recruiting.calgary.ca/psc/hcm/EMPLOYEE/HRMS/s/WEBLIB_TIMEOUT.PT_TIMEOUTWARNING.FieldFormula.IScript_TIMEOUTWARNING'; var sRCRequestURL = 'https://recruiting.calgary.ca/psc/hcm/EMPLOYEE/HRMS/s/WEBLIB_PTRC.ISCRIPT1.FieldFormula.IScript_RC_REQUEST'; Careers try { document.domain = \"calgary.ca\"; } catch(err) {;} var winName='win0'; var winParent = null; var modalID = null; var modalZoomName "
+ },
+ {
+  "job_id": "313266",
+  "first_seen": "2026-01-29",
+  "status": 200,
+  "len": 351133,
+  "title": "Careers",
+  "fields": {},
+  "text": " var totalTimeoutMilliseconds = 2073600000; var warningTimeoutMilliseconds = 2073600000; var timeOutURL = 'https://recruiting.calgary.ca/psc/hcm/EMPLOYEE/HRMS/?cmd=expire'; var timeoutWarningPageURL = 'https://recruiting.calgary.ca/psc/hcm/EMPLOYEE/HRMS/s/WEBLIB_TIMEOUT.PT_TIMEOUTWARNING.FieldFormula.IScript_TIMEOUTWARNING'; var sRCRequestURL = 'https://recruiting.calgary.ca/psc/hcm/EMPLOYEE/HRMS/s/WEBLIB_PTRC.ISCRIPT1.FieldFormula.IScript_RC_REQUEST'; Careers try { document.domain = \"calgary.ca\"; } catch(err) {;} var winName='win0'; var winParent = null; var modalID = null; var modalZoomName "
+ },
+ {
+  "job_id": "313895",
+  "first_seen": "2026-03-05",
+  "status": 200,
+  "len": 351133,
+  "title": "Careers",
+  "fields": {},
+  "text": " var totalTimeoutMilliseconds = 2073600000; var warningTimeoutMilliseconds = 2073600000; var timeOutURL = 'https://recruiting.calgary.ca/psc/hcm/EMPLOYEE/HRMS/?cmd=expire'; var timeoutWarningPageURL = 'https://recruiting.calgary.ca/psc/hcm/EMPLOYEE/HRMS/s/WEBLIB_TIMEOUT.PT_TIMEOUTWARNING.FieldFormula.IScript_TIMEOUTWARNING'; var sRCRequestURL = 'https://recruiting.calgary.ca/psc/hcm/EMPLOYEE/HRMS/s/WEBLIB_PTRC.ISCRIPT1.FieldFormula.IScript_RC_REQUEST'; Careers try { document.domain = \"calgary.ca\"; } catch(err) {;} var winName='win0'; var winParent = null; var modalID = null; var modalZoomName "
+ },
+ {
+  "job_id": "314471",
+  "first_seen": "2026-05-17",
+  "status": 200,
+  "len": 351133,
+  "title": "Careers",
+  "fields": {},
+  "text": " var totalTimeoutMilliseconds = 2073600000; var warningTimeoutMilliseconds = 2073600000; var timeOutURL = 'https://recruiting.calgary.ca/psc/hcm/EMPLOYEE/HRMS/?cmd=expire'; var timeoutWarningPageURL = 'https://recruiting.calgary.ca/psc/hcm/EMPLOYEE/HRMS/s/WEBLIB_TIMEOUT.PT_TIMEOUTWARNING.FieldFormula.IScript_TIMEOUTWARNING'; var sRCRequestURL = 'https://recruiting.calgary.ca/psc/hcm/EMPLOYEE/HRMS/s/WEBLIB_PTRC.ISCRIPT1.FieldFormula.IScript_RC_REQUEST'; Careers try { document.domain = \"calgary.ca\"; } catch(err) {;} var winName='win0'; var winParent = null; var modalID = null; var modalZoomName "
+ },
+ {
+  "job_id": "314781",
+  "first_seen": "2026-07-22",
+  "status": 200,
+  "len": 351133,
+  "title": "Careers",
+  "fields": {},
+  "text": " var totalTimeoutMilliseconds = 2073600000; var warningTimeoutMilliseconds = 2073600000; var timeOutURL = 'https://recruiting.calgary.ca/psc/hcm/EMPLOYEE/HRMS/?cmd=expire'; var timeoutWarningPageURL = 'https://recruiting.calgary.ca/psc/hcm/EMPLOYEE/HRMS/s/WEBLIB_TIMEOUT.PT_TIMEOUTWARNING.FieldFormula.IScript_TIMEOUTWARNING'; var sRCRequestURL = 'https://recruiting.calgary.ca/psc/hcm/EMPLOYEE/HRMS/s/WEBLIB_PTRC.ISCRIPT1.FieldFormula.IScript_RC_REQUEST'; Careers try { document.domain = \"calgary.ca\"; } catch(err) {;} var winName='win0'; var winParent = null; var modalID = null; var modalZoomName "
+ },
+ {
+  "job_id": "315155",
+  "first_seen": "2026-09-03",
+  "status": 200,
+  "len": 351133,
+  "title": "Careers",
+  "fields": {},
+  "text": " var totalTimeoutMilliseconds = 2073600000; var warningTimeoutMilliseconds = 2073600000; var timeOutURL = 'https://recruiting.calgary.ca/psc/hcm/EMPLOYEE/HRMS/?cmd=expire'; var timeoutWarningPageURL = 'https://recruiting.calgary.ca/psc/hcm/EMPLOYEE/HRMS/s/WEBLIB_TIMEOUT.PT_TIMEOUTWARNING.FieldFormula.IScript_TIMEOUTWARNING'; var sRCRequestURL = 'https://recruiting.calgary.ca/psc/hcm/EMPLOYEE/HRMS/s/WEBLIB_PTRC.ISCRIPT1.FieldFormula.IScript_RC_REQUEST'; Careers try { document.domain = \"calgary.ca\"; } catch(err) {;} var winName='win0'; var winParent = null; var modalID = null; var modalZoomName "
+ }
+]

@@ -1,0 +1,75 @@
+{
+ "careers.calgary.ca": {
+  "n": 0,
+  "sample": []
+ },
+ "jobs.calgary.ca": {
+  "n": 250,
+  "sample": [
+   [
+    "20100711074030",
+    "http://jobs.calgary.ca:80/"
+   ],
+   [
+    "20100822202712",
+    "http://jobs.calgary.ca:80/AjaxSearchResults.aspx"
+   ],
+   [
+    "20110110033822",
+    "http://jobs.calgary.ca:80/ca/alberta-jobs"
+   ],
+   [
+    "20110210222010",
+    "http://jobs.calgary.ca:80/ca/alberta/administrative-and-business-services-jobs"
+   ],
+   [
+    "20110313055915",
+    "http://jobs.calgary.ca:80/ca/alberta/administrative-and-business-services/dig.-mktg.-measurement-analyst-jobs"
+   ],
+   [
+    "20120204083614",
+    "http://jobs.calgary.ca:80/ca/alberta/administrative-and-business-services/digital-content-specialist-jobs"
+   ],
+   [
+    "20120130001008",
+    "http://jobs.calgary.ca:80/ca/alberta/administrative-and-business-services/digital-developer_analyst-jobs"
+   ],
+   [
+    "20110210222015",
+    "http://jobs.calgary.ca:80/ca/alberta/administrative-and-business-services/jobid1190465-business-strategies-advisor-jobs"
+   ],
+   [
+    "20110210222020",
+    "http://jobs.calgary.ca:80/ca/alberta/administrative-and-business-services/jobid1190466-secretary-on-call-jobs"
+   ],
+   [
+    "20110210222026",
+    "http://jobs.calgary.ca:80/ca/alberta/administrative-and-business-services/jobid1190469-web-editor-jobs"
+   ],
+   [
+    "20110210221232",
+    "http://jobs.calgary.ca:80/ca/alberta/administrative-and-business-services/jobid1192914-project-specialist-jobs"
+   ],
+   [
+    "20110210222031",
+    "http://jobs.calgary.ca:80/ca/alberta/administrative-and-business-services/jobid1192915-imagingdisclosure-technician-jobs"
+   ],
+   [
+    "20110210222035",
+    "http://jobs.calgary.ca:80/ca/alberta/administrative-and-business-services/jobid1192916-imaging-operator-jobs"
+   ],
+   [
+    "20110210222040",
+    "http://jobs.calgary.ca:80/ca/alberta/administrative-and-business-services/jobid1199151-litigation-coordinator-jobs"
+   ],
+   [
+    "20110210221859",
+    "http://jobs.calgary.ca:80/ca/alberta/administrative-and-business-services/jobid1199155-maintenance-control-coord-jobs"
+   ]
+  ]
+ },
+ "calgary.ca/careers/*": {
+  "n": 0,
+  "sample": []
+ }
+}

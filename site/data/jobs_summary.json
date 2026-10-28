@@ -4,9 +4,9 @@
  "total": {
   "postings": 3145,
   "positions": 3213,
-  "permanent": 122,
+  "permanent": 123,
   "temporary": 67,
-  "unknown_type": 3024,
+  "unknown_type": 3023,
   "est_annual_cost": 126068840,
   "with_pay": 1192
  },
@@ -221,9 +221,9 @@
   "2026-04": {
    "postings": 101,
    "positions": 123,
-   "permanent": 27,
+   "permanent": 28,
    "temporary": 16,
-   "unknown_type": 80,
+   "unknown_type": 79,
    "est_annual_cost": 8071159,
    "with_pay": 55
   },
@@ -340,9 +340,9 @@
   "Engineering and Geoscience": {
    "postings": 146,
    "positions": 152,
-   "permanent": 22,
+   "permanent": 23,
    "temporary": 8,
-   "unknown_type": 122,
+   "unknown_type": 121,
    "est_annual_cost": 6283387,
    "with_pay": 40
   },
@@ -583,13 +583,13 @@
  },
  "by_department": {
   "Not stated": {
-   "postings": 3024,
-   "positions": 3024,
+   "postings": 3023,
+   "positions": 3023,
    "permanent": 0,
    "temporary": 0,
-   "unknown_type": 3024,
-   "est_annual_cost": 107167572,
-   "with_pay": 1075
+   "unknown_type": 3023,
+   "est_annual_cost": 107037675,
+   "with_pay": 1074
   },
   "Water Services": {
    "postings": 16,
@@ -913,6 +913,15 @@
    "temporary": 1,
    "unknown_type": 0,
    "est_annual_cost": 98271,
+   "with_pay": 1
+  },
+  "Climate and Environment": {
+   "postings": 1,
+   "positions": 1,
+   "permanent": 1,
+   "temporary": 0,
+   "unknown_type": 0,
+   "est_annual_cost": 129897,
    "with_pay": 1
   }
  }

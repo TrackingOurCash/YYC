@@ -4,8 +4,8 @@
  "total": {
   "postings": 3145,
   "positions": 3213,
-  "permanent": 123,
-  "temporary": 67,
+  "permanent": 114,
+  "temporary": 76,
   "unknown_type": 3023,
   "est_annual_cost": 126068840,
   "with_pay": 1192
@@ -221,8 +221,8 @@
   "2026-04": {
    "postings": 101,
    "positions": 123,
-   "permanent": 28,
-   "temporary": 16,
+   "permanent": 25,
+   "temporary": 19,
    "unknown_type": 79,
    "est_annual_cost": 8071159,
    "with_pay": 55
@@ -230,8 +230,8 @@
   "2026-05": {
    "postings": 98,
    "positions": 110,
-   "permanent": 33,
-   "temporary": 14,
+   "permanent": 31,
+   "temporary": 16,
    "unknown_type": 63,
    "est_annual_cost": 8177102,
    "with_pay": 60
@@ -275,8 +275,8 @@
   "2026-10": {
    "postings": 112,
    "positions": 146,
-   "permanent": 62,
-   "temporary": 36,
+   "permanent": 58,
+   "temporary": 40,
    "unknown_type": 48,
    "est_annual_cost": 11253405,
    "with_pay": 78
@@ -304,8 +304,8 @@
   "Business/Customer Support": {
    "postings": 356,
    "positions": 372,
-   "permanent": 22,
-   "temporary": 26,
+   "permanent": 20,
+   "temporary": 28,
    "unknown_type": 324,
    "est_annual_cost": 18307973,
    "with_pay": 173
@@ -331,8 +331,8 @@
   "Leisure Services": {
    "postings": 150,
    "positions": 150,
-   "permanent": 7,
-   "temporary": 0,
+   "permanent": 0,
+   "temporary": 7,
    "unknown_type": 143,
    "est_annual_cost": 3092270,
    "with_pay": 43
@@ -630,8 +630,8 @@
   "Recreation and Social Programs": {
    "postings": 7,
    "positions": 7,
-   "permanent": 7,
-   "temporary": 0,
+   "permanent": 1,
+   "temporary": 6,
    "unknown_type": 0,
    "est_annual_cost": 435593,
    "with_pay": 7
@@ -711,8 +711,8 @@
   "Calgary Transit": {
    "postings": 3,
    "positions": 3,
-   "permanent": 2,
-   "temporary": 1,
+   "permanent": 0,
+   "temporary": 3,
    "unknown_type": 0,
    "est_annual_cost": 159878,
    "with_pay": 3
@@ -738,8 +738,8 @@
   "Parks & Open Spaces": {
    "postings": 2,
    "positions": 2,
-   "permanent": 2,
-   "temporary": 0,
+   "permanent": 1,
+   "temporary": 1,
    "unknown_type": 0,
    "est_annual_cost": 134544,
    "with_pay": 2

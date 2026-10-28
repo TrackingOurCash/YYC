@@ -119,13 +119,38 @@ def parse_listing(html: str, base_url: str = CAREERS_URL) -> list[dict]:
     return list(postings.values())
 
 
+# The labels of the "Position and Pay Information" block.
+LABELS = ("business unit", "union", "position type", "compensation", "hours of work", "location", "audience")
+
+
 def _labelled(lines: list[str]) -> dict[str, str]:
-    """Pair "Label:" lines with the value line that follows them."""
+    """Pair "Label:" lines with the value line that follows them, or read
+    "Label: value" when both are on one line (as in archived copies)."""
     out = {}
-    for i, line in enumerate(lines[:-1]):
-        if line.endswith(":") and len(line) < 40:
-            out.setdefault(line[:-1].strip().lower(), lines[i + 1].strip())
+    for i, line in enumerate(lines):
+        label, sep, value = line.partition(":")
+        if not sep or len(label) >= 40:
+            continue
+        if value.strip():
+            out.setdefault(label.strip().lower(), value.strip())
+        elif i + 1 < len(lines):
+            out.setdefault(label.strip().lower(), lines[i + 1].strip())
     return out
+
+
+def position_counts(position_type: str) -> tuple[int, int]:
+    """(permanent, temporary) positions from a "Position Type" value such as
+    "1 Permanent & 3 Temporary (up to 18 months)". On-call postings hire a
+    pool of casual staff ("Up to 10 On-Call"), so they count as one
+    temporary position, as does any other value naming no count."""
+    counts = {"permanent": 0, "temporary": 0}
+    for n, kind in POSITIONS_RE.findall(position_type):
+        key = "permanent" if kind.lower() in ("permanent", "regular") else "temporary"
+        counts[key] += int(n)
+    if not any(counts.values()):
+        casual = re.search(r"temp|on.?call|casual|seasonal|student|\bterm\b", position_type, re.I)
+        counts["temporary" if casual else "permanent"] = 1
+    return counts["permanent"], counts["temporary"]
 
 
 def parse_detail(html: str) -> dict:
@@ -152,9 +177,14 @@ def parse_detail(html: str) -> dict:
     }
 
     marker = "Position and Pay Information"
-    if marker not in text:
+    if marker in text:
+        info = _labelled(text.split(marker, 1)[1].split("\n"))
+    else:
+        # Archived copies have no heading over the block; read its labels
+        # from anywhere on the page.
+        info = {k: v for k, v in _labelled(lines).items() if k in LABELS}
+    if not info.get("business unit") and not info.get("position type"):
         return {"full_part_time": head.get("full/part time", "")} if head else {}
-    info = _labelled(text.split(marker, 1)[1].split("\n"))
 
     out = {
         "department": info.get("business unit", ""),
@@ -165,15 +195,9 @@ def parse_detail(html: str) -> dict:
         "audience": info.get("audience", ""),
     }
 
-    counts = {"permanent": 0, "temporary": 0}
-    for n, kind in POSITIONS_RE.findall(out["position_type"]):
-        key = "permanent" if kind.lower() in ("permanent", "regular") else "temporary"
-        counts[key] += int(n)
-    if not any(counts.values()):
-        key = "temporary" if "temp" in out["position_type"].lower() else "permanent"
-        counts[key] = 1
-    out["permanent_positions"] = str(counts["permanent"])
-    out["temporary_positions"] = str(counts["temporary"])
+    perm, temp = position_counts(out["position_type"])
+    out["permanent_positions"] = str(perm)
+    out["temporary_positions"] = str(temp)
 
     comp = info.get("compensation", "")
     m = PAY_RE.search(comp)

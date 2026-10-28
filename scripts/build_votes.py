@@ -56,7 +56,7 @@ def main() -> None:
         out.append([
             m["date"],
             type_idx[m["meeting_type"]],
-            1 if "CARRIED" in m["result"].upper() else 0,
+            1 if re.search(r"\bCARRIED\b", m["result"].upper()) and not re.search(r"\bNOT\b|\bDEFEATED\b|\bLOST\b", m["result"].upper()) else 0,
             1 if m["mentions_money"] else 0,
             int(m["largest_amount"]) if m["largest_amount"] else None,
             m["resolution"],

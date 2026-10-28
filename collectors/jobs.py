@@ -252,6 +252,11 @@ def run(details: bool = True, today: str | None = None) -> dict:
                 continue
             try:
                 fields = fetch_detail(s, row["url"])
+                if not fields:
+                    # Likely a sign-in or maintenance page; try again tomorrow
+                    # while the posting is still open.
+                    print(f"detail {job_id}: nothing readable on the page", file=sys.stderr)
+                    continue
                 for key in DETAIL_FIELDS:
                     row[key] = fields.get(key, "")
                 row["details_fetched"] = today

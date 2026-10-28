@@ -125,9 +125,14 @@
     $("s-main-label").textContent = `${state.year} ${FUND[state.fund]} ${fig}, ${scope}`;
     $("s-main").textContent = cur ? money(cur) : "No data";
     $("s-main-note").textContent = cur ? moneyFull(cur) : `No ${fig} published for ${state.year}`;
-    $("s-other-label").textContent = `${state.year} ${other} ${fig}`;
-    const o = total({ fund: other });
-    $("s-other").textContent = o ? money(o) : "–";
+    // Capital for 2023 and 2024 is published as actual spending only, so fall back to it.
+    let oStatus = state.status, o = total({ fund: other });
+    if (!o) {
+      oStatus = state.status === "Approved" ? "Actual" : "Approved";
+      o = total({ fund: other, status: oStatus });
+    }
+    $("s-other-label").textContent = `${state.year} ${other} ${oStatus === "Approved" ? "budget" : "actual spending"}`;
+    $("s-other").textContent = o ? money(o) : "None published";
     $("s-change").textContent = cur && prev ? change(cur, prev) : "–";
     const rows = all.filter((r) => match(r));
     const top = [...sumBy(rows, groupKey).entries()].sort((a, b) => b[1] - a[1])[0];

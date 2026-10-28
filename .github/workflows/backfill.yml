@@ -35,5 +35,6 @@ jobs:
             echo "No changes"
           else
             git commit -m "Backfill job postings from the Internet Archive"
-            git push
+            for i in 1 2 3; do git pull --rebase origin main && git push && exit 0; sleep 10; done
+            exit 1
           fi

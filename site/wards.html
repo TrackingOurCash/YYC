@@ -154,7 +154,8 @@
       const p = svgEl("path", { d: w.path, class: "ward" + (w.ward === state.ward ? " sel" : ""), fill: v == null ? "var(--grid)" : RAMP[cls(v)] });
       p.setAttribute("aria-label", `Ward ${w.ward}: ${v == null ? "no report" : meas.format(v)}`);
       const r = report(w.ward);
-      hover(p, `Ward ${w.ward}`, () => [[meas.label, v == null ? "No report" : meas.format(v)], ["Councillor", r?.councillor || w.councillor || "–"]]);
+      hover(p, `Ward ${w.ward}`, () => [[meas.label, v == null ? "No report" : meas.format(v)],
+        r ? ["Councillor", r.councillor || "Not named in the report"] : ["Councillor now", w.councillor || "–"]]);
       p.addEventListener("click", () => select(w.ward));
       p.addEventListener("keydown", (e) => e.key === "Enter" && select(w.ward));
       shapes.push([w.ward === state.ward, p]);
@@ -197,7 +198,8 @@
     hbars($("d-cats"), cats, { empty: r ? "No itemized expenses in this report." : "No report." });
     const links = [];
     if (r) links.push(el("a", { href: r.url, rel: "noopener" }, "City's report (PDF)"));
-    const names = (r?.councillor || w?.councillor || "").split(" & ").filter(Boolean);
+    // The report's councillor; today's only when there's no report for the year.
+    const names = ((r ? r.councillor : w?.councillor) || "").split(" & ").filter(Boolean);
     for (const n of names) links.push(el("a", { href: `votes.html?member=${encodeURIComponent(n)}` }, `How ${n} votes`));
     $("d-links").replaceChildren(...links);
   }

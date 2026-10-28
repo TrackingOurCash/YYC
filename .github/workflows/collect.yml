@@ -22,31 +22,52 @@ jobs:
           python-version: "3.12"
           cache: pip
       - run: pip install -r requirements.txt
+      # Each step runs even if an earlier one failed, so one source being down
+      # doesn't lose the day's data from the others; the run still shows as failed.
       - name: Job postings
+        if: ${{ !cancelled() }}
         run: python collectors/jobs.py
       - name: Budget (Open Calgary)
+        if: ${{ !cancelled() }}
         run: python collectors/budget.py
       - name: Council votes (Open Calgary)
+        if: ${{ !cancelled() }}
         run: python collectors/votes.py
       - name: Salary list (Open Calgary)
+        if: ${{ !cancelled() }}
         run: python collectors/compensation.py
       - name: Civic Partners and FCSS grants
+        if: ${{ !cancelled() }}
         run: python collectors/grants.py
       - name: Ward boundaries (Open Calgary)
+        if: ${{ !cancelled() }}
         run: python collectors/ward_boundaries.py
       - name: Ward office budgets and expenses
+        if: ${{ !cancelled() }}
         run: python collectors/ward_expenses.py
       - name: City staff and payroll (annual reports and budget)
+        if: ${{ !cancelled() }}
         run: python collectors/workforce.py
-      - name: Build dashboard data
-        run: |
-          python scripts/build_jobs_summary.py
-          python scripts/build_budget.py
-          python scripts/build_votes.py
-          python scripts/build_grants.py
-          python scripts/build_wards.py
-          python scripts/build_workforce.py
+      - name: Build jobs data
+        if: ${{ !cancelled() }}
+        run: python scripts/build_jobs_summary.py
+      - name: Build budget data
+        if: ${{ !cancelled() }}
+        run: python scripts/build_budget.py
+      - name: Build votes data
+        if: ${{ !cancelled() }}
+        run: python scripts/build_votes.py
+      - name: Build grants data
+        if: ${{ !cancelled() }}
+        run: python scripts/build_grants.py
+      - name: Build wards data
+        if: ${{ !cancelled() }}
+        run: python scripts/build_wards.py
+      - name: Build staff data
+        if: ${{ !cancelled() }}
+        run: python scripts/build_workforce.py
       - name: Commit changes
+        if: ${{ !cancelled() }}
         run: |
           git config user.name "yyc-collector"
           git config user.email "actions@users.noreply.github.com"
@@ -55,5 +76,7 @@ jobs:
             echo "No changes"
           else
             git commit -m "Data update $(date -u +%F)"
-            git push
+            # Someone may have pushed during the run; put the data on top.
+            for i in 1 2 3; do git pull --rebase origin main && git push && exit 0; sleep 10; done
+            exit 1
           fi

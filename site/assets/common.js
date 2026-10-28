@@ -14,6 +14,10 @@ window.YYC = (() => {
   const monthName = (m) => new Date(m + "-15").toLocaleDateString("en-CA", { month: "short", year: "numeric" });
   const dayName = (d) => (d ? new Date(d.slice(0, 10) + "T12:00").toLocaleDateString("en-CA", { month: "short", day: "numeric", year: "numeric" }) : "–");
 
+  // Each year has its own colour across the site; years without one are grey.
+  const YEAR_COLORS = new Set([2024, 2025, 2026]);
+  const yearColor = (y) => (YEAR_COLORS.has(+y) ? `var(--y${+y})` : "var(--y-other)");
+
   // Labels come from City data, so text always goes in via textContent.
   function el(tag, props = {}, text) {
     const n = document.createElement(tag);
@@ -299,5 +303,5 @@ window.YYC = (() => {
     window.addEventListener("resize", () => { clearTimeout(t); t = setTimeout(fn, 150); });
   }
 
-  return { $, money, moneyFull, num, pct, monthName, dayName, el, svgEl, hover, hbars, dbars, columns, line, table, fillSelect, onResize };
+  return { $, money, moneyFull, num, pct, monthName, dayName, yearColor, el, svgEl, hover, hbars, dbars, columns, line, table, fillSelect, onResize };
 })();

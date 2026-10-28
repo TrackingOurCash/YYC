@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="assets/site.css">
 <style>
   /* Blue means "temporary" in this page's position charts, so pay bars use another hue. */
-  #c-dept .fill { background: var(--s3); }
+  #c-dept .fill { background: var(--bar, var(--y-other)); }
 </style>
 <script src="assets/theme.js"></script>
 </head>
@@ -129,7 +129,7 @@
 <script src="assets/common.js"></script>
 <script>
 (() => {
-  const { $, money, moneyFull, num, monthName, dayName, el, hbars, columns, table, fillSelect, onResize } = YYC;
+  const { $, money, moneyFull, num, monthName, dayName, yearColor, el, hbars, columns, table, fillSelect, onResize } = YYC;
   let all = [];
   const state = { year: "", month: "", dept: "", cat: "", type: "", unknown: true, group: "category", compare: "ytd", sort: "first_seen", dir: -1, shown: 100 };
 
@@ -191,6 +191,7 @@
     for (const d of list) {
       d.tip = () => [["Yearly pay", moneyFull(d.value)], ["Postings", num(d.postings)], ["Postings without pay", num(d.noPay)], ["Permanent positions", num(d.perm)], ["Temporary positions", num(d.temp)], ["Type not known", num(d.unknown)]];
     }
+    $("c-dept").style.setProperty("--bar", yearColor(state.year));
     hbars($("c-dept"), list, { empty: "No postings match these filters." });
     // Selecting a row filters the page, postings list included, to it.
     [...$("c-dept").children].forEach((row, i) => {
@@ -236,7 +237,7 @@
         ? `January 1 to ${through} of each year, so a partly finished year compares fairly. Earlier years come only from archived copies, which miss some postings and usually lack position counts and pay, so they read low.`
         : `Whole years; ${years[years.length - 1]} runs to ${through} so far. Earlier years come only from archived copies, which miss some postings and usually lack position counts and pay, so they read low.`;
     columns($("c-yoy-pos"), years, typeSeries(years, inYear), { stacked: true, height: 220 });
-    columns($("c-yoy-cost"), years, [{ label: "Yearly pay", color: "var(--s3)", values: years.map((y) => inYear(y).reduce((s, p) => s + costOf(p), 0)) }], { stacked: true, format: money, height: 220 });
+    columns($("c-yoy-cost"), years, [{ label: "Yearly pay", colorOf: (v, i) => yearColor(years[i]), values: years.map((y) => inYear(y).reduce((s, p) => s + costOf(p), 0)) }], { stacked: true, format: money, height: 220 });
   }
 
   function payText(p) {

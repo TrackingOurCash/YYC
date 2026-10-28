@@ -15,6 +15,11 @@
   --perm: #e34948;
   --temp: #2a78d6;
   --unk: #898781;
+  /* One colour per year wherever bars stand for a year; earlier years are grey. */
+  --y2024: #0b98b8;
+  --y2025: #a3207e;
+  --y2026: #cf9e00;
+  --y-other: #b5b3aa;
   --hover: rgba(11, 11, 11, 0.04);
   --link: #1c5cab;
 }
@@ -35,6 +40,10 @@
     --perm: #e66767;
     --temp: #3987e5;
     --unk: #6b6a65;
+    --y2024: #12a0bd;
+    --y2025: #b02f8a;
+    --y2026: #d9a812;
+    --y-other: #5a5954;
     --hover: rgba(255, 255, 255, 0.05);
     --link: #86b6ef;
   }
@@ -55,6 +64,10 @@
   --perm: #e66767;
   --temp: #3987e5;
   --unk: #6b6a65;
+  --y2024: #12a0bd;
+  --y2025: #b02f8a;
+  --y2026: #d9a812;
+  --y-other: #5a5954;
   --hover: rgba(255, 255, 255, 0.05);
   --link: #86b6ef;
 }

@@ -1,5 +1,8 @@
 """Turn data/votes/*.csv into site/data/votes.json for the council votes page.
 
+Votes come from the City's dataset, plus any later meetings read from the
+published minutes; those carry a link to the minutes they came from.
+
 The JSON is compact: names and meeting types are stored once and motions
 refer to them by index.
 
@@ -128,11 +131,25 @@ def person_aliases(names: set[str]) -> dict[str, str]:
     return aliases
 
 
+def read(name: str) -> list[dict]:
+    path = SRC / name
+    if not path.exists():
+        return []
+    with path.open(newline="") as f:
+        return list(csv.DictReader(f))
+
+
 def main() -> None:
-    with (SRC / "motions.csv").open(newline="") as f:
-        motions = list(csv.DictReader(f))
-    with (SRC / "ballots.csv").open(newline="") as f:
-        ballots = list(csv.DictReader(f))
+    motions = read("motions.csv")
+    ballots = read("ballots.csv")
+    # Meetings newer than the City's dataset come from the published minutes
+    # (collectors/votes_minutes.py). Once the dataset has a meeting date, its
+    # own rows win and the minutes copy is dropped.
+    city_latest = max(m["date"] for m in motions)
+    recent = [m for m in read("minutes_motions.csv") if m["date"] > city_latest]
+    recent_ids = {m["id"] for m in recent}
+    motions += recent
+    ballots += [b for b in read("minutes_ballots.csv") if b["motion_id"] in recent_ids]
 
     aliases = person_aliases({b["voter"] for b in ballots})
     voters = sorted({aliases.get(b["voter"], b["voter"]) for b in ballots})
@@ -158,6 +175,7 @@ def main() -> None:
             sorted(v["No"]),
             sorted(v["Absent"]),
             adds_spending(m["resolution"]),
+            m.get("minutes_url") or None,
         ])
 
     meta = SRC / "dataset.json"
@@ -166,12 +184,13 @@ def main() -> None:
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps({
         "city_updated": city_updated,
-        "fields": ["date", "meeting_type", "carried", "mentions_money", "largest_amount", "resolution", "yes", "no", "absent", "adds_spending"],
+        "city_latest": city_latest,
+        "fields": ["date", "meeting_type", "carried", "mentions_money", "largest_amount", "resolution", "yes", "no", "absent", "adds_spending", "minutes_url"],
         "voters": voters,
         "meeting_types": types,
         "motions": out,
     }, separators=(",", ":"), ensure_ascii=False) + "\n")
-    print(f"wrote {OUT.relative_to(ROOT)}: {len(out)} motions ({sum(1 for m in out if m[-1])} adding spending), {len(voters)} members")
+    print(f"wrote {OUT.relative_to(ROOT)}: {len(out)} motions ({len(recent)} from minutes, {sum(1 for m in out if m[9])} adding spending), {len(voters)} members")
 
 
 if __name__ == "__main__":

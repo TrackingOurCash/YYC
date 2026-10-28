@@ -233,6 +233,9 @@ tbody tr.mark { --mark: var(--s1); background: color-mix(in srgb, var(--mark) 8%
 tbody tr.mark.spend { --mark: var(--spend); }
 tbody tr.mark:hover { background: color-mix(in srgb, var(--mark) 13%, transparent); }
 tbody tr.mark td:first-child { box-shadow: inset 3px 0 0 var(--mark); }
-.spend-tag { display: flex; width: fit-content; align-items: center; gap: 5px; font-size: 11px; font-weight: 600; color: var(--ink); white-space: nowrap; margin-bottom: 4px; }
+.tags { display: flex; flex-wrap: wrap; gap: 4px 12px; margin-bottom: 4px; }
+.spend-tag, .minutes-tag { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600; color: var(--ink); white-space: nowrap; }
+.minutes-tag { color: var(--muted); text-decoration: underline dotted; text-underline-offset: 2px; }
+.minutes-tag::before { content: ""; width: 8px; height: 8px; border-radius: 2px; border: 1.5px solid var(--muted); box-sizing: border-box; }
 .spend-tag::before { content: ""; width: 8px; height: 8px; border-radius: 2px; background: var(--spend); }
 .vote-away { color: var(--muted); }

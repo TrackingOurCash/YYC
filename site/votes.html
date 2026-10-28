@@ -122,7 +122,7 @@
       <li>The City's data has no motion number. Votes are grouped by meeting, date, wording and result, so two identically worded motions with the same result in one meeting may be counted as one.</li>
       <li>Council terms start at the general elections of October 18, 2021 and October 20, 2025. Votes before October 7, 2020 aren't in the data; see the <a href="https://www.calgary.ca/agendaminutes">City's minutes</a> for those.</li>
     </ul>
-    <p>Data: <a href="https://data.calgary.ca/d/ruq3-99hx">Council and Committee Votes</a> on Open Calgary. We check it daily, but the City only adds new votes about once a month<span id="city-updated"></span>. Code: <a href="https://github.com/TrackingOurCash/YYC">github.com/TrackingOurCash/YYC</a>. Latest vote in the data: <span id="latest">–</span>.</p>
+    <p>Data: <a href="https://data.calgary.ca/d/ruq3-99hx">Council and Committee Votes</a> on Open Calgary. We check it daily, but the City only adds new votes about once a month<span id="city-updated"></span>, so newer meetings come from the minutes on the City's <a href="https://pub-calgary.escribemeetings.com/">meetings portal</a> until it does. Code: <a href="https://github.com/TrackingOurCash/YYC">github.com/TrackingOurCash/YYC</a>. Latest vote in the data: <span id="latest">–</span>.</p>
     <p class="sources-link"><a href="sources.html">Sources: where every dataset on this site comes from →</a></p>
   </footer>
 </main>
@@ -297,11 +297,20 @@
     return d;
   }
   function motionCell(m) {
-    if (!m.spend) return motionText(m);
-    const tag = el("div", { className: "spend-tag" }, "Adds spending");
-    hover(tag, "Counted as adding spending because it says", () => [[`“${m.spend}”`, ""]]);
+    if (!m.spend && !m.minutes) return motionText(m);
+    const tags = el("div", { className: "tags" });
+    if (m.spend) {
+      const tag = el("span", { className: "spend-tag" }, "Adds spending");
+      hover(tag, "Counted as adding spending because it says", () => [[`“${m.spend}”`, ""]]);
+      tags.append(tag);
+    }
+    if (m.minutes) {
+      const tag = el("a", { className: "minutes-tag", href: m.minutes, target: "_blank", rel: "noopener" }, "From minutes");
+      hover(tag, "Not in the City's votes data yet", () => [["Read from this meeting's published minutes. It's swapped for the City's own record once the City adds the meeting.", ""]]);
+      tags.append(tag);
+    }
     const box = el("div");
-    box.append(tag, motionText(m));
+    box.append(tags, motionText(m));
     return box;
   }
   function resultCell(m) {
@@ -366,15 +375,19 @@
     .then((data) => {
       voters = data.voters;
       types = data.meeting_types;
-      motions = data.motions.map(([date, t, carried, money, amount, text, yes, no, absent, spend]) => ({
-        date, type: types[t], council: / of Council$/.test(types[t]), carried: !!carried, money: !!money, amount, text, yes, no, absent, spend,
+      motions = data.motions.map(([date, t, carried, money, amount, text, yes, no, absent, spend, minutes]) => ({
+        date, type: types[t], council: / of Council$/.test(types[t]), carried: !!carried, money: !!money, amount, text, yes, no, absent, spend, minutes,
       }));
       const latest = motions.reduce((m, x) => (x.date > m ? x.date : m), "");
       $("latest").textContent = dayName(latest);
-      // The City publishes votes about monthly, so say how current the data is.
+      // The City publishes votes about monthly, so say how current its data is
+      // and which later meetings were filled in from their minutes.
+      const cityLatest = data.city_latest || latest;
+      const updated = data.city_updated ? `, as of its update on ${dayName(data.city_updated)}` : "";
       if (data.city_updated) $("city-updated").textContent = ` (last on ${dayName(data.city_updated)})`;
-      $("lag").textContent = `The City adds new votes about once a month, so the latest meeting here is ${dayName(latest)}` +
-        (data.city_updated ? `, from its update on ${dayName(data.city_updated)}.` : ".");
+      $("lag").textContent = latest > cityLatest
+        ? `The City adds new votes about once a month, and its data runs to ${dayName(cityLatest)}${updated}. Meetings since then, up to ${dayName(latest)}, are read from their published minutes and marked “From minutes” until the City catches up. Minutes don't say who was absent.`
+        : `The City adds new votes about once a month, so the latest meeting here is ${dayName(latest)}${updated}.`;
       const bind = (id, key, evt = "change") => $(id).addEventListener(evt, (e) => { state[key] = e.target.value; state.shown = 100; render(); });
       bind("f-term", "term"); bind("f-meeting", "meeting"); bind("f-money", "money"); bind("f-q", "q", "input"); bind("f-their", "their");
       $("clear").addEventListener("click", () => { state.picked = []; state.their = ""; $("f-their").value = ""; state.shown = 100; render(); });

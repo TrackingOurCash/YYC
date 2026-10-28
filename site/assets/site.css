@@ -221,15 +221,18 @@ nav.tabs .theme button:focus-visible { outline: 2px solid var(--s1); outline-off
 .vote-no { font-weight: 600; }
 /* Segmented switch inside a card, e.g. No / Yes / Added spending */
 .card-head { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 8px 16px; }
+.card-head + .sub { margin-top: 4px; }
 .seg { display: inline-flex; flex-wrap: wrap; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
 .seg button { font: inherit; font-size: 13px; color: var(--ink-2); background: var(--surface); border: 0; padding: 4px 10px; cursor: pointer; }
 .seg button + button { border-left: 1px solid var(--border); }
 .seg button[aria-pressed="true"] { color: var(--ink); background: var(--hover); font-weight: 600; }
 .seg button:focus-visible { outline: 2px solid var(--s1); outline-offset: -2px; }
 .hbars.spend .fill { background: var(--spend); }
-tbody tr.spend { background: color-mix(in srgb, var(--spend) 8%, transparent); }
-tbody tr.spend:hover { background: color-mix(in srgb, var(--spend) 13%, transparent); }
-tbody tr.spend td:first-child { box-shadow: inset 3px 0 0 var(--spend); }
+/* Highlighted motions take the colour of the chart view that marks them. */
+tbody tr.mark { --mark: var(--s1); background: color-mix(in srgb, var(--mark) 8%, transparent); }
+tbody tr.mark.spend { --mark: var(--spend); }
+tbody tr.mark:hover { background: color-mix(in srgb, var(--mark) 13%, transparent); }
+tbody tr.mark td:first-child { box-shadow: inset 3px 0 0 var(--mark); }
 .spend-tag { display: flex; width: fit-content; align-items: center; gap: 5px; font-size: 11px; font-weight: 600; color: var(--ink); white-space: nowrap; margin-bottom: 4px; }
 .spend-tag::before { content: ""; width: 8px; height: 8px; border-radius: 2px; background: var(--spend); }
 .vote-away { color: var(--muted); }

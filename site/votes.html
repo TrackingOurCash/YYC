@@ -99,7 +99,10 @@
   </section>
 
   <section class="card" style="margin-top:16px">
-    <h2>Motions</h2>
+    <div class="card-head">
+      <h2>Motions</h2>
+      <button class="load-more" id="reset" type="button" style="margin:0">Reset / show all</button>
+    </div>
     <p class="sub" id="t-sub"></p>
     <div class="table-wrap">
       <table>
@@ -219,15 +222,15 @@
   const MODES = {
     no: {
       title: "How often each member voted No",
-      sub: "Share of each member's Yes and No votes that were No, on the motions in view. Members with fewer than 10 votes in view aren't shown. Hover a row for counts; select one to follow that member.",
+      sub: "Share of each member's Yes and No votes that were No, on the motions in view. Members with fewer than 10 votes in view aren't shown. Hover a row for counts; select one to follow that member and highlight their No votes in the table below.",
     },
     yes: {
       title: "How often each member voted Yes",
-      sub: "Share of each member's Yes and No votes that were Yes, on the motions in view. Members with fewer than 10 votes in view aren't shown. Hover a row for counts; select one to follow that member.",
+      sub: "Share of each member's Yes and No votes that were Yes, on the motions in view. Members with fewer than 10 votes in view aren't shown. Hover a row for counts; select one to follow that member and highlight their Yes votes in the table below.",
     },
     spend: {
       title: "How many times each member voted to add spending",
-      sub: "Yes votes on the motions in view that add spending, which are highlighted in the table below. Hover a row for how often they voted against; select one to follow that member.",
+      sub: "Yes votes on the motions in view that add spending, which are highlighted in the table below. Hover a row for how often they voted against; select one to follow that member and highlight only the spending they voted for.",
     },
   };
 
@@ -320,16 +323,33 @@
     const v = voteOf(m, i);
     return el("span", { className: v === "No" ? "vote-no" : v === "Absent" ? "vote-away" : "" }, v || "–");
   }
+  // The table highlights what the chart switch and the followed members point
+  // to: their No or Yes votes, or spending motions (that they voted for).
+  function marked(m) {
+    const P = state.picked;
+    if (state.mode === "spend") return !!m.spend && (!P.length || P.some((i) => m.yes.includes(i)));
+    return P.some((i) => (state.mode === "no" ? m.no : m.yes).includes(i));
+  }
+  function markNote(count) {
+    const P = state.picked;
+    const who = P.length === 1 ? voters[P[0]] : P.length <= 3 ? P.map((i) => voters[i]).join(" or ") : `any of the ${P.length} members you follow`;
+    const vote = state.mode === "no" ? "No" : "Yes";
+    if (state.mode === "spend") {
+      return P.length ? `; ${num(count)} highlighted: spending ${who} voted for` : `; ${num(count)} add spending and are highlighted`;
+    }
+    return P.length ? `; ${num(count)} highlighted where ${who} voted ${vote}` : `; follow a member to highlight where they voted ${vote}`;
+  }
   function renderTable(rows) {
     // With members picked, their votes replace the Voted No column.
     const cols = state.picked.length
       ? [...COLS.slice(0, -1), ...state.picked.map((i) => ({ key: `v${i}`, label: voters[i], value: (m) => voteOf(m, i), render: (m) => voteCell(m, i) }))]
       : COLS;
-    table($("t-head"), $("t-body"), rows, cols, state, () => { state.shown = 100; renderTable(filtered()); }, { limit: state.shown, rowClass: (m) => (m.spend ? "spend" : "") });
+    table($("t-head"), $("t-body"), rows, cols, state, () => { state.shown = 100; renderTable(filtered()); }, { limit: state.shown, rowClass: (m) => (marked(m) ? `mark ${state.mode === "spend" ? "spend" : "vote"}` : "") });
     $("more").hidden = rows.length <= state.shown;
-    const spend = rows.filter((m) => m.spend).length;
+    const count = rows.filter(marked).length;
+    const all = state.mode === "spend" && !state.picked.length && state.money === "spend";
     $("t-sub").textContent = `Showing ${num(Math.min(rows.length, state.shown))} of ${num(rows.length)} motion${rows.length === 1 ? "" : "s"}` +
-      (spend && state.money !== "spend" ? `; ${num(spend)} add spending and are highlighted` : "") + ". Select a column to sort.";
+      (rows.length && !all ? markNote(count) : "") + ". Select a column to sort.";
   }
 
   function render() {
@@ -359,7 +379,13 @@
       bind("f-term", "term"); bind("f-meeting", "meeting"); bind("f-money", "money"); bind("f-q", "q", "input"); bind("f-their", "their");
       $("clear").addEventListener("click", () => { state.picked = []; state.their = ""; $("f-their").value = ""; state.shown = 100; render(); });
       $("more").addEventListener("click", () => { state.shown += 100; renderTable(filtered()); });
-      for (const b of $("m-mode").children) b.addEventListener("click", () => { state.mode = b.dataset.mode; renderMembers(inScope()); });
+      for (const b of $("m-mode").children) b.addEventListener("click", () => { state.mode = b.dataset.mode; renderMembers(inScope()); renderTable(filtered()); });
+      // Reset: nobody followed, no search, every motion in the term and meetings chosen, no highlight.
+      $("reset").addEventListener("click", () => {
+        Object.assign(state, { picked: [], their: "", q: "", money: "", mode: "no", shown: 100 });
+        $("f-their").value = ""; $("f-q").value = ""; $("f-money").value = "";
+        render();
+      });
       // votes.html?member=Name (repeatable) opens with those members picked.
       for (const n of new URLSearchParams(location.search).getAll("member")) {
         const i = voters.indexOf(n);

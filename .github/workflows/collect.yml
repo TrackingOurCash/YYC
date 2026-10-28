@@ -32,12 +32,17 @@ jobs:
         run: python collectors/compensation.py
       - name: Civic Partners and FCSS grants
         run: python collectors/grants.py
+      - name: Ward boundaries (Open Calgary)
+        run: python collectors/ward_boundaries.py
+      - name: Ward office budgets and expenses
+        run: python collectors/ward_expenses.py
       - name: Build dashboard data
         run: |
           python scripts/build_jobs_summary.py
           python scripts/build_budget.py
           python scripts/build_votes.py
           python scripts/build_grants.py
+          python scripts/build_wards.py
       - name: Commit changes
         run: |
           git config user.name "yyc-collector"

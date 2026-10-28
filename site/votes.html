@@ -15,7 +15,7 @@
     <h1>Calgary council votes</h1>
     <p>Every recorded council and committee vote since electronic voting began in October 2020, from the City's <a href="https://data.calgary.ca/d/ruq3-99hx">Council and Committee Votes</a> data.</p>
     <nav class="tabs" aria-label="Sections">
-      <a href="./">Overview</a><a href="jobs.html">City jobs</a><a href="budget.html">Budget</a><a href="grants.html">Grants</a><a href="votes.html" aria-current="page">Council votes</a>
+      <a href="./">Overview</a><a href="jobs.html">City jobs</a><a href="budget.html">Budget</a><a href="grants.html">Grants</a><a href="wards.html">Wards</a><a href="votes.html" aria-current="page">Council votes</a>
     </nav>
   </header>
 
@@ -294,6 +294,11 @@
       bind("f-term", "term"); bind("f-meeting", "meeting"); bind("f-money", "money"); bind("f-q", "q", "input"); bind("f-their", "their");
       $("clear").addEventListener("click", () => { state.picked = []; state.their = ""; $("f-their").value = ""; state.shown = 100; render(); });
       $("more").addEventListener("click", () => { state.shown += 100; renderTable(filtered()); });
+      // votes.html?member=Name (repeatable) opens with those members picked.
+      for (const n of new URLSearchParams(location.search).getAll("member")) {
+        const i = voters.indexOf(n);
+        if (i >= 0 && !state.picked.includes(i)) state.picked.push(i);
+      }
       render();
     })
     .catch(() => { $("t-sub").textContent = "Couldn't load the data. Try reloading the page."; });

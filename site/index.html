@@ -15,7 +15,7 @@
     <h1>Where Calgary's money goes</h1>
     <p>What the City of Calgary commits to spend, collected from the City's own public data and updated every morning.</p>
     <nav class="tabs" aria-label="Sections">
-      <a href="./" aria-current="page">Overview</a><a href="jobs.html">City jobs</a><a href="budget.html">Budget</a><a href="grants.html">Grants</a><a href="votes.html">Council votes</a>
+      <a href="./" aria-current="page">Overview</a><a href="jobs.html">City jobs</a><a href="budget.html">Budget</a><a href="grants.html">Grants</a><a href="wards.html">Wards</a><a href="votes.html">Council votes</a>
     </nav>
   </header>
 
@@ -31,6 +31,12 @@
       <div class="value" id="g-value">–</div>
       <div class="note" id="g-note"></div>
       <div class="more">See who gets them →</div>
+    </a>
+    <a class="card stat" href="wards.html">
+      <div class="label" id="w-label">Ward office spending</div>
+      <div class="value" id="w-value">–</div>
+      <div class="note" id="w-note"></div>
+      <div class="more">See each ward on the map →</div>
     </a>
     <a class="card stat" href="votes.html">
       <div class="label">Council motions mentioning money this term</div>
@@ -50,7 +56,7 @@
     <h2>Coming next</h2>
     <ul class="sub" style="margin:8px 0 0; padding-left:18px">
       <li>Who the grant recipients are: charities, community associations, City-created bodies</li>
-      <li>Ward map: ward office spending and capital projects by ward</li>
+      <li>Capital projects by ward on the ward map</li>
     </ul>
   </section>
 
@@ -77,6 +83,17 @@
     $("g-label").textContent = `${year} grants to named organizations`;
     $("g-value").textContent = money(rows.reduce((s, r) => s + r[6], 0));
     $("g-note").textContent = `Civic Partners and FCSS, to ${num(orgs.size)} recipients`;
+  }).catch(() => {});
+  fetch("data/wards.json", { cache: "no-cache" }).then((r) => r.json()).then((d) => {
+    // The latest full year, so wards compare on a whole year of spending.
+    const full = d.reports.filter((r) => r.period_end.endsWith("12-31"));
+    const year = Math.max(...full.map((r) => r.year));
+    const spent = full.filter((r) => r.year === year).reduce((s, r) => s + (r.spent || 0), 0);
+    const spons = d.categories.indexOf("Community sponsorships");
+    const sp = d.expenses.filter(([y, , c]) => y === year && c === spons).reduce((s, e) => s + e[5], 0);
+    $("w-label").textContent = `${year} ward office spending`;
+    $("w-value").textContent = money(spent);
+    $("w-note").textContent = `14 councillor offices, including ${money(sp)} in community sponsorships`;
   }).catch(() => {});
   fetch("data/votes.json", { cache: "no-cache" }).then((r) => r.json()).then((d) => {
     const types = d.meeting_types;

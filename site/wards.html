@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Calgary ward spending</title>
+<meta name="description" content="What each Calgary councillor's ward office spends, mapped by ward, with every itemized expense and community sponsorship.">
+<link rel="stylesheet" href="assets/site.css">
+<script src="assets/theme.js"></script>
+<style>
+  :root { --q1: #b7d3f6; --q2: #86b6ef; --q3: #5598e7; --q4: #2a78d6; --q5: #184f95; }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) { --q1: #104281; --q2: #1c5cab; --q3: #2a78d6; --q4: #5598e7; --q5: #86b6ef; }
+  }
+  :root[data-theme="dark"] { --q1: #104281; --q2: #1c5cab; --q3: #2a78d6; --q4: #5598e7; --q5: #86b6ef; }
+  .map-grid { display: grid; grid-template-columns: 3fr 2fr; gap: 16px; margin-top: 16px; }
+  @media (max-width: 760px) { .map-grid { grid-template-columns: 1fr; } }
+  #map { width: 100%; height: auto; display: block; }
+  #map .ward { stroke: var(--surface); stroke-width: 2; cursor: pointer; }
+  #map .ward:hover, #map .ward:focus-visible { stroke: var(--ink-2); outline: none; }
+  #map .ward.sel { stroke: var(--ink); stroke-width: 3; }
+  #map text { font-size: 13px; font-weight: 600; fill: var(--ink); stroke: var(--surface); stroke-width: 3; paint-order: stroke; pointer-events: none; text-anchor: middle; }
+  .scale { display: flex; flex-wrap: wrap; gap: 4px 12px; margin-top: 8px; font-size: 12px; color: var(--ink-2); }
+  .scale span { display: inline-flex; align-items: center; gap: 6px; }
+  .scale span::before { content: ""; width: 14px; height: 10px; border-radius: 2px; background: var(--c); }
+  .facts { display: grid; grid-template-columns: 1fr auto; gap: 6px 12px; margin: 12px 0 16px; font-size: 14px; }
+  .facts dt { color: var(--ink-2); }
+  .facts dd { margin: 0; text-align: right; font-variant-numeric: tabular-nums; }
+  .links { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 13px; margin-top: 12px; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <div class="crumb"><a href="https://trackingourcash.github.io/">Tracking Our Cash</a> / Calgary</div>
+    <h1>Ward office spending</h1>
+    <p>What each councillor's office spends, from the ward budget and expense reports the City publishes for all 14 wards. Every ward gets the same budget; how it's spent differs.</p>
+    <nav class="tabs" aria-label="Sections">
+      <a href="./">Overview</a><a href="jobs.html">City jobs</a><a href="budget.html">Budget</a><a href="grants.html">Grants</a><a href="wards.html" aria-current="page">Wards</a><a href="votes.html">Council votes</a>
+    </nav>
+  </header>
+
+  <div class="filters" role="group" aria-label="Filters">
+    <label>Year
+      <select id="f-year"></select>
+    </label>
+    <label>Colour the map by
+      <select id="f-measure"></select>
+    </label>
+  </div>
+
+  <section class="map-grid">
+    <div class="card">
+      <h2 id="map-title">Ward map</h2>
+      <p class="sub" id="map-sub">Hover a ward for its figure; select one for details.</p>
+      <svg id="map" role="img" aria-label="Map of Calgary's 14 wards"></svg>
+      <div class="scale" id="scale"></div>
+    </div>
+    <div class="card" id="detail">
+      <h2 id="d-title">Ward</h2>
+      <p class="sub" id="d-sub"></p>
+      <dl class="facts" id="d-facts"></dl>
+      <h3 style="font-size:14px;margin:0 0 6px">Itemized spending by category</h3>
+      <div class="hbars" id="d-cats"></div>
+      <div class="links" id="d-links"></div>
+    </div>
+  </section>
+
+  <section class="card" style="margin-top:16px">
+    <h2 id="cmp-title">All wards compared</h2>
+    <p class="sub">Select a row to see that ward.</p>
+    <div class="hbars" id="cmp"></div>
+  </section>
+
+  <section class="card" style="margin-top:16px">
+    <h2>Itemized expenses</h2>
+    <div class="filters" style="margin:8px 0 8px">
+      <label>Wards
+        <select id="f-scope">
+          <option value="ward">Selected ward</option>
+          <option value="">All wards</option>
+        </select>
+      </label>
+      <label>Category
+        <select id="f-cat"><option value="">All categories</option></select>
+      </label>
+      <label>Search vendor or reason
+        <input type="search" id="f-q" placeholder="e.g. community association, Flames, signs">
+      </label>
+    </div>
+    <p class="sub" id="t-sub"></p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr id="t-head"></tr></thead>
+        <tbody id="t-body"></tbody>
+      </table>
+    </div>
+    <button class="load-more" id="more" hidden>Show 100 more</button>
+  </section>
+
+  <footer>
+    <p><strong>How the numbers work</strong></p>
+    <ul>
+      <li>Each ward office publishes a "Ward Budget &amp; Expenditure Disclosure" report. Total spending includes staff salaries, which the City doesn't itemize to protect employees' privacy, so itemized expenses add up to much less than the total.</li>
+      <li>Reports cover the year to date. The latest one runs to <span id="period">–</span>, so its totals are for part of the year; compare full years for a fair picture.</li>
+      <li>2025 reports cover both the councillor who served until the October 2025 election and the one elected then.</li>
+      <li>"Community sponsorships" is the City's account for sponsoring individuals and organizations: event tickets, donations, and promotional items given out at events. Categories group the City's expense accounts; the account name is in each row.</li>
+      <li>Amounts are as reported, including refunds shown as negative amounts. The Mayor's office isn't included because no matching report was found.</li>
+    </ul>
+    <p>Data: ward budget and expenditure reports on calgary.ca (<a href="https://www.calgary.ca/content/dam/www/citycouncil/documents/expenses-2026/ward-01-budget-and-expenditure-2026.pdf">Ward 1, 2026</a> for example) and <a href="https://data.calgary.ca/d/tz8z-hyaz">Ward Boundaries</a> on Open Calgary, refreshed daily. Code: <a href="https://github.com/TrackingOurCash/YYC">github.com/TrackingOurCash/YYC</a>.</p>
+  </footer>
+</main>
+
+<script src="assets/common.js"></script>
+<script>
+(() => {
+  const { $, money, moneyFull, num, pct, dayName, el, svgEl, hover, hbars, table, fillSelect } = YYC;
+  let D, reports, expenses;
+  const state = { year: 0, measure: "spent", ward: 1, scope: "ward", cat: "", q: "", sort: "amount", dir: -1, shown: 100 };
+  const RAMP = ["var(--q1)", "var(--q2)", "var(--q3)", "var(--q4)", "var(--q5)"];
+
+  const report = (ward, year = state.year) => reports.find((r) => r.ward === ward && r.year === year);
+  const items = (ward, year = state.year) => expenses.filter((e) => e.year === year && (ward == null || e.ward === ward));
+  const sum = (rows) => rows.reduce((s, e) => s + e.amount, 0);
+
+  // Measures: id -> { label, value(ward) (null when unknown), format }
+  function measures() {
+    const m = {
+      spent: { label: "Total spending (with salaries)", value: (w) => report(w)?.spent ?? null, format: money },
+      share: { label: "Share of budget spent", value: (w) => { const r = report(w); return r && r.spent != null ? r.spent / r.budget : null; }, format: pct },
+      items: { label: "Itemized spending (no salaries)", value: (w) => (report(w) ? sum(items(w)) : null), format: money },
+    };
+    D.categories.forEach((c, i) => {
+      m[`c${i}`] = { label: c, value: (w) => (report(w) ? sum(items(w).filter((e) => e.category === i)) : null), format: money };
+    });
+    return m;
+  }
+  let M;
+
+  function renderMap() {
+    const svg = $("map");
+    svg.setAttribute("viewBox", D.view_box);
+    svg.replaceChildren();
+    const meas = M[state.measure];
+    const values = D.wards.map((w) => meas.value(w.ward)).filter((v) => v != null);
+    // Classes span the lowest to highest ward, so differences between wards show.
+    const lo = Math.min(...values), hi = Math.max(...values);
+    const step = (hi - lo) / RAMP.length;
+    const cls = (v) => Math.min(RAMP.length - 1, Math.floor((v - lo) / (step || 1)));
+    const shapes = [], labels = [];
+    for (const w of D.wards) {
+      const v = meas.value(w.ward);
+      const p = svgEl("path", { d: w.path, class: "ward" + (w.ward === state.ward ? " sel" : ""), fill: v == null ? "var(--grid)" : RAMP[cls(v)] });
+      p.setAttribute("aria-label", `Ward ${w.ward}: ${v == null ? "no report" : meas.format(v)}`);
+      const r = report(w.ward);
+      hover(p, `Ward ${w.ward}`, () => [[meas.label, v == null ? "No report" : meas.format(v)], ["Councillor", r?.councillor || w.councillor || "–"]]);
+      p.addEventListener("click", () => select(w.ward));
+      p.addEventListener("keydown", (e) => e.key === "Enter" && select(w.ward));
+      shapes.push([w.ward === state.ward, p]);
+      const t = svgEl("text", { x: w.label[0], y: w.label[1] + 4 });
+      t.textContent = w.ward;
+      labels.push(t);
+    }
+    // Draw the selected ward last so its outline sits on top.
+    shapes.sort((a, b) => a[0] - b[0]).forEach(([, p]) => svg.append(p));
+    labels.forEach((t) => svg.append(t));
+    $("scale").replaceChildren(...RAMP.map((c, i) => {
+      const s = el("span", {}, `${meas.format(lo + step * i)}–${meas.format(lo + step * (i + 1))}`);
+      s.style.setProperty("--c", c);
+      return s;
+    }));
+    const r = reports.find((x) => x.year === state.year);
+    $("map-title").textContent = `${meas.label}, ${periodName(r)}`;
+  }
+
+  const periodName = (r) => (!r ? String(state.year) : r.period_end.endsWith("12-31") ? String(r.year) : `${r.year} to ${dayName(r.period_end).replace(/, \d{4}$/, "")}`);
+
+  function renderDetail() {
+    const w = D.wards.find((x) => x.ward === state.ward);
+    const r = report(state.ward);
+    $("d-title").textContent = `Ward ${state.ward}`;
+    $("d-sub").textContent = r ? `${r.councillor || "Councillor not named in the report"} · ${periodName(r)}` : `No report for ${state.year}`;
+    const its = items(state.ward);
+    const facts = r ? [
+      ["Budget for the year", moneyFull(r.budget)],
+      [r.period_end.endsWith("12-31") ? "Spent (with salaries)" : "Spent so far (with salaries)", moneyFull(r.spent)],
+      ["Share of budget spent", r.spent != null ? pct(r.spent / r.budget) : "–"],
+      ["Itemized (no salaries)", `${moneyFull(sum(its))} in ${num(its.length)} items`],
+      ["Community sponsorships", moneyFull(sum(its.filter((e) => D.categories[e.category] === "Community sponsorships")))],
+    ] : [];
+    $("d-facts").replaceChildren(...facts.flatMap(([k, v]) => [el("dt", {}, k), el("dd", {}, v)]));
+    const cats = D.categories.map((c, i) => {
+      const rows = its.filter((e) => e.category === i);
+      return { name: c, value: sum(rows), tip: () => [["Amount", moneyFull(sum(rows))], ["Items", num(rows.length)]] };
+    }).filter((d) => d.value).sort((a, b) => b.value - a.value);
+    hbars($("d-cats"), cats, { empty: r ? "No itemized expenses in this report." : "No report." });
+    const links = [];
+    if (r) links.push(el("a", { href: r.url, rel: "noopener" }, "City's report (PDF)"));
+    const names = (r?.councillor || w?.councillor || "").split(" & ").filter(Boolean);
+    for (const n of names) links.push(el("a", { href: `votes.html?member=${encodeURIComponent(n)}` }, `How ${n} votes`));
+    $("d-links").replaceChildren(...links);
+  }
+
+  function renderCompare() {
+    const meas = M[state.measure];
+    const list = D.wards.map((w) => ({ ward: w.ward, name: `Ward ${w.ward}${report(w.ward)?.councillor ? ` · ${report(w.ward).councillor}` : ""}`, value: meas.value(w.ward) }))
+      .filter((d) => d.value != null)
+      .sort((a, b) => b.value - a.value)
+      .map((d) => ({ ...d, tip: () => [[meas.label, meas.format(d.value)]] }));
+    $("cmp-title").textContent = `All wards compared: ${meas.label.toLowerCase()}`;
+    hbars($("cmp"), list, { format: meas.format, empty: `No reports for ${state.year}.` });
+    [...$("cmp").children].forEach((row, i) => {
+      if (!list[i]) return;
+      row.classList.add("pick");
+      if (list[i].ward === state.ward) row.style.background = "var(--hover)";
+      row.addEventListener("click", () => select(list[i].ward));
+      row.addEventListener("keydown", (e) => e.key === "Enter" && select(list[i].ward));
+    });
+  }
+
+  const filteredItems = () => {
+    const q = state.q.trim().toLowerCase();
+    return items(state.scope === "ward" ? state.ward : null).filter((e) =>
+      (state.cat === "" || e.category === +state.cat) &&
+      (!q || e.vendor.toLowerCase().includes(q) || e.description.toLowerCase().includes(q) || e.account.toLowerCase().includes(q)));
+  };
+  const COLS = [
+    { key: "ward", label: "Ward", num: true, value: (e) => e.ward },
+    { key: "month", label: "Month", value: (e) => e.month },
+    { key: "category", label: "Category", value: (e) => D.categories[e.category] },
+    { key: "vendor", label: "Paid to", value: (e) => e.vendor },
+    { key: "description", label: "Reason given", cls: "motion", value: (e) => e.description || e.account, render: (e) => e.description || e.account.replace(/^\d+ /, "") },
+    { key: "amount", label: "Amount", num: true, value: (e) => e.amount, render: (e) => moneyFull(e.amount) },
+  ];
+  function renderTable() {
+    const rows = filteredItems();
+    const cols = state.scope === "ward" ? COLS.slice(1) : COLS;
+    table($("t-head"), $("t-body"), rows, cols, state, () => { state.shown = 100; renderTable(); }, { limit: state.shown });
+    $("more").hidden = rows.length <= state.shown;
+    $("t-sub").textContent = `${num(rows.length)} expense${rows.length === 1 ? "" : "s"} totalling ${moneyFull(sum(rows))}${state.scope === "ward" ? ` in Ward ${state.ward}` : " across all wards"}, ${state.year}. Select a column to sort.`;
+  }
+
+  function select(ward) {
+    state.ward = ward;
+    state.shown = 100;
+    render();
+  }
+
+  function render() {
+    renderMap();
+    renderDetail();
+    renderCompare();
+    renderTable();
+  }
+
+  fetch("data/wards.json", { cache: "no-cache" })
+    .then((r) => r.json())
+    .then((d) => {
+      D = d;
+      reports = d.reports;
+      expenses = d.expenses.map(([year, ward, category, account, month, amount, vendor, description]) => ({ year, ward, category, account: d.accounts[account], month, amount, vendor, description }));
+      M = measures();
+      const years = [...new Set(reports.map((r) => r.year))].sort((a, b) => b - a);
+      state.year = years[0];
+      for (const y of years) {
+        const r = reports.find((x) => x.year === y);
+        $("f-year").append(el("option", { value: String(y) }, periodName(r)));
+      }
+      for (const [k, m] of Object.entries(M)) $("f-measure").append(el("option", { value: k }, m.label));
+      fillSelect("f-cat", D.categories.map((_, i) => i), (i) => D.categories[i]);
+      $("period").textContent = dayName(reports.filter((r) => r.year === years[0])[0].period_end);
+      $("f-year").addEventListener("change", (e) => { state.year = +e.target.value; state.shown = 100; render(); });
+      $("f-measure").addEventListener("change", (e) => { state.measure = e.target.value; render(); });
+      $("f-scope").addEventListener("change", (e) => { state.scope = e.target.value; state.shown = 100; renderTable(); });
+      $("f-cat").addEventListener("change", (e) => { state.cat = e.target.value; state.shown = 100; renderTable(); });
+      $("f-q").addEventListener("input", (e) => { state.q = e.target.value; state.shown = 100; renderTable(); });
+      $("more").addEventListener("click", () => { state.shown += 100; renderTable(); });
+      render();
+    })
+    .catch(() => { $("t-sub").textContent = "Couldn't load the ward data. Try reloading the page."; });
+})();
+</script>
+</body>
+</html>

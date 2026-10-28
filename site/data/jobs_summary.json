@@ -5,8 +5,8 @@
   "postings": 3145,
   "positions": 3464,
   "permanent": 309,
-  "temporary": 310,
-  "unknown_type": 2845,
+  "temporary": 314,
+  "unknown_type": 2841,
   "est_annual_cost": 159598876,
   "with_pay": 1413
  },
@@ -276,8 +276,8 @@
    "postings": 112,
    "positions": 146,
    "permanent": 58,
-   "temporary": 36,
-   "unknown_type": 52,
+   "temporary": 40,
+   "unknown_type": 48,
    "est_annual_cost": 11358346,
    "with_pay": 79
   }
@@ -332,8 +332,8 @@
    "postings": 150,
    "positions": 179,
    "permanent": 0,
-   "temporary": 55,
-   "unknown_type": 124,
+   "temporary": 59,
+   "unknown_type": 120,
    "est_annual_cost": 5832058,
    "with_pay": 81
   },
@@ -595,8 +595,8 @@
    "postings": 32,
    "positions": 61,
    "permanent": 1,
-   "temporary": 56,
-   "unknown_type": 4,
+   "temporary": 60,
+   "unknown_type": 0,
    "est_annual_cost": 2783577,
    "with_pay": 32
   },

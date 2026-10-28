@@ -125,7 +125,7 @@ class PayEstimator:
 
 
 def positions(row: dict) -> tuple[int, int, int]:
-    """(permanent, temporary, type not known). A posting whose own page
+    """(permanent, temporary, unlisted). A posting whose own page
     wasn't read counts as one position of unknown type."""
     def num(key):
         try:

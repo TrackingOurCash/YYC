@@ -43,7 +43,7 @@
         <option value="temporary">Temporary only</option>
       </select>
     </label>
-    <label class="check" id="l-unknown"><input type="checkbox" id="f-unknown" checked> Include type not known</label>
+    <label class="check" id="l-unknown"><input type="checkbox" id="f-unknown" checked> Include unlisted</label>
   </div>
 
   <section class="hero" aria-label="Totals">
@@ -72,7 +72,7 @@
     <div class="card">
       <h2>Positions posted by month</h2>
       <p class="sub">By the month each posting was first seen.</p>
-      <div class="legend" id="lg-month"><span style="--c:var(--perm)">Permanent</span><span style="--c:var(--temp)">Temporary</span><span style="--c:var(--unk)" id="lg-unk">Type not known</span></div>
+      <div class="legend" id="lg-month"><span style="--c:var(--perm)">Permanent</span><span style="--c:var(--temp)">Temporary</span><span style="--c:var(--unk)" id="lg-unk">Unlisted</span></div>
       <svg id="c-month" role="img" aria-label="Positions posted by month" width="100%" height="240"></svg>
     </div>
   </section>
@@ -89,7 +89,7 @@
     <div class="yoy">
       <div>
         <h3>Positions posted</h3>
-        <div class="legend"><span style="--c:var(--perm)">Permanent</span><span style="--c:var(--temp)">Temporary</span><span style="--c:var(--unk)" id="lg-unk2">Type not known</span></div>
+        <div class="legend"><span style="--c:var(--perm)">Permanent</span><span style="--c:var(--temp)">Temporary</span><span style="--c:var(--unk)" id="lg-unk2">Unlisted</span></div>
         <svg id="c-yoy-pos" role="img" aria-label="Positions posted by year" width="100%" height="220"></svg>
       </div>
       <div>
@@ -117,7 +117,7 @@
     <ul>
       <li>Daily tracking started <span id="since">–</span>. The City's list shows no posting date, so a posting's date is the first morning it was seen.</li>
       <li>Postings from before then were rebuilt from <a href="https://web.archive.org/web/2026*/calgary.ca/careers.html">Internet Archive copies</a> of the careers page, which caught it a few times a month. Their date is the first archived copy that lists them, so postings already open when the first copy was taken all land in that month, and postings open only between copies are missed. These are marked "Archived".</li>
-      <li id="unknown-note"><strong>Why some position types are "not known":</strong> the number of positions and whether they're permanent or temporary are only on each posting's own page, and the City takes that page down when the posting closes. The collector reads it while a posting is open, but for postings rebuilt from the archive the page usually wasn't saved. Each of those counts as one position of unknown type. Untick "Include type not known" to leave them out.</li>
+      <li id="unknown-note"><strong>Why some position types are "Unlisted":</strong> the number of positions and whether they're permanent or temporary are only on each posting's own page, and the City takes that page down when the posting closes. The collector reads it while a posting is open, but for postings rebuilt from the archive the page usually wasn't saved. Each of those counts as one unlisted position. Untick "Include unlisted" to leave them out.</li>
       <li>Yearly pay is the pay range midpoint × positions: base pay only, not benefits. When a posting's own pay isn't available, it uses the range for the same title on the City's <a href="https://data.calgary.ca/d/9bze-mzx6">compensation disclosure list</a> for that year, then the pay on another posting with the same title. Postings with no match count as $0, so totals are a floor. Hourly pay is annualised from weekly hours (35 if not stated), and temporary positions count at the yearly rate even if they last a few months.</li>
       <li>A posting is a job the City intends to fill, not a confirmed hire, and most fill existing jobs that someone left rather than adding new ones. The City doesn't say which postings are new positions.</li>
     </ul>
@@ -168,7 +168,7 @@
     const withPay = rows.filter((p) => p.est_annual_cost != null).reduce((s, p) => s + positionsOf(p), 0);
     $("s-positions-note").textContent = withPay ? `${moneyFull(sum(costOf) / withPay)} average yearly pay where known` : "";
     $("s-split").textContent = `${num(perm)} / ${num(temp)}`;
-    $("s-split-note").textContent = unknown ? `${num(unknown)} not known` : "";
+    $("s-split-note").textContent = unknown ? `${num(unknown)} unlisted` : "";
   }
 
   function renderGroups(rows) {
@@ -189,7 +189,7 @@
       list = [...list.slice(0, TOP), { other: true, name: `${rest.length} other ${state.group === "category" ? "categories" : "departments"}`, value: sum("value"), postings: sum("postings"), perm: sum("perm"), temp: sum("temp"), unknown: sum("unknown"), noPay: sum("noPay") }];
     }
     for (const d of list) {
-      d.tip = () => [["Yearly pay", moneyFull(d.value)], ["Postings", num(d.postings)], ["Postings without pay", num(d.noPay)], ["Permanent positions", num(d.perm)], ["Temporary positions", num(d.temp)], ["Type not known", num(d.unknown)]];
+      d.tip = () => [["Yearly pay", moneyFull(d.value)], ["Postings", num(d.postings)], ["Postings without pay", num(d.noPay)], ["Permanent positions", num(d.perm)], ["Temporary positions", num(d.temp)], ["Unlisted", num(d.unknown)]];
     }
     $("c-dept").style.setProperty("--bar", yearColor(state.year));
     hbars($("c-dept"), list, { empty: "No postings match these filters." });
@@ -215,7 +215,7 @@
       { label: "Permanent", color: "var(--perm)", values: cats.map((c) => sumFor(c, permOf)) },
       { label: "Temporary", color: "var(--temp)", values: cats.map((c) => sumFor(c, tempOf)) },
     ];
-    if (!state.type && state.unknown) series.push({ label: "Type not known", color: "var(--unk)", values: cats.map((c) => sumFor(c, unknownOf)) });
+    if (!state.type && state.unknown) series.push({ label: "Unlisted", color: "var(--unk)", values: cats.map((c) => sumFor(c, unknownOf)) });
     return series;
   }
 
@@ -242,7 +242,7 @@
 
   function payText(p) {
     if (p.pay_min == null) {
-      if (!p.est_annual_cost) return "Not known";
+      if (!p.est_annual_cost) return "Unlisted";
       const n = p.permanent + p.temporary + p.unknown;
       return `≈${moneyFull(p.est_annual_cost / n)}/yr (${p.pay_source === "salary list" ? "salary list" : "same title"})`;
     }
@@ -256,7 +256,7 @@
     if (p.archived) wrap.append(el("span", { className: "tag" }, "Archived"));
     return wrap;
   }
-  const typeText = (p) => [[permOf(p), "perm."], [tempOf(p), "temp."], [unknownOf(p), "not known"]].filter(([n]) => n).map(([n, t]) => `${num(n)} ${t}`).join(", ");
+  const typeText = (p) => [[permOf(p), "perm."], [tempOf(p), "temp."], [unknownOf(p), "unlisted"]].filter(([n]) => n).map(([n, t]) => `${num(n)} ${t}`).join(", ");
   const COLS = [
     { key: "first_seen", label: "First seen", desc: true, cls: "date", value: (p) => p.first_seen, render: (p) => dayName(p.first_seen) },
     { key: "title", label: "Job", cls: "job", value: (p) => p.title, render: jobCell },

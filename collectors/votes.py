@@ -17,7 +17,7 @@ import json
 import re
 from pathlib import Path
 
-from opencalgary import fetch_all, write_csv
+from opencalgary import fetch_all, last_updated, write_csv
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "data" / "votes"
@@ -103,7 +103,12 @@ def run() -> dict:
         sort_key=lambda m: (m["date"], m["meeting_type"], m["id"]),
     )
     write_csv(OUT / "ballots.csv", ballots, ["motion_id", "voter", "vote"], sort_key=lambda b: (b["motion_id"], b["voter"]))
-    return {"rows": len(rows), "motions": len(motions), "money_motions": sum(1 for m in motions if m["mentions_money"])}
+    # The City refreshes this dataset about monthly, so recent meetings lag;
+    # the page shows when it last did. Keep the old date if the portal is quiet.
+    updated = last_updated(DATASET)
+    if updated:
+        (OUT / "dataset.json").write_text(json.dumps({"city_updated": updated}) + "\n")
+    return {"rows": len(rows), "motions": len(motions), "money_motions": sum(1 for m in motions if m["mentions_money"]), "city_updated": updated}
 
 
 if __name__ == "__main__":

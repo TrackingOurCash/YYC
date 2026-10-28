@@ -13,7 +13,7 @@
   <header>
     <div class="crumb"><a href="https://trackingourcash.github.io/">Tracking Our Cash</a> / Calgary</div>
     <h1>Calgary council votes</h1>
-    <p>Every recorded council and committee vote since electronic voting began in October 2020, from the City's <a href="https://data.calgary.ca/d/ruq3-99hx">Council and Committee Votes</a> data.</p>
+    <p>Every recorded council and committee vote since electronic voting began in October 2020, from the City's <a href="https://data.calgary.ca/d/ruq3-99hx">Council and Committee Votes</a> data. <span id="lag"></span></p>
     <nav class="tabs" aria-label="Sections">
       <a href="./">Overview</a><a href="jobs.html">City jobs</a><a href="staff.html">City staff</a><a href="budget.html">Budget</a><a href="grants.html">Grants</a><a href="wards.html">Wards</a><a href="votes.html" aria-current="page">Council votes</a>
     </nav>
@@ -119,7 +119,7 @@
       <li>The City's data has no motion number. Votes are grouped by meeting, date, wording and result, so two identically worded motions with the same result in one meeting may be counted as one.</li>
       <li>Council terms start at the general elections of October 18, 2021 and October 20, 2025. Votes before October 7, 2020 aren't in the data; see the <a href="https://www.calgary.ca/agendaminutes">City's minutes</a> for those.</li>
     </ul>
-    <p>Data: <a href="https://data.calgary.ca/d/ruq3-99hx">Council and Committee Votes</a> on Open Calgary, refreshed daily. Code: <a href="https://github.com/TrackingOurCash/YYC">github.com/TrackingOurCash/YYC</a>. Latest vote in the data: <span id="latest">–</span>.</p>
+    <p>Data: <a href="https://data.calgary.ca/d/ruq3-99hx">Council and Committee Votes</a> on Open Calgary. We check it daily, but the City only adds new votes about once a month<span id="city-updated"></span>. Code: <a href="https://github.com/TrackingOurCash/YYC">github.com/TrackingOurCash/YYC</a>. Latest vote in the data: <span id="latest">–</span>.</p>
     <p class="sources-link"><a href="sources.html">Sources: where every dataset on this site comes from →</a></p>
   </footer>
 </main>
@@ -349,7 +349,12 @@
       motions = data.motions.map(([date, t, carried, money, amount, text, yes, no, absent, spend]) => ({
         date, type: types[t], council: / of Council$/.test(types[t]), carried: !!carried, money: !!money, amount, text, yes, no, absent, spend,
       }));
-      $("latest").textContent = dayName(motions.reduce((m, x) => (x.date > m ? x.date : m), ""));
+      const latest = motions.reduce((m, x) => (x.date > m ? x.date : m), "");
+      $("latest").textContent = dayName(latest);
+      // The City publishes votes about monthly, so say how current the data is.
+      if (data.city_updated) $("city-updated").textContent = ` (last on ${dayName(data.city_updated)})`;
+      $("lag").textContent = `The City adds new votes about once a month, so the latest meeting here is ${dayName(latest)}` +
+        (data.city_updated ? `, from its update on ${dayName(data.city_updated)}.` : ".");
       const bind = (id, key, evt = "change") => $(id).addEventListener(evt, (e) => { state[key] = e.target.value; state.shown = 100; render(); });
       bind("f-term", "term"); bind("f-meeting", "meeting"); bind("f-money", "money"); bind("f-q", "q", "input"); bind("f-their", "their");
       $("clear").addEventListener("click", () => { state.picked = []; state.their = ""; $("f-their").value = ""; state.shown = 100; render(); });

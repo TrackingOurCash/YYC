@@ -160,8 +160,12 @@ def main() -> None:
             adds_spending(m["resolution"]),
         ])
 
+    meta = SRC / "dataset.json"
+    city_updated = json.loads(meta.read_text()).get("city_updated") if meta.exists() else None
+
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps({
+        "city_updated": city_updated,
         "fields": ["date", "meeting_type", "carried", "mentions_money", "largest_amount", "resolution", "yes", "no", "absent", "adds_spending"],
         "voters": voters,
         "meeting_types": types,

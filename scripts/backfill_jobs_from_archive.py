@@ -109,9 +109,15 @@ def main() -> None:
         time.sleep(1)
     print(f"{len(detail_caps)} archived posting pages, {with_details} with pay details", file=sys.stderr)
 
-    added = 0
+    added = moved = 0
     for job_id, row in found.items():
         if job_id in rows:
+            # An earlier capture can push back the date of a posting that
+            # was itself only found in the archive.
+            old = rows[job_id]
+            if old.get("source") == "archive" and row["first_seen"] < old["first_seen"]:
+                old["first_seen"] = row["first_seen"]
+                moved += 1
             continue
         if not row.get("title"):
             continue  # a posting page with no listing entry has no title to show
@@ -120,7 +126,7 @@ def main() -> None:
         rows[job_id] = row
         added += 1
     jobs.save_postings(rows)
-    print(f"added {added} postings from the archive; {len(rows)} tracked in total")
+    print(f"added {added} postings from the archive, moved {moved} to an earlier first-seen date; {len(rows)} tracked in total")
 
 
 if __name__ == "__main__":

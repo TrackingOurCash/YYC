@@ -20,6 +20,8 @@
   --y2025: #a3207e;
   --y2026: #cf9e00;
   --y-other: #b5b3aa;
+  /* Council motions that add spending. */
+  --spend: #b8467a;
   --hover: rgba(11, 11, 11, 0.04);
   --link: #1c5cab;
 }
@@ -44,6 +46,7 @@
     --y2025: #b02f8a;
     --y2026: #d9a812;
     --y-other: #5a5954;
+    --spend: #c95591;
     --hover: rgba(255, 255, 255, 0.05);
     --link: #86b6ef;
   }
@@ -68,6 +71,7 @@
   --y2025: #b02f8a;
   --y2026: #d9a812;
   --y-other: #5a5954;
+  --spend: #c95591;
   --hover: rgba(255, 255, 255, 0.05);
   --link: #86b6ef;
 }
@@ -150,7 +154,7 @@ svg .col:hover .hl, svg .col:focus-visible .hl { opacity: 1; }
 
 #tip { position: fixed; pointer-events: none; z-index: 10; background: var(--surface); color: var(--ink);
        border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px; font-size: 12px;
-       box-shadow: 0 4px 16px rgba(0,0,0,.12); min-width: 160px; display: none; }
+       box-shadow: 0 4px 16px rgba(0,0,0,.12); min-width: 160px; max-width: 340px; display: none; }
 #tip .t { color: var(--ink-2); margin-bottom: 4px; }
 #tip .r { display: flex; justify-content: space-between; gap: 16px; }
 #tip .r b { font-variant-numeric: tabular-nums; }
@@ -215,4 +219,17 @@ nav.tabs .theme button:focus-visible { outline: 2px solid var(--s1); outline-off
 .chip:hover { background: var(--hover); }
 .chip[aria-pressed="true"] { background: var(--ink); color: var(--surface); border-color: var(--ink); }
 .vote-no { font-weight: 600; }
+/* Segmented switch inside a card, e.g. No / Yes / Added spending */
+.card-head { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 8px 16px; }
+.seg { display: inline-flex; flex-wrap: wrap; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+.seg button { font: inherit; font-size: 13px; color: var(--ink-2); background: var(--surface); border: 0; padding: 4px 10px; cursor: pointer; }
+.seg button + button { border-left: 1px solid var(--border); }
+.seg button[aria-pressed="true"] { color: var(--ink); background: var(--hover); font-weight: 600; }
+.seg button:focus-visible { outline: 2px solid var(--s1); outline-offset: -2px; }
+.hbars.spend .fill { background: var(--spend); }
+tbody tr.spend { background: color-mix(in srgb, var(--spend) 8%, transparent); }
+tbody tr.spend:hover { background: color-mix(in srgb, var(--spend) 13%, transparent); }
+tbody tr.spend td:first-child { box-shadow: inset 3px 0 0 var(--spend); }
+.spend-tag { display: flex; width: fit-content; align-items: center; gap: 5px; font-size: 11px; font-weight: 600; color: var(--ink); white-space: nowrap; margin-bottom: 4px; }
+.spend-tag::before { content: ""; width: 8px; height: 8px; border-radius: 2px; background: var(--spend); }
 .vote-away { color: var(--muted); }

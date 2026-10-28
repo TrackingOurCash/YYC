@@ -37,6 +37,7 @@
     <label>Motions
       <select id="f-money">
         <option value="money">Mentioning money</option>
+        <option value="spend">Adding spending</option>
         <option value="">All motions</option>
       </select>
     </label>
@@ -70,13 +71,14 @@
             <option value="absent">Where any of them was absent</option>
             <option value="split">Where they voted differently</option>
             <option value="losing">Where any of them was on the losing side</option>
+            <option value="spend">Where any of them voted to add spending</option>
           </select>
         </label>
         <button class="load-more" id="clear" style="margin:0 0 2px">Clear selection</button>
       </div>
       <div class="table-wrap">
         <table>
-          <thead><tr><th>Councillor</th><th class="num">Votes cast</th><th class="num">Yes</th><th class="num">No</th><th class="num">Voted No</th><th class="num">Absent</th><th class="num">On the losing side</th></tr></thead>
+          <thead><tr><th>Councillor</th><th class="num">Votes cast</th><th class="num">Yes</th><th class="num">No</th><th class="num">Voted No</th><th class="num">Absent</th><th class="num">On the losing side</th><th class="num">Voted to add spending</th></tr></thead>
           <tbody id="picked-body"></tbody>
         </table>
       </div>
@@ -84,8 +86,15 @@
   </section>
 
   <section class="card" style="margin-top:16px">
-    <h2>How often each member voted No</h2>
-    <p class="sub">Share of each member's Yes and No votes that were No, on the motions in view. Members with fewer than 10 votes in view aren't shown. Hover a row for counts; select one to follow that member.</p>
+    <div class="card-head">
+      <h2 id="m-title">How often each member voted No</h2>
+      <div class="seg" id="m-mode" role="group" aria-label="Show">
+        <button type="button" data-mode="no" aria-pressed="true">No</button>
+        <button type="button" data-mode="yes" aria-pressed="false">Yes</button>
+        <button type="button" data-mode="spend" aria-pressed="false">Voted to add spending</button>
+      </div>
+    </div>
+    <p class="sub" id="m-sub"></p>
     <div class="hbars" id="c-members"></div>
   </section>
 
@@ -104,6 +113,8 @@
   <footer>
     <p><strong>How the numbers work</strong></p>
     <ul>
+      <li>"Adds spending" marks motions that approve new or extra money: allocating, approving, drawing or investing a dollar amount, a budget increase, new one-time or ongoing funding, approving a budget or budget adjustments, or an amendment that raises an amount. Motions only asking for a report, referring money to a later budget, cutting or moving money already approved, borrowing, or putting money into a reserve aren't counted. The words that matched show when you hover the label. It's read from the motion's wording, so it misses some spending motions rather than count ones that aren't.</li>
+      <li>"Voted to add spending" counts a member's Yes votes on those motions, whether or not the motion carried.</li>
       <li>"Mentioning money" means the motion's text includes a dollar figure or a word like budget, funding, grant, capital, levy, tax, contract or cost. It catches spending decisions but also some procedural motions; read the text to be sure.</li>
       <li>The City's data has no motion number. Votes are grouped by meeting, date, wording and result, so two identically worded motions with the same result in one meeting may be counted as one.</li>
       <li>Council terms start at the general elections of October 18, 2021 and October 20, 2025. Votes before October 7, 2020 aren't in the data; see the <a href="https://www.calgary.ca/agendaminutes">City's minutes</a> for those.</li>
@@ -116,10 +127,10 @@
 <script src="assets/common.js"></script>
 <script>
 (() => {
-  const { $, money, num, pct, dayName, el, hbars, table, onResize } = YYC;
+  const { $, money, num, pct, dayName, el, hover, hbars, table, onResize } = YYC;
   const TERMS = { "2017": ["2020-10-07", "2021-10-18"], "2021": ["2021-10-18", "2025-10-20"], "2025": ["2025-10-20", "9999"] };
   let voters = [], types = [], motions = [];
-  const state = { term: "2025", meeting: "council", money: "money", q: "", their: "", picked: [], sort: "date", dir: -1, shown: 100 };
+  const state = { term: "2025", meeting: "council", money: "money", q: "", their: "", picked: [], mode: "no", sort: "date", dir: -1, shown: 100 };
 
   // A member's vote on a motion: "Yes", "No", "Absent", or "" when they weren't a voter.
   const voteOf = (m, i) => (m.yes.includes(i) ? "Yes" : m.no.includes(i) ? "No" : m.absent.includes(i) ? "Absent" : "");
@@ -131,7 +142,7 @@
     return motions.filter((m) =>
       m.date >= from && m.date < to &&
       (!state.meeting || m.council) &&
-      (!state.money || m.money) &&
+      (!state.money || (state.money === "spend" ? m.spend : m.money)) &&
       (!q || m.text.toLowerCase().includes(q)));
   }
   function filtered() {
@@ -147,6 +158,7 @@
         case "absent": return votes.includes("Absent");
         case "split": return votes.includes("Yes") && votes.includes("No");
         case "losing": return P.some((i) => losing(m, i));
+        case "spend": return !!m.spend && votes.includes("Yes");
         default: return true;
       }
     });
@@ -177,15 +189,16 @@
     $("picked").hidden = !state.picked.length;
     const rows = inScope();
     $("picked-body").replaceChildren(...state.picked.map((i) => {
-      let yes = 0, no = 0, absent = 0, lost = 0;
+      let yes = 0, no = 0, absent = 0, lost = 0, spend = 0;
       for (const m of rows) {
         const v = voteOf(m, i);
         if (v === "Yes") yes++; else if (v === "No") no++; else if (v === "Absent") absent++;
         if (losing(m, i)) lost++;
+        if (v === "Yes" && m.spend) spend++;
       }
       const cast = yes + no;
       const tr = el("tr");
-      const cells = [voters[i], num(cast), num(yes), num(no), cast ? pct(no / cast) : "–", num(absent), cast ? pct(lost / cast) : "–"];
+      const cells = [voters[i], num(cast), num(yes), num(no), cast ? pct(no / cast) : "–", num(absent), cast ? pct(lost / cast) : "–", num(spend)];
       cells.forEach((c, k) => tr.append(el("td", { className: k ? "num" : "" }, c)));
       return tr;
     }));
@@ -203,23 +216,59 @@
     $("s-close").textContent = num(close);
   }
 
+  const MODES = {
+    no: {
+      title: "How often each member voted No",
+      sub: "Share of each member's Yes and No votes that were No, on the motions in view. Members with fewer than 10 votes in view aren't shown. Hover a row for counts; select one to follow that member.",
+    },
+    yes: {
+      title: "How often each member voted Yes",
+      sub: "Share of each member's Yes and No votes that were Yes, on the motions in view. Members with fewer than 10 votes in view aren't shown. Hover a row for counts; select one to follow that member.",
+    },
+    spend: {
+      title: "How many times each member voted to add spending",
+      sub: "Yes votes on the motions in view that add spending, which are highlighted in the table below. Hover a row for how often they voted against; select one to follow that member.",
+    },
+  };
+
   function renderMembers(rows) {
+    const mode = state.mode;
+    $("m-title").textContent = MODES[mode].title;
+    $("m-sub").textContent = MODES[mode].sub;
+    for (const b of $("m-mode").children) b.setAttribute("aria-pressed", b.dataset.mode === mode ? "true" : "false");
+    $("c-members").classList.toggle("spend", mode === "spend");
+
     const c = voters.map(() => ({ yes: 0, no: 0, absent: 0 }));
-    for (const m of rows) {
+    for (const m of mode === "spend" ? rows.filter((m) => m.spend) : rows) {
       for (const i of m.yes) c[i].yes++;
       for (const i of m.no) c[i].no++;
       for (const i of m.absent) c[i].absent++;
     }
-    const list = c.map((v, i) => ({ name: voters[i], i, ...v, cast: v.yes + v.no }))
-      .filter((d) => d.cast >= 10)
-      .map((d) => ({
+    const members = c.map((v, i) => ({ name: voters[i], i, ...v, cast: v.yes + v.no }));
+    let list;
+    if (mode === "spend") {
+      list = members.filter((d) => d.cast > 0).map((d) => ({
         name: d.name,
         i: d.i,
-        value: d.no / d.cast,
-        tip: () => [["Voted No", `${pct(d.no / d.cast)} (${num(d.no)})`], ["Voted Yes", num(d.yes)], ["Absent", num(d.absent)]],
-      }))
-      .sort((a, b) => b.value - a.value);
-    hbars($("c-members"), list, { format: pct, empty: "No member has 10 or more votes on these motions." });
+        value: d.yes,
+        tip: () => [["Voted Yes", num(d.yes)], ["Voted No", num(d.no)], ["Absent", num(d.absent)], ["Share voted Yes", pct(d.yes / d.cast)]],
+      }));
+    } else {
+      const share = (d) => (mode === "no" ? d.no : d.yes) / d.cast;
+      list = members.filter((d) => d.cast >= 10).map((d) => ({
+        name: d.name,
+        i: d.i,
+        value: share(d),
+        tip: () => mode === "no"
+          ? [["Voted No", `${pct(d.no / d.cast)} (${num(d.no)})`], ["Voted Yes", num(d.yes)], ["Absent", num(d.absent)]]
+          : [["Voted Yes", `${pct(d.yes / d.cast)} (${num(d.yes)})`], ["Voted No", num(d.no)], ["Absent", num(d.absent)]],
+      }));
+    }
+    list.sort((a, b) => b.value - a.value || a.name.localeCompare(b.name));
+    hbars($("c-members"), list, {
+      format: mode === "spend" ? num : pct,
+      empty: mode === "spend" ? "None of the motions in view add spending." : "No member has 10 or more votes on these motions.",
+    });
     [...$("c-members").children].forEach((row, k) => {
       if (!list[k]) return;
       row.classList.add("pick");
@@ -235,7 +284,7 @@
     if (m.no.length <= 7) return names(m.no);
     return m.yes.length && m.yes.length <= 4 ? `${m.no.length} members, all but ${names(m.yes)}` : `${m.no.length} members`;
   }
-  function motionCell(m) {
+  function motionText(m) {
     const short = m.text.length > 220 ? m.text.slice(0, 220).replace(/\s+\S*$/, "") + "…" : m.text;
     if (short === m.text) return el("span", {}, m.text);
     const d = el("details");
@@ -243,6 +292,14 @@
     s.append(el("span", {}, short + " "), el("span", { className: "more-toggle" }, "Read more"));
     d.append(s, el("div", { className: "full" }, m.text));
     return d;
+  }
+  function motionCell(m) {
+    if (!m.spend) return motionText(m);
+    const tag = el("div", { className: "spend-tag" }, "Adds spending");
+    hover(tag, "Counted as adding spending because it says", () => [[`“${m.spend}”`, ""]]);
+    const box = el("div");
+    box.append(tag, motionText(m));
+    return box;
   }
   function resultCell(m) {
     const span = el("span", { className: "result" }, m.carried ? "Carried" : "Defeated");
@@ -268,9 +325,11 @@
     const cols = state.picked.length
       ? [...COLS.slice(0, -1), ...state.picked.map((i) => ({ key: `v${i}`, label: voters[i], value: (m) => voteOf(m, i), render: (m) => voteCell(m, i) }))]
       : COLS;
-    table($("t-head"), $("t-body"), rows, cols, state, () => { state.shown = 100; renderTable(filtered()); }, { limit: state.shown });
+    table($("t-head"), $("t-body"), rows, cols, state, () => { state.shown = 100; renderTable(filtered()); }, { limit: state.shown, rowClass: (m) => (m.spend ? "spend" : "") });
     $("more").hidden = rows.length <= state.shown;
-    $("t-sub").textContent = `Showing ${num(Math.min(rows.length, state.shown))} of ${num(rows.length)} motion${rows.length === 1 ? "" : "s"}. Select a column to sort.`;
+    const spend = rows.filter((m) => m.spend).length;
+    $("t-sub").textContent = `Showing ${num(Math.min(rows.length, state.shown))} of ${num(rows.length)} motion${rows.length === 1 ? "" : "s"}` +
+      (spend && state.money !== "spend" ? `; ${num(spend)} add spending and are highlighted` : "") + ". Select a column to sort.";
   }
 
   function render() {
@@ -287,14 +346,15 @@
     .then((data) => {
       voters = data.voters;
       types = data.meeting_types;
-      motions = data.motions.map(([date, t, carried, money, amount, text, yes, no, absent]) => ({
-        date, type: types[t], council: / of Council$/.test(types[t]), carried: !!carried, money: !!money, amount, text, yes, no, absent,
+      motions = data.motions.map(([date, t, carried, money, amount, text, yes, no, absent, spend]) => ({
+        date, type: types[t], council: / of Council$/.test(types[t]), carried: !!carried, money: !!money, amount, text, yes, no, absent, spend,
       }));
       $("latest").textContent = dayName(motions.reduce((m, x) => (x.date > m ? x.date : m), ""));
       const bind = (id, key, evt = "change") => $(id).addEventListener(evt, (e) => { state[key] = e.target.value; state.shown = 100; render(); });
       bind("f-term", "term"); bind("f-meeting", "meeting"); bind("f-money", "money"); bind("f-q", "q", "input"); bind("f-their", "their");
       $("clear").addEventListener("click", () => { state.picked = []; state.their = ""; $("f-their").value = ""; state.shown = 100; render(); });
       $("more").addEventListener("click", () => { state.shown += 100; renderTable(filtered()); });
+      for (const b of $("m-mode").children) b.addEventListener("click", () => { state.mode = b.dataset.mode; renderMembers(inScope()); });
       // votes.html?member=Name (repeatable) opens with those members picked.
       for (const n of new URLSearchParams(location.search).getAll("member")) {
         const i = voters.indexOf(n);

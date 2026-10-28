@@ -258,7 +258,7 @@ window.YYC = (() => {
 
   // Sortable table. cols: [{key, label, num, value(row), render(row) -> Node|string}]
   // Sorts every row, renders the first `limit`.
-  function table(head, body, rows, cols, state, onSort, { limit = Infinity } = {}) {
+  function table(head, body, rows, cols, state, onSort, { limit = Infinity, rowClass } = {}) {
     head.replaceChildren(...cols.map((c) => {
       const th = el("th", { className: c.num ? "num" : "" });
       const b = el("button", {}, c.label + (state.sort === c.key ? (state.dir > 0 ? " ↑" : " ↓") : ""));
@@ -277,7 +277,7 @@ window.YYC = (() => {
       return (va < vb ? -1 : va > vb ? 1 : 0) * state.dir;
     });
     body.replaceChildren(...sorted.slice(0, limit).map((r) => {
-      const tr = el("tr");
+      const tr = el("tr", { className: rowClass ? rowClass(r) : "" });
       for (const c of cols) {
         const td = el("td", { className: (c.num ? "num " : "") + (c.cls || "") });
         const v = c.render ? c.render(r) : c.value(r);

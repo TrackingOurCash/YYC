@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Calgary data sources</title>
+<meta name="description" content="Every source used to build the Tracking Our Cash Calgary datasets, with links to the original data and to the copies kept in the project's repository.">
+<link rel="stylesheet" href="assets/site.css">
+<script src="assets/theme.js"></script>
+<style>
+  .src { table-layout: fixed; width: 100%; min-width: 720px; }
+  .src th:nth-child(1) { width: 24%; }
+  .src th:nth-child(2) { width: 34%; }
+  .src th:nth-child(3) { width: 14%; }
+  .src th:nth-child(4) { width: 28%; }
+  .src code { overflow-wrap: anywhere; }
+  .src td { vertical-align: top; }
+  .src code { font-size: 12px; }
+  section.card + section.card { margin-top: 16px; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <div class="crumb"><a href="https://trackingourcash.github.io/">Tracking Our Cash</a> / Calgary</div>
+    <h1>Sources</h1>
+    <p>Every number on this site comes from something the City of Calgary publishes. This page lists each source, what we take from it, and where our copy lives so you can check it yourself.</p>
+    <nav class="tabs" aria-label="Sections">
+      <a href="./">Overview</a><a href="jobs.html">City jobs</a><a href="budget.html">Budget</a><a href="grants.html">Grants</a><a href="wards.html">Wards</a><a href="votes.html">Council votes</a>
+    </nav>
+  </header>
+
+  <section class="card" style="margin-top:24px">
+    <h2>How the data is collected</h2>
+    <p class="sub" style="margin-top:6px">A scheduled job on GitHub runs every morning at 7:00 Calgary time (6:00 in winter). It downloads each source below, saves the result as plain CSV or JSON files in the project's <a href="https://github.com/TrackingOurCash/YYC">GitHub repository</a>, and rebuilds the site. Every change is a commit, so the repository's history shows what each source said on each day. The code for each step is linked in the tables.</p>
+  </section>
+
+  <section class="card">
+    <h2>City jobs</h2>
+    <div class="table-wrap">
+      <table class="src">
+        <thead><tr><th>Source</th><th>What we take from it</th><th>How often</th><th>Our copy</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><a href="https://www.calgary.ca/careers.html">City of Calgary careers page</a><br><span class="sub">calgary.ca, web page</span></td>
+            <td>Every open posting: title, job category, closing date and link</td>
+            <td>Daily</td>
+            <td><a href="https://github.com/TrackingOurCash/YYC/blob/main/data/jobs/postings.csv"><code>data/jobs/postings.csv</code></a>, daily copies in <a href="https://github.com/TrackingOurCash/YYC/tree/main/data/jobs/snapshots"><code>data/jobs/snapshots/</code></a><br>Code: <a href="https://github.com/TrackingOurCash/YYC/blob/main/collectors/jobs.py"><code>collectors/jobs.py</code></a></td>
+          </tr>
+          <tr>
+            <td>City job posting pages<br><span class="sub">recruiting.calgary.ca, one page per posting</span></td>
+            <td>Department, union, pay range, weekly hours, and how many permanent and temporary positions, from each posting's "Position and Pay Information" section</td>
+            <td>Daily, while a posting is open</td>
+            <td>Same file as above<br>Code: <a href="https://github.com/TrackingOurCash/YYC/blob/main/collectors/jobs.py"><code>collectors/jobs.py</code></a></td>
+          </tr>
+          <tr>
+            <td><a href="https://web.archive.org/web/2024*/calgary.ca/careers.html">Internet Archive copies of the careers page</a><br><span class="sub">web.archive.org (Wayback Machine)</span></td>
+            <td>Postings from January 2024 until daily collection started, dated by the first archived copy that lists them; pay and positions where the posting's own page was also archived</td>
+            <td>Once, as a backfill</td>
+            <td>Rows marked <code>source=archive</code> in <code>data/jobs/postings.csv</code><br>Code: <a href="https://github.com/TrackingOurCash/YYC/blob/main/scripts/backfill_jobs_from_archive.py"><code>scripts/backfill_jobs_from_archive.py</code></a></td>
+          </tr>
+          <tr>
+            <td><a href="https://data.calgary.ca/d/9bze-mzx6">Compensation Disclosure List</a><br><span class="sub">Open Calgary, dataset 9bze-mzx6</span></td>
+            <td>The salary range for every City position title, 2014 onwards, used to estimate pay when a posting doesn't show it</td>
+            <td>Daily (the City updates it yearly)</td>
+            <td><a href="https://github.com/TrackingOurCash/YYC/blob/main/data/jobs/compensation.csv"><code>data/jobs/compensation.csv</code></a><br>Code: <a href="https://github.com/TrackingOurCash/YYC/blob/main/collectors/compensation.py"><code>collectors/compensation.py</code></a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Budget</h2>
+    <div class="table-wrap">
+      <table class="src">
+        <thead><tr><th>Source</th><th>What we take from it</th><th>How often</th><th>Our copy</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><a href="https://data.calgary.ca/d/fqax-i3nz">Calgary Open Budget</a><br><span class="sub">Open Calgary, dataset fqax-i3nz</span></td>
+            <td>Operating and capital budget by department, business unit and year from the 2023–2026 Service Plans and Budgets, with actual capital spending for 2023 and 2024</td>
+            <td>Daily (the City updates it yearly)</td>
+            <td><a href="https://github.com/TrackingOurCash/YYC/blob/main/data/budget/open_budget.csv"><code>data/budget/open_budget.csv</code></a><br>Code: <a href="https://github.com/TrackingOurCash/YYC/blob/main/collectors/budget.py"><code>collectors/budget.py</code></a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Grants</h2>
+    <div class="table-wrap">
+      <table class="src">
+        <thead><tr><th>Source</th><th>What we take from it</th><th>How often</th><th>Our copy</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><a href="https://www.calgary.ca/our-finances/civic-partners-funding.html">Civic Partners funding</a><br><span class="sub">calgary.ca, web page</span></td>
+            <td>Operating, capital, community safety and innovation grants to each Civic Partner, by year</td>
+            <td>Daily (the City updates it yearly)</td>
+            <td rowspan="2"><a href="https://github.com/TrackingOurCash/YYC/blob/main/data/grants/grants.csv"><code>data/grants/grants.csv</code></a><br>Code: <a href="https://github.com/TrackingOurCash/YYC/blob/main/collectors/grants.py"><code>collectors/grants.py</code></a></td>
+          </tr>
+          <tr>
+            <td><a href="https://www.calgary.ca/social-services/funding/organization-allocations.html">FCSS funding allocations</a><br><span class="sub">calgary.ca, web page</span></td>
+            <td>Family &amp; Community Support Services funding to each agency and program, 2021 onwards</td>
+            <td>Daily (the City updates it each funding cycle)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Wards</h2>
+    <div class="table-wrap">
+      <table class="src">
+        <thead><tr><th>Source</th><th>What we take from it</th><th>How often</th><th>Our copy</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>Ward budget and expenditure disclosures<br><span class="sub">calgary.ca, one PDF per ward per year, e.g. <a href="https://www.calgary.ca/content/dam/www/citycouncil/documents/expenses-2026/ward-01-budget-and-expenditure-2026.pdf">Ward 1, 2026</a></span></td>
+            <td>Each ward office's budget, total spending (salaries included) and every itemized expense with vendor and reason, 2024 onwards</td>
+            <td>Daily (the City updates them through the year)</td>
+            <td><a href="https://github.com/TrackingOurCash/YYC/blob/main/data/wards/ward_budgets.csv"><code>data/wards/ward_budgets.csv</code></a>, <a href="https://github.com/TrackingOurCash/YYC/blob/main/data/wards/ward_expenses.csv"><code>data/wards/ward_expenses.csv</code></a><br>Code: <a href="https://github.com/TrackingOurCash/YYC/blob/main/collectors/ward_expenses.py"><code>collectors/ward_expenses.py</code></a></td>
+          </tr>
+          <tr>
+            <td><a href="https://data.calgary.ca/d/tz8z-hyaz">Ward Boundaries</a><br><span class="sub">Open Calgary, dataset tz8z-hyaz</span></td>
+            <td>The shape of each of the 14 wards, for the map, and its councillor</td>
+            <td>Daily</td>
+            <td><a href="https://github.com/TrackingOurCash/YYC/blob/main/data/wards/ward_boundaries.geojson"><code>data/wards/ward_boundaries.geojson</code></a><br>Code: <a href="https://github.com/TrackingOurCash/YYC/blob/main/collectors/ward_boundaries.py"><code>collectors/ward_boundaries.py</code></a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Council votes</h2>
+    <div class="table-wrap">
+      <table class="src">
+        <thead><tr><th>Source</th><th>What we take from it</th><th>How often</th><th>Our copy</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><a href="https://data.calgary.ca/d/ruq3-99hx">Council and Committee Votes</a><br><span class="sub">Open Calgary, dataset ruq3-99hx</span></td>
+            <td>Every recorded vote at council and committee meetings since October 7, 2020: meeting, date, motion text, result, and each member's vote</td>
+            <td>Daily</td>
+            <td><a href="https://github.com/TrackingOurCash/YYC/blob/main/data/votes/motions.csv"><code>data/votes/motions.csv</code></a>, <a href="https://github.com/TrackingOurCash/YYC/blob/main/data/votes/ballots.csv"><code>data/votes/ballots.csv</code></a><br>Code: <a href="https://github.com/TrackingOurCash/YYC/blob/main/collectors/votes.py"><code>collectors/votes.py</code></a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer>
+    <p>How each page turns these into totals is explained under "How the numbers work" at the bottom of that page. Something missing or wrong? Open an issue on <a href="https://github.com/TrackingOurCash/YYC/issues">GitHub</a>.</p>
+  </footer>
+</main>
+</body>
+</html>

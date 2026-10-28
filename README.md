@@ -69,4 +69,4 @@ The GitHub Action in `.github/workflows/collect.yml` runs all of these every day
 
 ## Dashboard
 
-`site/` is a static site with no build step: `index.html` (overview), `jobs.html`, `budget.html`, `grants.html`, `wards.html` and `votes.html`, sharing `assets/site.css` and `assets/common.js`. Each page reads its JSON from `site/data/` and works out every total in the browser, so a page's filters apply to its totals, charts and table together. To preview it locally, run `python -m http.server -d site` and open http://localhost:8000.
+`site/` is a static site with no build step: `index.html` (overview), `jobs.html`, `budget.html`, `grants.html`, `wards.html`, `votes.html` and `sources.html` (every source, linked from each page's footer), sharing `assets/site.css` and `assets/common.js`. Each page reads its JSON from `site/data/` and works out every total in the browser, so a page's filters apply to its totals, charts and table together. To preview it locally, run `python -m http.server -d site` and open http://localhost:8000.

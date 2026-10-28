@@ -15,8 +15,9 @@ it can:
   up to TRIES copies are tried per posting, earliest first.
 
 Rows are merged into data/jobs/postings.csv with source=archive. Rows the
-daily collector already has are left alone, except that an archive row
-missing its details gets them when a later run finds them. Safe to re-run.
+daily collector already has are left alone, except that a row missing its
+details, or read before parse_detail last changed (jobs.DETAILS_VERSION),
+gets them from an archived copy when a run finds one. Safe to re-run.
 
 Usage: python scripts/backfill_jobs_from_archive.py [--since 2026-01-01]
 """
@@ -100,8 +101,8 @@ def main() -> None:
     details: dict[str, dict] = {}
     tried = 0
     for job_id, caps in sorted(detail_caps.items()):
-        if job_id in rows and rows[job_id].get("details_fetched"):
-            continue
+        if job_id in rows and rows[job_id].get("details_fetched") and rows[job_id].get("details_version") == jobs.DETAILS_VERSION:
+            continue  # already read under the current rules
         if job_id not in rows and job_id not in found:
             continue  # no listing entry, so no title to show
         tried += 1

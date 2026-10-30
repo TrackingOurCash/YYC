@@ -1,14 +1,14 @@
 {
- "generated": "2026-10-29",
+ "generated": "2026-10-30",
  "tracking_since": "2024-01-05",
  "total": {
-  "postings": 3152,
-  "positions": 3473,
+  "postings": 3155,
+  "positions": 3477,
   "permanent": 315,
-  "temporary": 317,
+  "temporary": 321,
   "unknown_type": 2841,
-  "est_annual_cost": 160917332,
-  "with_pay": 1423
+  "est_annual_cost": 161611748,
+  "with_pay": 1429
  },
  "by_month": {
   "2024-01": {
@@ -224,8 +224,8 @@
    "permanent": 25,
    "temporary": 19,
    "unknown_type": 79,
-   "est_annual_cost": 8159216,
-   "with_pay": 56
+   "est_annual_cost": 8257496,
+   "with_pay": 57
   },
   "2026-05": {
    "postings": 98,
@@ -242,7 +242,7 @@
    "permanent": 0,
    "temporary": 0,
    "unknown_type": 123,
-   "est_annual_cost": 6344448,
+   "est_annual_cost": 6345990,
    "with_pay": 63
   },
   "2026-07": {
@@ -273,13 +273,13 @@
    "with_pay": 68
   },
   "2026-10": {
-   "postings": 119,
-   "positions": 155,
+   "postings": 122,
+   "positions": 159,
    "permanent": 64,
-   "temporary": 43,
+   "temporary": 47,
    "unknown_type": 48,
-   "est_annual_cost": 12367166,
-   "with_pay": 86
+   "est_annual_cost": 12961760,
+   "with_pay": 91
   }
  },
  "by_category": {
@@ -302,13 +302,13 @@
    "with_pay": 24
   },
   "Business/Customer Support": {
-   "postings": 358,
-   "positions": 389,
+   "postings": 360,
+   "positions": 392,
    "permanent": 34,
-   "temporary": 54,
+   "temporary": 57,
    "unknown_type": 301,
-   "est_annual_cost": 22140827,
-   "with_pay": 205
+   "est_annual_cost": 22442123,
+   "with_pay": 207
   },
   "Science/Technical": {
    "postings": 203,
@@ -365,13 +365,13 @@
    "with_pay": 43
   },
   "Trades": {
-   "postings": 103,
-   "positions": 108,
+   "postings": 104,
+   "positions": 109,
    "permanent": 9,
-   "temporary": 4,
+   "temporary": 5,
    "unknown_type": 95,
-   "est_annual_cost": 4131657,
-   "with_pay": 31
+   "est_annual_cost": 4524777,
+   "with_pay": 35
   },
   "Finance/Taxation": {
    "postings": 79,
@@ -588,8 +588,8 @@
    "permanent": 1,
    "temporary": 0,
    "unknown_type": 2841,
-   "est_annual_cost": 110685603,
-   "with_pay": 1129
+   "est_annual_cost": 110981985,
+   "with_pay": 1132
   },
   "Recreation and Social Programs": {
    "postings": 32,
@@ -654,6 +654,15 @@
    "est_annual_cost": 1579980,
    "with_pay": 12
   },
+  "Human Resources": {
+   "postings": 10,
+   "positions": 16,
+   "permanent": 4,
+   "temporary": 12,
+   "unknown_type": 0,
+   "est_annual_cost": 1584006,
+   "with_pay": 10
+  },
   "Community Planning": {
    "postings": 10,
    "positions": 24,
@@ -671,15 +680,6 @@
    "unknown_type": 0,
    "est_annual_cost": 1189918,
    "with_pay": 10
-  },
-  "Human Resources": {
-   "postings": 9,
-   "positions": 14,
-   "permanent": 4,
-   "temporary": 10,
-   "unknown_type": 0,
-   "est_annual_cost": 1387464,
-   "with_pay": 9
   },
   "Climate and Environment": {
    "postings": 9,
@@ -798,6 +798,15 @@
    "est_annual_cost": 430444,
    "with_pay": 4
   },
+  "Fleet and Inventory": {
+   "postings": 3,
+   "positions": 4,
+   "permanent": 1,
+   "temporary": 3,
+   "unknown_type": 0,
+   "est_annual_cost": 487895,
+   "with_pay": 3
+  },
   "City Clerk's Office": {
    "postings": 3,
    "positions": 8,
@@ -842,15 +851,6 @@
    "unknown_type": 0,
    "est_annual_cost": 0,
    "with_pay": 0
-  },
-  "Fleet and Inventory": {
-   "postings": 2,
-   "positions": 3,
-   "permanent": 1,
-   "temporary": 2,
-   "unknown_type": 0,
-   "est_annual_cost": 389615,
-   "with_pay": 2
   },
   "Environmental Risk and Resilience": {
    "postings": 2,
@@ -950,6 +950,15 @@
    "unknown_type": 0,
    "est_annual_cost": 643873,
    "with_pay": 2
+  },
+  "Operational Excellence - Operational Services": {
+   "postings": 1,
+   "positions": 1,
+   "permanent": 0,
+   "temporary": 1,
+   "unknown_type": 0,
+   "est_annual_cost": 103212,
+   "with_pay": 1
   },
   "Waste & Recycling Services": {
    "postings": 1,

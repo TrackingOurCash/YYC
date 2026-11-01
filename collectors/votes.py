@@ -8,10 +8,14 @@ type, resolution text and result (see group_motions).
 Writes two tables:
   data/votes/motions.csv  one row per motion
   data/votes/ballots.csv  one row per member per motion
+
+Meetings already in those tables but missing from the City's file are kept
+(see keep_missing_meetings).
 """
 
 from __future__ import annotations
 
+import csv
 import hashlib
 import json
 import re
@@ -91,11 +95,35 @@ def group_motions(rows: list[dict]) -> tuple[list[dict], list[dict]]:
     return motions, ballots
 
 
+def read_csv(path: Path) -> list[dict]:
+    if not path.exists():
+        return []
+    with path.open(newline="") as f:
+        return list(csv.DictReader(f))
+
+
+def keep_missing_meetings(motions: list[dict], ballots: list[dict]) -> int:
+    """Add back meetings from our copy that the City's file leaves out.
+
+    On 2026-10-30 the City's refresh replaced the dataset with one month of
+    votes instead of the full record since 2020. The City's rows still win
+    for any meeting (date and meeting type) they include; earlier meetings
+    they drop are kept from data/votes, so a short refresh can't wipe the
+    history. Returns how many motions were kept this way.
+    """
+    have = {(m["date"], m["meeting_type"]) for m in motions}
+    kept = {m["id"]: m for m in read_csv(OUT / "motions.csv") if (m["date"], m["meeting_type"]) not in have}
+    motions += kept.values()
+    ballots += [b for b in read_csv(OUT / "ballots.csv") if b["motion_id"] in kept]
+    return len(kept)
+
+
 def run() -> dict:
     rows = fetch_all(DATASET, **{"$select": ":id,meetingtype,meetingdate,resolution,voter,vote,result"})
     if not rows:
         raise SystemExit("Open Calgary returned no votes.")
     motions, ballots = group_motions(rows)
+    kept = keep_missing_meetings(motions, ballots)
     write_csv(
         OUT / "motions.csv",
         motions,
@@ -108,7 +136,8 @@ def run() -> dict:
     updated = last_updated(DATASET)
     if updated:
         (OUT / "dataset.json").write_text(json.dumps({"city_updated": updated}) + "\n")
-    return {"rows": len(rows), "motions": len(motions), "money_motions": sum(1 for m in motions if m["mentions_money"]), "city_updated": updated}
+    return {"rows": len(rows), "motions": len(motions), "kept_from_our_copy": kept,
+            "money_motions": sum(1 for m in motions if m["mentions_money"]), "city_updated": updated}
 
 
 if __name__ == "__main__":

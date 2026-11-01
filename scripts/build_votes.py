@@ -8,8 +8,9 @@ refer to them by index.
 
 Each motion also gets the phrase, if any, that shows it approves new or
 extra spending: allocating, approving or drawing a dollar amount, a budget
-increase, new one-time or ongoing funding, approving a budget, or an
-amendment that raises an amount. Motions are left out when the words around
+increase, new one-time or ongoing funding, approving a budget, an
+amendment that raises an amount, or approving a growth application with
+the operating funding it needs. Motions are left out when the words around
 the money make it a study or referral, a cut, a swap of money already
 approved, a loan or borrowing, a move into a reserve, or tax relief. The
 rules were checked by hand against every council motion with a dollar
@@ -55,6 +56,10 @@ POSITIVE = [
     re.compile(rf"{AMT}[^.;$]{{0,60}}\bfrom the\b[^.;$]{{0,60}}\b(?:Reserve|Account|surplus)\b", re.I),
     re.compile(rf"\b(?:funding|grant|budget) of {AMT}[^.;$]{{0,30}}\b(?:is|be|are)\s+(?:directed|allocated|provided|granted|approved|committed)\b", re.I),
     re.compile(rf"\b(?:approv\w*|adopt\w*)\b[^.;]{{0,30}}\bapplication\b[^.;$]{{0,150}}\bin the amount of {AMT}", re.I),
+    # Approving a growth application commits the City to fund its services:
+    # "include the required operating funding in the 2028 adjustments to the
+    # 2027-2030 Business Plans and Budgets".
+    re.compile(r"\binclude the required (?:operating|capital)(?: and (?:operating|capital))? funding in\b[^.;]{0,60}\b(?:Budgets?|Business Plans)\b", re.I),
 ]
 # Words up to the money that make it a study, a request or a referral.
 STUDY = re.compile(r"\b(report back|return(?:ing)? to (?:Council|Committee|the)|review|consider\w*|explor\w+|options?|scoping|investigat\w+|prepare|bring forward|advocat\w+|request\w*|refer\w*|lobby|seek|identify|assess\w*|analy\w+|potential|future|if any|the plan for|subject to)\b", re.I)

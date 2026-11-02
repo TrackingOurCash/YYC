@@ -1,14 +1,14 @@
 {
- "generated": "2026-11-01",
+ "generated": "2026-11-02",
  "tracking_since": "2024-01-05",
  "total": {
-  "postings": 3162,
-  "positions": 3486,
+  "postings": 3163,
+  "positions": 3487,
   "permanent": 319,
-  "temporary": 326,
+  "temporary": 327,
   "unknown_type": 2841,
-  "est_annual_cost": 162663834,
-  "with_pay": 1437
+  "est_annual_cost": 162740562,
+  "with_pay": 1438
  },
  "by_month": {
   "2024-01": {
@@ -280,6 +280,15 @@
    "unknown_type": 48,
    "est_annual_cost": 13913984,
    "with_pay": 98
+  },
+  "2026-11": {
+   "postings": 1,
+   "positions": 1,
+   "permanent": 0,
+   "temporary": 1,
+   "unknown_type": 0,
+   "est_annual_cost": 76728,
+   "with_pay": 1
   }
  },
  "by_category": {
@@ -347,13 +356,13 @@
    "with_pay": 61
   },
   "Labour/Operations Support": {
-   "postings": 142,
-   "positions": 231,
+   "postings": 143,
+   "positions": 232,
    "permanent": 42,
-   "temporary": 65,
+   "temporary": 66,
    "unknown_type": 124,
-   "est_annual_cost": 11126406,
-   "with_pay": 58
+   "est_annual_cost": 11203134,
+   "with_pay": 59
   },
   "Engineering Services": {
    "postings": 119,
@@ -610,13 +619,13 @@
    "with_pay": 31
   },
   "Calgary Police Service": {
-   "postings": 20,
-   "positions": 34,
+   "postings": 21,
+   "positions": 35,
    "permanent": 21,
-   "temporary": 13,
+   "temporary": 14,
    "unknown_type": 0,
-   "est_annual_cost": 2433550,
-   "with_pay": 15
+   "est_annual_cost": 2510278,
+   "with_pay": 16
   },
   "Mobility": {
    "postings": 19,

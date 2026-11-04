@@ -1,14 +1,14 @@
 {
- "generated": "2026-11-03",
+ "generated": "2026-11-04",
  "tracking_since": "2024-01-05",
  "total": {
-  "postings": 3168,
-  "positions": 3495,
-  "permanent": 324,
-  "temporary": 330,
+  "postings": 3172,
+  "positions": 3503,
+  "permanent": 330,
+  "temporary": 332,
   "unknown_type": 2841,
-  "est_annual_cost": 163935891,
-  "with_pay": 1445
+  "est_annual_cost": 164520093,
+  "with_pay": 1448
  },
  "by_month": {
   "2024-01": {
@@ -282,13 +282,13 @@
    "with_pay": 98
   },
   "2026-11": {
-   "postings": 6,
-   "positions": 9,
-   "permanent": 5,
-   "temporary": 4,
+   "postings": 10,
+   "positions": 17,
+   "permanent": 11,
+   "temporary": 6,
    "unknown_type": 0,
-   "est_annual_cost": 930377,
-   "with_pay": 6
+   "est_annual_cost": 1514579,
+   "with_pay": 9
   }
  },
  "by_category": {
@@ -311,22 +311,22 @@
    "with_pay": 24
   },
   "Business/Customer Support": {
-   "postings": 362,
-   "positions": 395,
-   "permanent": 34,
-   "temporary": 60,
+   "postings": 364,
+   "positions": 399,
+   "permanent": 37,
+   "temporary": 61,
    "unknown_type": 301,
-   "est_annual_cost": 22726935,
-   "with_pay": 209
+   "est_annual_cost": 23134597,
+   "with_pay": 211
   },
   "Science/Technical": {
-   "postings": 204,
-   "positions": 218,
-   "permanent": 14,
-   "temporary": 18,
+   "postings": 205,
+   "positions": 220,
+   "permanent": 15,
+   "temporary": 19,
    "unknown_type": 186,
-   "est_annual_cost": 14492775,
-   "with_pay": 138
+   "est_annual_cost": 14669315,
+   "with_pay": 139
   },
   "Information Technology": {
    "postings": 165,
@@ -347,9 +347,9 @@
    "with_pay": 82
   },
   "Engineering and Geoscience": {
-   "postings": 149,
-   "positions": 156,
-   "permanent": 39,
+   "postings": 150,
+   "positions": 158,
+   "permanent": 41,
    "temporary": 9,
    "unknown_type": 108,
    "est_annual_cost": 9823405,
@@ -610,13 +610,13 @@
    "with_pay": 33
   },
   "Water Services": {
-   "postings": 31,
-   "positions": 117,
-   "permanent": 48,
-   "temporary": 69,
+   "postings": 32,
+   "positions": 119,
+   "permanent": 49,
+   "temporary": 70,
    "unknown_type": 0,
-   "est_annual_cost": 9589206,
-   "with_pay": 31
+   "est_annual_cost": 9765746,
+   "with_pay": 32
   },
   "Calgary Police Service": {
    "postings": 21,
@@ -637,13 +637,13 @@
    "with_pay": 18
   },
   "Calgary Transit": {
-   "postings": 15,
-   "positions": 19,
+   "postings": 16,
+   "positions": 20,
    "permanent": 15,
-   "temporary": 4,
+   "temporary": 5,
    "unknown_type": 0,
-   "est_annual_cost": 1972277,
-   "with_pay": 15
+   "est_annual_cost": 2070302,
+   "with_pay": 16
   },
   "Capital Planning and Business Services": {
    "postings": 15,
@@ -807,6 +807,15 @@
    "est_annual_cost": 430444,
    "with_pay": 4
   },
+  "Utilities Delivery": {
+   "postings": 3,
+   "positions": 4,
+   "permanent": 4,
+   "temporary": 0,
+   "unknown_type": 0,
+   "est_annual_cost": 290179,
+   "with_pay": 2
+  },
   "Facilities": {
    "postings": 3,
    "positions": 5,
@@ -888,15 +897,6 @@
    "est_annual_cost": 347384,
    "with_pay": 2
   },
-  "Utilities Delivery": {
-   "postings": 2,
-   "positions": 2,
-   "permanent": 2,
-   "temporary": 0,
-   "unknown_type": 0,
-   "est_annual_cost": 290179,
-   "with_pay": 2
-  },
   "Emergency Management & Community Safety": {
    "postings": 2,
    "positions": 32,
@@ -968,6 +968,15 @@
    "unknown_type": 0,
    "est_annual_cost": 643873,
    "with_pay": 2
+  },
+  "Government Relations": {
+   "postings": 1,
+   "positions": 3,
+   "permanent": 3,
+   "temporary": 0,
+   "unknown_type": 0,
+   "est_annual_cost": 309637,
+   "with_pay": 1
   },
   "Operational Excellence - Operational Services": {
    "postings": 1,

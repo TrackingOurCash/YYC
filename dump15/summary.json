@@ -1,0 +1,20 @@
+{
+ "fcss": {
+  "status": 200,
+  "final": "https://www.calgary.ca/social-services/funding/organization-allocations.html",
+  "history": [],
+  "len": 5521152
+ },
+ "civic": {
+  "status": 200,
+  "final": "https://www.calgary.ca/our-finances/civic-partners-funding.html",
+  "history": [],
+  "len": 151493
+ },
+ "fcss_parent": {
+  "status": 200,
+  "final": "https://www.calgary.ca/social-services/funding.html",
+  "history": [],
+  "len": 116810
+ }
+}

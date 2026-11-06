@@ -7,7 +7,8 @@ capital rows name the project after the organization ("Contemporary Calgary
 Arts Society - Phase 3 ..."); the project moves to the funded program column.
 
 When one grant, year and recipient has both an approved budget and an actual
-amount, only the actual is kept.
+amount, only the actual is kept. For each program and year only the City's
+latest listing counts (see latest_listing).
 """
 
 from __future__ import annotations
@@ -46,6 +47,19 @@ def name_key(name: str) -> str:
     return " ".join(words)
 
 
+def latest_listing(rows: list[dict]) -> list[dict]:
+    """For each grant program and year, only the rows from the last time the
+    City's page listed that year. When the page is reworded or corrected
+    (FCSS renamed every funded program in November 2026), the older wording
+    would otherwise count the same money twice. Years the page no longer
+    shows keep their last listing."""
+    latest: dict[tuple, str] = {}
+    for r in rows:
+        k = (r["source"], r["program"], r["year"])
+        latest[k] = max(latest.get(k, ""), r["last_seen"])
+    return [r for r in rows if r["last_seen"] == latest[(r["source"], r["program"], r["year"])]]
+
+
 def split_projects(rows: list[dict]) -> None:
     """Move "Organization - Project" suffixes into funded_program when the
     part before the dash is a recipient in its own right."""
@@ -61,7 +75,7 @@ def split_projects(rows: list[dict]) -> None:
 
 def main() -> None:
     with GRANTS_CSV.open(newline="") as f:
-        rows = list(csv.DictReader(f))
+        rows = latest_listing(list(csv.DictReader(f)))
     split_projects(rows)
 
     # Most recent spelling of each recipient.

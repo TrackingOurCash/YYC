@@ -36,6 +36,17 @@
   </section>
 
   <section class="card">
+    <h2>Is each source working?</h2>
+    <p class="sub" style="margin-top:6px">If a source fails, the daily job tries it three times. If it still fails, the site keeps showing that source's last good data instead of a gap, and this table says so. A source that keeps failing usually means the City changed a page, and it gets fixed.</p>
+    <div class="table-wrap">
+      <table class="src" id="health">
+        <thead><tr><th>Source</th><th>Status</th><th>Last good read</th><th>Last checked</th></tr></thead>
+        <tbody><tr><td colspan="4" class="sub">Loading…</td></tr></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="card">
     <h2>City jobs</h2>
     <div class="table-wrap">
       <table class="src">
@@ -123,7 +134,7 @@
           </tr>
           <tr>
             <td><a href="https://www.calgary.ca/social-services/funding/organization-allocations.html">FCSS funding allocations</a><br><span class="sub">calgary.ca, web page</span></td>
-            <td>Family &amp; Community Support Services funding to each agency and program, 2021 onwards</td>
+            <td>Family &amp; Community Support Services funding to each agency and program, 2021 onwards (the page now starts at 2022; we kept 2021 from earlier reads). When the City rewords or corrects a year, its latest version is what counts.</td>
             <td>Daily (the City updates it each funding cycle)</td>
           </tr>
         </tbody>
@@ -181,5 +192,31 @@
     <p>How each page turns these into totals is explained under "How the numbers work" at the bottom of that page. Something missing or wrong? Open an issue on <a href="https://github.com/TrackingOurCash/YYC/issues">GitHub</a>.</p>
   </footer>
 </main>
+<script>
+  // Each source's last run, from data/status.json (written by scripts/run_source.py).
+  (() => {
+    const day = (d) => (d ? new Date(d + "T12:00").toLocaleDateString("en-CA", { month: "short", day: "numeric", year: "numeric" }) : "–");
+    const body = document.querySelector("#health tbody");
+    fetch("data/status.json", { cache: "no-cache" })
+      .then((r) => (r.ok ? r.json() : {}))
+      .then((status) => {
+        const rows = Object.values(status).sort((a, b) => a.title.localeCompare(b.title));
+        if (!rows.length) { body.innerHTML = '<tr><td colspan="4" class="sub">No runs recorded yet.</td></tr>'; return; }
+        body.replaceChildren(...rows.map((s) => {
+          const tr = document.createElement("tr");
+          const cells = [s.title, "", day(s.last_ok), day(s.last_run)].map((t) => { const td = document.createElement("td"); td.textContent = t; return td; });
+          const state = document.createElement("span");
+          state.className = "result";
+          state.style.setProperty("--dot", s.fails_in_row ? "var(--s2)" : "var(--s1)");
+          state.textContent = s.fails_in_row ? `Failing since ${day(s.failing_since)}, showing earlier data` : "Working";
+          if (s.fails_in_row && s.last_error) state.title = s.last_error;
+          cells[1].append(state);
+          tr.append(...cells);
+          return tr;
+        }));
+      })
+      .catch(() => { body.innerHTML = '<tr><td colspan="4" class="sub">Status not available.</td></tr>'; });
+  })();
+</script>
 </body>
 </html>

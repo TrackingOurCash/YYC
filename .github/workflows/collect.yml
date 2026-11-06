@@ -24,35 +24,40 @@ jobs:
           python-version: "3.12"
           cache: pip
       - run: pip install -r requirements.txt
-      # Each step runs even if an earlier one failed, so one source being down
-      # doesn't lose the day's data from the others; the run still shows as failed.
+      # Each source runs through scripts/run_source.py: up to three tries, and if
+      # they all fail, its last good data is put back and the run carries on with
+      # a warning. The last step turns the run red once a source has failed three
+      # runs in a row, since that usually means a page changed and needs a fix.
       - name: Job postings
         if: ${{ !cancelled() }}
-        run: python collectors/jobs.py
+        run: python scripts/run_source.py jobs "City job postings" --keep data/jobs/postings.csv data/jobs/snapshots -- python collectors/jobs.py
       - name: Budget (Open Calgary)
         if: ${{ !cancelled() }}
-        run: python collectors/budget.py
+        run: python scripts/run_source.py budget "Budget (Open Calgary)" --keep data/budget -- python collectors/budget.py
       - name: Council votes (Open Calgary)
         if: ${{ !cancelled() }}
-        run: python collectors/votes.py
+        run: python scripts/run_source.py votes "Council votes (Open Calgary)" --keep data/votes/motions.csv data/votes/ballots.csv data/votes/dataset.json -- python collectors/votes.py
       - name: Council votes since the City's last update (meeting minutes)
         if: ${{ !cancelled() }}
-        run: python collectors/votes_minutes.py
+        run: python scripts/run_source.py votes_minutes "Council votes from meeting minutes" --keep data/votes/minutes_motions.csv data/votes/minutes_ballots.csv -- python collectors/votes_minutes.py
       - name: Salary list (Open Calgary)
         if: ${{ !cancelled() }}
-        run: python collectors/compensation.py
-      - name: Civic Partners and FCSS grants
+        run: python scripts/run_source.py compensation "Salary list (Open Calgary)" --keep data/jobs/compensation.csv -- python collectors/compensation.py
+      - name: Civic Partners grants
         if: ${{ !cancelled() }}
-        run: python collectors/grants.py
+        run: python scripts/run_source.py grants_civic "Civic Partners grants" --keep data/grants -- python collectors/grants.py --only "Civic Partners"
+      - name: FCSS grants
+        if: ${{ !cancelled() }}
+        run: python scripts/run_source.py grants_fcss "FCSS grants" --keep data/grants -- python collectors/grants.py --only FCSS
       - name: Ward boundaries (Open Calgary)
         if: ${{ !cancelled() }}
-        run: python collectors/ward_boundaries.py
+        run: python scripts/run_source.py ward_boundaries "Ward boundaries (Open Calgary)" --keep data/wards/ward_boundaries.geojson -- python collectors/ward_boundaries.py
       - name: Ward office budgets and expenses
         if: ${{ !cancelled() }}
-        run: python collectors/ward_expenses.py
+        run: python scripts/run_source.py ward_expenses "Ward office budgets and expenses" --keep data/wards/ward_budgets.csv data/wards/ward_expenses.csv -- python collectors/ward_expenses.py
       - name: City staff and payroll (annual reports and budget)
         if: ${{ !cancelled() }}
-        run: python collectors/workforce.py
+        run: python scripts/run_source.py workforce "City staff and payroll" --keep data/workforce -- python collectors/workforce.py
       - name: Build jobs data
         if: ${{ !cancelled() }}
         run: python scripts/build_jobs_summary.py
@@ -85,3 +90,6 @@ jobs:
             for i in 1 2 3; do git pull --rebase origin main && git push && exit 0; sleep 10; done
             exit 1
           fi
+      - name: Check for sources broken several runs in a row
+        if: ${{ !cancelled() }}
+        run: python scripts/check_sources.py

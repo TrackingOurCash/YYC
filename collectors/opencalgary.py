@@ -40,7 +40,16 @@ def last_updated(dataset_id: str) -> str | None:
     return dt.datetime.fromtimestamp(ts, dt.timezone.utc).date().isoformat() if ts else None
 
 
-def write_csv(path: Path, rows: list[dict], fields: list[str], sort_key=None) -> None:
+def write_csv(path: Path, rows: list[dict], fields: list[str], sort_key=None, min_share: float = 0.9) -> None:
+    """Write rows to a CSV, unless the file already holds many more: under
+    min_share of its rows means the source came back cut short (as Open
+    Calgary's votes did on 2026-10-30), so the old file is kept and this
+    stops. Pass min_share=0 for files that can rightly empty out."""
+    if min_share and path.exists():
+        with path.open(newline="") as f:
+            before = sum(1 for _ in csv.reader(f)) - 1
+        if len(rows) < before * min_share:
+            raise SystemExit(f"{path.name}: the source gave {len(rows)} rows, down from {before}; keeping the earlier file.")
     path.parent.mkdir(parents=True, exist_ok=True)
     if sort_key:
         rows = sorted(rows, key=sort_key)

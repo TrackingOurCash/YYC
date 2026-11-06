@@ -148,8 +148,9 @@ def run(since: str | None = None) -> dict:
         time.sleep(1)
     write_csv(OUT / "minutes_motions.csv", motions,
               ["id", "date", "meeting_type", "result", "mentions_money", "largest_amount", "resolution", "minutes_url"],
-              sort_key=lambda m: (m["date"], m["meeting_type"], m["id"]))
-    write_csv(OUT / "minutes_ballots.csv", ballots, ["motion_id", "voter", "vote"], sort_key=lambda b: (b["motion_id"], b["voter"]))
+              sort_key=lambda m: (m["date"], m["meeting_type"], m["id"]), min_share=0)
+    # Empties out whenever the City's dataset catches up with the minutes.
+    write_csv(OUT / "minutes_ballots.csv", ballots, ["motion_id", "voter", "vote"], sort_key=lambda b: (b["motion_id"], b["voter"]), min_share=0)
     unmatched = sorted({b["voter"] for b in ballots} - set(by_surname.values()))
     return {"after": start, "meetings": read, "motions": len(motions), "unmatched_names": unmatched}
 

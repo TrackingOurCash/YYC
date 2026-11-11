@@ -2,7 +2,11 @@ name: Collect Calgary data
 
 on:
   schedule:
-    - cron: "0 13 * * *" # 7:00 Calgary time (MDT) / 6:00 (MST)
+    # Off the top of the hour, when GitHub is busiest and most likely to drop a
+    # scheduled run (none fired Nov 7-11, 2026). The afternoon run is a backup;
+    # when the morning one worked it finds little or nothing new.
+    - cron: "23 13 * * *" # 7:23 Calgary time (MDT) / 6:23 (MST)
+    - cron: "41 20 * * *" # 14:41 / 13:41
   workflow_dispatch:
 
 permissions:

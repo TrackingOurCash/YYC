@@ -44,6 +44,7 @@
         <tbody><tr><td colspan="4" class="sub">Loading…</td></tr></tbody>
       </table>
     </div>
+    <p class="sub" id="health-stale" hidden></p>
   </section>
 
   <section class="card">
@@ -202,6 +203,13 @@
       .then((status) => {
         const rows = Object.values(status).sort((a, b) => a.title.localeCompare(b.title));
         if (!rows.length) { body.innerHTML = '<tr><td colspan="4" class="sub">No runs recorded yet.</td></tr>'; return; }
+        // The daily job itself can stop (GitHub skipped it Nov 7-11, 2026); say so if it hasn't run lately.
+        const lastRun = rows.reduce((m, s) => (s.last_run > m ? s.last_run : m), "");
+        if (lastRun && Date.now() - new Date(lastRun + "T12:00").getTime() > 2.5 * 864e5) {
+          const note = document.getElementById("health-stale");
+          note.textContent = `The daily update last ran on ${day(lastRun)}, so everything on the site is as of that day until it runs again.`;
+          note.hidden = false;
+        }
         body.replaceChildren(...rows.map((s) => {
           const tr = document.createElement("tr");
           const cells = [s.title, "", day(s.last_ok), day(s.last_run)].map((t) => { const td = document.createElement("td"); td.textContent = t; return td; });

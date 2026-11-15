@@ -53,12 +53,6 @@ jobs:
       - name: FCSS grants
         if: ${{ !cancelled() }}
         run: python scripts/run_source.py grants_fcss "FCSS grants" --keep data/grants -- python collectors/grants.py --only FCSS
-      - name: Ward boundaries (Open Calgary)
-        if: ${{ !cancelled() }}
-        run: python scripts/run_source.py ward_boundaries "Ward boundaries (Open Calgary)" --keep data/wards/ward_boundaries.geojson -- python collectors/ward_boundaries.py
-      - name: Ward office budgets and expenses
-        if: ${{ !cancelled() }}
-        run: python scripts/run_source.py ward_expenses "Ward office budgets and expenses" --keep data/wards/ward_budgets.csv data/wards/ward_expenses.csv -- python collectors/ward_expenses.py
       - name: City staff and payroll (annual reports and budget)
         if: ${{ !cancelled() }}
         run: python scripts/run_source.py workforce "City staff and payroll" --keep data/workforce -- python collectors/workforce.py
@@ -74,9 +68,6 @@ jobs:
       - name: Build grants data
         if: ${{ !cancelled() }}
         run: python scripts/build_grants.py
-      - name: Build wards data
-        if: ${{ !cancelled() }}
-        run: python scripts/build_wards.py
       - name: Build staff data
         if: ${{ !cancelled() }}
         run: python scripts/build_workforce.py

@@ -14,8 +14,6 @@ Part of [Tracking Our Cash](https://trackingourcash.github.io). The Calgary dash
 | Council and committee votes since October 2020 | [Council and Committee Votes](https://data.calgary.ca/d/ruq3-99hx) on Open Calgary | Daily |
 | Civic Partners grants (operating, capital, community safety, innovation) by organization | [Civic Partners funding](https://www.calgary.ca/our-finances/civic-partners-funding.html) on calgary.ca | Daily (the City updates it about once a year) |
 | FCSS grants by organization and funded program, 2021 onwards | [FCSS funding allocations](https://www.calgary.ca/social-services/funding/organization-allocations.html) on calgary.ca | Daily (the City updates it each funding cycle) |
-| Each ward office's budget, spending and itemized expenses, 2024 onwards | Ward budget and expenditure reports (PDF) on calgary.ca, e.g. [Ward 1, 2026](https://www.calgary.ca/content/dam/www/citycouncil/documents/expenses-2026/ward-01-budget-and-expenditure-2026.pdf) | Daily (the City updates them through the year) |
-| Ward boundaries and councillors | [Ward Boundaries](https://data.calgary.ca/d/tz8z-hyaz) on Open Calgary | Daily |
 | City full-time positions and payroll (salaries, wages and benefits), 2006 onwards | [Annual Financial Reports](https://www.calgary.ca/our-finances/annual-reports.html) (PDF) on calgary.ca, 2010 onwards | Checked daily (a new report comes out each spring) |
 | Budgeted full-time positions by department and business unit, 2023 to 2026 | [2026 Budget as approved](https://www.calgary.ca/content/dam/www/cfod/finance/documents/plans-budgets-and-financial-reports/2023-2026-service-plans-budgets/2026-budget-as-approved-dec-3-2025.pdf) (PDF) on calgary.ca | Checked daily for new budget documents |
 
@@ -45,10 +43,6 @@ Postings from before the collector started are rebuilt by `scripts/backfill_jobs
 
 `collectors/grants.py` reads the tables on the Civic Partners and FCSS pages into `data/grants/grants.csv`, one row per organization, grant, funded program, year and figure (actual, approved budget or allocated). The pages only show the current funding years, so rows that drop off the page are kept, with the first and last day each was seen. `scripts/build_grants.py` writes `site/data/grants.json`: it merges recipient names that are spelled differently from year to year, moves capital project names into the funded program column, and keeps the actual amount where a year has both a budget and an actual.
 
-## Wards
-
-`collectors/ward_expenses.py` downloads each ward office's "Ward Budget & Expenditure Disclosure" PDF and reads it with pdfplumber, using the position of each column heading to split every expense line into account, month, amount, vendor and reason. It writes `data/wards/ward_budgets.csv` (budget, total spent including salaries, and period, one row per ward and year) and `data/wards/ward_expenses.csv` (one row per itemized expense). Each report covers the year to date, so the current and previous year are re-read whenever the PDF changes. `collectors/ward_boundaries.py` saves the ward map from Open Calgary. `scripts/build_wards.py` projects and simplifies the map, groups expense accounts into categories, and writes `site/data/wards.json`.
-
 ## City staff and payroll
 
 `collectors/workforce.py` reads two kinds of PDF with pdfplumber. From each Annual Financial Report it takes the five-year "Expenses by object" line for salaries, wages and benefits and the "Municipal full-time equivalents" lines (City, related authorities, and per 1,000 people), writing `data/workforce/annual_reports.csv`. Reports from 2018 on are found on the annual reports page; older ones are at the same address pattern. From the budget it takes the full-time equivalent tables by department, business unit and staff type, writing `data/workforce/budget_fte.csv`; it also checks the 2026 and 2027 budget pages for new PDFs. Every document read is listed in `data/workforce/documents.csv` and isn't read again; delete its row to re-read it. `scripts/build_workforce.py` keeps the newest report's figure for each year and writes `site/data/workforce.json`.
@@ -62,14 +56,11 @@ python collectors/budget.py
 python collectors/votes.py
 python collectors/compensation.py
 python collectors/grants.py
-python collectors/ward_boundaries.py
-python collectors/ward_expenses.py
 python collectors/workforce.py
 python scripts/build_jobs_summary.py
 python scripts/build_budget.py
 python scripts/build_votes.py
 python scripts/build_grants.py
-python scripts/build_wards.py
 python scripts/build_workforce.py
 ```
 
@@ -77,4 +68,4 @@ The GitHub Action in `.github/workflows/collect.yml` runs all of these every day
 
 ## Dashboard
 
-`site/` is a static site with no build step: `index.html` (overview), `jobs.html`, `staff.html`, `budget.html`, `grants.html`, `wards.html`, `votes.html` and `sources.html` (every source, linked from each page's footer), sharing `assets/site.css` and `assets/common.js`. Each page reads its JSON from `site/data/` and works out every total in the browser, so a page's filters apply to its totals, charts and table together. To preview it locally, run `python -m http.server -d site` and open http://localhost:8000.
+`site/` is a static site with no build step: `index.html` (overview), `jobs.html`, `staff.html`, `budget.html`, `grants.html`, `votes.html` and `sources.html` (every source, linked from each page's footer), sharing `assets/site.css` and `assets/common.js`. Each page reads its JSON from `site/data/` and works out every total in the browser, so a page's filters apply to its totals, charts and table together. To preview it locally, run `python -m http.server -d site` and open http://localhost:8000.

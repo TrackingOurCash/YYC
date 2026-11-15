@@ -1,0 +1,81 @@
+[
+ {
+  "date": "2026/11/10 09:30:00",
+  "meeting": "Regular Meeting of Council",
+  "title": "Day 1 Summary of Proceedings",
+  "url": "/FileStream.ashx?DocumentId=377669",
+  "has_minutes": false,
+  "file": "0.pdf"
+ },
+ {
+  "date": "2025/12/03 10:00:00",
+  "meeting": "Regular Meeting of Council",
+  "title": "Day 9 Summary of Proceedings",
+  "url": "/FileStream.ashx?DocumentId=340990",
+  "has_minutes": false,
+  "file": "1.pdf"
+ },
+ {
+  "date": "2025/11/25 09:30:00",
+  "meeting": "Regular Meeting of Council",
+  "title": "Day 3 Summary of Proceedings",
+  "url": "/FileStream.ashx?DocumentId=340233",
+  "has_minutes": false,
+  "file": "2.pdf"
+ },
+ {
+  "date": "2025/11/10 09:30:00",
+  "meeting": "Regular Meeting of Council",
+  "title": "Day 1 Summary of Proceedings",
+  "url": "/FileStream.ashx?DocumentId=340148",
+  "has_minutes": true
+ },
+ {
+  "date": "2025/11/28 09:30:00",
+  "meeting": "Regular Meeting of Council",
+  "title": "Day 6 Summary of Proceedings",
+  "url": "/FileStream.ashx?DocumentId=340256",
+  "has_minutes": false,
+  "file": "3.pdf"
+ },
+ {
+  "date": "2025/11/26 09:30:00",
+  "meeting": "Regular Meeting of Council",
+  "title": "Day 4 Summary of Proceedings",
+  "url": "/FileStream.ashx?DocumentId=340242",
+  "has_minutes": false,
+  "file": "4.pdf"
+ },
+ {
+  "date": "2025/12/01 10:30:00",
+  "meeting": "Regular Meeting of Council",
+  "title": "Day 7 Summary of Proceedings",
+  "url": "/FileStream.ashx?DocumentId=340197",
+  "has_minutes": false,
+  "file": "5.pdf"
+ },
+ {
+  "date": "2025/11/24 09:30:00",
+  "meeting": "Regular Meeting of Council",
+  "title": "Day 2 Summary of Proceedings",
+  "url": "/FileStream.ashx?DocumentId=340217",
+  "has_minutes": false,
+  "file": "6.pdf"
+ },
+ {
+  "date": "2025/11/27 09:30:00",
+  "meeting": "Regular Meeting of Council",
+  "title": "Day 5 Summary of Proceedings",
+  "url": "/FileStream.ashx?DocumentId=340249",
+  "has_minutes": false,
+  "file": "7.pdf"
+ },
+ {
+  "date": "2025/12/02 10:00:00",
+  "meeting": "Regular Meeting of Council",
+  "title": "Day 8 Summary of Proceedings",
+  "url": "/FileStream.ashx?DocumentId=340988",
+  "has_minutes": false,
+  "file": "8.pdf"
+ }
+]

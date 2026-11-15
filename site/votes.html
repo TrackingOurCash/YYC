@@ -13,7 +13,7 @@
   <header>
     <div class="crumb"><a href="https://trackingourcash.github.io/">Tracking Our Cash</a> / Calgary</div>
     <h1>Calgary council votes</h1>
-    <p>Every recorded council and committee vote since electronic voting began in October 2020, from the City's <a href="https://data.calgary.ca/d/ruq3-99hx">Council and Committee Votes</a> data. <span id="lag"></span></p>
+    <p>Every recorded council and committee vote since electronic voting began in October 2020, from the City's <a href="https://data.calgary.ca/d/ruq3-99hx">Council and Committee Votes</a> data, plus this term's public hearings and committees from the published minutes. <span id="lag"></span></p>
     <nav class="tabs" aria-label="Sections">
       <a href="./">Overview</a><a href="jobs.html">City jobs</a><a href="staff.html">City staff</a><a href="budget.html">Budget</a><a href="grants.html">Grants</a><a href="votes.html" aria-current="page">Council votes</a>
     </nav>
@@ -104,6 +104,7 @@
       <button class="load-more" id="reset" type="button" style="margin:0">Reset / show all</button>
     </div>
     <p class="sub" id="t-sub"></p>
+    <div class="seat-legend" aria-hidden="true" style="margin:-4px 0 10px"><span><i class="yes"></i>Yes</span><span><i class="no"></i>No</span><span><i class="away"></i>Absent</span><span>Seats show each member's vote, Yes from the left and No from the right. Hover one for names.</span></div>
     <div class="table-wrap">
       <table>
         <thead><tr id="t-head"></tr></thead>
@@ -122,7 +123,7 @@
       <li>The City's data has no motion number. Votes are grouped by meeting, date, wording and result, so two identically worded motions with the same result in one meeting may be counted as one.</li>
       <li>Council terms start at the general elections of October 18, 2021 and October 20, 2025. Votes before October 7, 2020 aren't in the data; see the <a href="https://www.calgary.ca/agendaminutes">City's minutes</a> for those.</li>
     </ul>
-    <p>Data: <a href="https://data.calgary.ca/d/ruq3-99hx">Council and Committee Votes</a> on Open Calgary. We check it daily, but the City only adds new votes about once a month<span id="city-updated"></span>, so newer meetings come from the minutes on the City's <a href="https://pub-calgary.escribemeetings.com/">meetings portal</a> until it does. Code: <a href="https://github.com/TrackingOurCash/YYC">github.com/TrackingOurCash/YYC</a>. Latest vote in the data: <span id="latest">–</span>.</p>
+    <p>Data: <a href="https://data.calgary.ca/d/ruq3-99hx">Council and Committee Votes</a> on Open Calgary. We check it daily, but the City only adds new votes about once a month<span id="city-updated"></span>, so newer meetings come from the minutes on the City's <a href="https://pub-calgary.escribemeetings.com/">meetings portal</a> until it does. Public hearings and committees the City's data leaves out come from the minutes too, and every day the City's data is checked against the minutes of every meeting this term so no vote goes missing. Code: <a href="https://github.com/TrackingOurCash/YYC">github.com/TrackingOurCash/YYC</a>. Latest vote in the data: <span id="latest">–</span>.</p>
     <p class="sources-link"><a href="sources.html">Sources: where every dataset on this site comes from →</a></p>
   </footer>
 </main>
@@ -296,6 +297,11 @@
     d.append(s, el("div", { className: "full" }, m.text));
     return d;
   }
+  const MINUTES_TAGS = {
+    new: ["From minutes", "Not in the City's votes data yet", "Read from this meeting's published minutes. It's swapped for the City's own record once the City adds the meeting."],
+    extra: ["From minutes", "The City's votes data leaves out this meeting", "Read from this meeting's published minutes. The City's votes data doesn't cover public hearings or most committees."],
+    gap: ["Missing from City data", "The City's votes data skipped this vote", "The City's data has this meeting but not this vote, so it's read from the meeting's published minutes."],
+  };
   function motionCell(m) {
     if (!m.spend && !m.minutes) return motionText(m);
     const tags = el("div", { className: "tags" });
@@ -305,8 +311,9 @@
       tags.append(tag);
     }
     if (m.minutes) {
-      const tag = el("a", { className: "minutes-tag", href: m.minutes, target: "_blank", rel: "noopener" }, "From minutes");
-      hover(tag, "Not in the City's votes data yet", () => [["Read from this meeting's published minutes. It's swapped for the City's own record once the City adds the meeting.", ""]]);
+      const [label, title, body] = MINUTES_TAGS[m.minutesKind] || MINUTES_TAGS.new;
+      const tag = el("a", { className: "minutes-tag", href: m.minutes, target: "_blank", rel: "noopener" }, label);
+      hover(tag, title, () => [[body, ""]]);
       tags.append(tag);
     }
     const box = el("div");
@@ -318,15 +325,68 @@
     span.style.setProperty("--dot", m.carried ? "var(--s1)" : "var(--s2)");
     return span;
   }
+  // A half-circle of seats, one per member who voted or was absent: Yes from
+  // the left, then absent, then No from the right.
+  const SVG = "http://www.w3.org/2000/svg";
+  const layouts = new Map();
+  function seatLayout(n) {
+    if (layouts.has(n)) return layouts.get(n);
+    const R = 34, cx = 36, cy = 37;
+    const rows = n <= 10 ? 1 : n <= 26 ? 2 : 3;
+    const radii = rows === 1 ? [R] : Array.from({ length: rows }, (_, k) => R * (0.55 + 0.45 * k / (rows - 1)));
+    const total = radii.reduce((a, b) => a + b, 0);
+    const counts = radii.map((r) => Math.round(n * r / total));
+    counts[rows - 1] += n - counts.reduce((a, b) => a + b, 0);
+    const seats = [];
+    radii.forEach((r, k) => {
+      const c = counts[k];
+      for (let j = 0; j < c; j++) {
+        const a = Math.PI * (c === 1 ? 0.5 : 1 - j / (c - 1));
+        seats.push({ a, r, x: cx + r * Math.cos(a), y: cy - r * Math.sin(a) });
+      }
+    });
+    seats.sort((p, q) => q.a - p.a || p.r - q.r);
+    const gaps = radii.map((r, k) => (counts[k] > 1 ? Math.PI * r / (counts[k] - 1) : 2 * r));
+    if (rows > 1) gaps.push(R * 0.45 / (rows - 1));
+    const out = { seats, dot: Math.min(4.6, 0.42 * Math.min(...gaps)) };
+    layouts.set(n, out);
+    return out;
+  }
+  function seatChart(m) {
+    const votes = [...m.yes.map(() => "yes"), ...m.absent.map(() => "away"), ...m.no.map(() => "no")];
+    if (!votes.length) return "";
+    const { seats, dot } = seatLayout(votes.length);
+    const svg = document.createElementNS(SVG, "svg");
+    svg.setAttribute("class", "seat-chart");
+    svg.setAttribute("viewBox", "0 0 72 40");
+    svg.setAttribute("role", "img");
+    svg.setAttribute("aria-label", `${m.yes.length} Yes, ${m.no.length} No${m.absent.length ? `, ${m.absent.length} absent` : ""}`);
+    seats.forEach((p, k) => {
+      const c = document.createElementNS(SVG, "circle");
+      c.setAttribute("cx", p.x.toFixed(1));
+      c.setAttribute("cy", p.y.toFixed(1));
+      c.setAttribute("r", (votes[k] === "away" ? dot - 0.6 : dot).toFixed(2));
+      c.setAttribute("class", votes[k]);
+      svg.append(c);
+    });
+    hover(svg, `${m.yes.length} Yes, ${m.no.length} No${m.absent.length ? `, ${m.absent.length} absent` : ""}`, () => [
+      ["Yes", names(m.yes) || "None"],
+      ["No", names(m.no) || "None"],
+      ...(m.absent.length ? [["Absent", names(m.absent)]] : []),
+    ]);
+    const box = el("div", { className: "seat-box" });
+    box.append(svg, el("div", { className: "seat-count" }, `${m.yes.length}–${m.no.length}`));
+    return box;
+  }
+  const SEATS = { key: "seats", label: "Vote", num: true, cls: "seats", value: (m) => m.yes.length - m.no.length, render: seatChart };
   const COLS = [
     { key: "date", label: "Date", desc: true, cls: "date", value: (m) => m.date, render: (m) => dayName(m.date) },
     { key: "meeting", label: "Meeting", value: (m) => m.type },
     { key: "text", label: "Motion", cls: "motion", value: (m) => m.text, render: motionCell },
-    { key: "amount", label: "Largest $ in text", num: true, value: (m) => m.amount ?? -1, render: (m) => (m.amount ? money(m.amount) : "") },
+    { key: "amount", label: "Largest $", num: true, value: (m) => m.amount ?? -1, render: (m) => (m.amount ? money(m.amount) : "") },
     { key: "carried", label: "Result", value: (m) => m.carried, render: resultCell },
-    { key: "yes", label: "Yes", num: true, value: (m) => m.yes.length, render: (m) => num(m.yes.length) },
-    { key: "no", label: "No", num: true, value: (m) => m.no.length, render: (m) => num(m.no.length) },
     { key: "noNames", label: "Voted No", value: (m) => names(m.no), render: noNames },
+    SEATS,
   ];
   function voteCell(m, i) {
     const v = voteOf(m, i);
@@ -351,7 +411,7 @@
   function renderTable(rows) {
     // With members picked, their votes replace the Voted No column.
     const cols = state.picked.length
-      ? [...COLS.slice(0, -1), ...state.picked.map((i) => ({ key: `v${i}`, label: voters[i], value: (m) => voteOf(m, i), render: (m) => voteCell(m, i) }))]
+      ? [...COLS.slice(0, -2), ...state.picked.map((i) => ({ key: `v${i}`, label: voters[i], value: (m) => voteOf(m, i), render: (m) => voteCell(m, i) })), SEATS]
       : COLS;
     table($("t-head"), $("t-body"), rows, cols, state, () => { state.shown = 100; renderTable(filtered()); }, { limit: state.shown, rowClass: (m) => (marked(m) ? `mark ${state.mode === "spend" ? "spend" : "vote"}` : "") });
     $("more").hidden = rows.length <= state.shown;
@@ -375,8 +435,8 @@
     .then((data) => {
       voters = data.voters;
       types = data.meeting_types;
-      motions = data.motions.map(([date, t, carried, money, amount, text, yes, no, absent, spend, minutes]) => ({
-        date, type: types[t], council: / of Council$/.test(types[t]), carried: !!carried, money: !!money, amount, text, yes, no, absent, spend, minutes,
+      motions = data.motions.map(([date, t, carried, money, amount, text, yes, no, absent, spend, minutes, minutesKind]) => ({
+        date, type: types[t], council: / of Council$/.test(types[t]), carried: !!carried, money: !!money, amount, text, yes, no, absent, spend, minutes, minutesKind,
       }));
       const latest = motions.reduce((m, x) => (x.date > m ? x.date : m), "");
       $("latest").textContent = dayName(latest);
@@ -388,6 +448,12 @@
       $("lag").textContent = latest > cityLatest
         ? `The City adds new votes about once a month, and its data runs to ${dayName(cityLatest)}${updated}. Meetings since then, up to ${dayName(latest)}, are read from their published minutes and marked “From minutes” until the City catches up. Minutes don't say who was absent.`
         : `The City adds new votes about once a month, so the latest meeting here is ${dayName(latest)}${updated}.`;
+      const ck = data.check;
+      if (ck && ck.minutes_votes) {
+        $("lag").textContent += ck.missing
+          ? ` We also check the City's data against the minutes of every meeting this term: ${num(ck.missing)} of ${num(ck.minutes_votes)} recorded votes were missing from it, so they're added from the minutes and marked “Missing from City data”.`
+          : ` We also check the City's data against the minutes of every meeting this term, and all ${num(ck.minutes_votes)} recorded votes are in it.`;
+      }
       const bind = (id, key, evt = "change") => $(id).addEventListener(evt, (e) => { state[key] = e.target.value; state.shown = 100; render(); });
       bind("f-term", "term"); bind("f-meeting", "meeting"); bind("f-money", "money"); bind("f-q", "q", "input"); bind("f-their", "their");
       $("clear").addEventListener("click", () => { state.picked = []; state.their = ""; $("f-their").value = ""; state.shown = 100; render(); });

@@ -1,7 +1,13 @@
 """Turn data/votes/*.csv into site/data/votes.json for the council votes page.
 
-Votes come from the City's dataset, plus any later meetings read from the
-published minutes; those carry a link to the minutes they came from.
+Votes come from the City's dataset, plus votes read from the published
+minutes (collectors/votes_minutes.py), which carry a link to their minutes:
+- meetings after the dataset's newest one, or of a kind the dataset never
+  covers (public hearings, most committees), come from the minutes;
+- for meetings the dataset has, each vote in the minutes is matched to the
+  City's record by date, meeting, wording and vote counts. Votes the City
+  left out are kept and marked, and the result of the check is saved in
+  data/votes/check.json and shown on the page.
 
 The JSON is compact: names and meeting types are stored once and motions
 refer to them by index.
@@ -24,6 +30,7 @@ import csv
 import json
 import re
 from collections import defaultdict
+from difflib import SequenceMatcher
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -144,14 +151,110 @@ def read(name: str) -> list[dict]:
         return list(csv.DictReader(f))
 
 
+def norm(text: str) -> str:
+    return re.sub(r"[^a-z0-9]+", " ", clean(text).lower()).strip()[:600]
+
+
+def from_minutes(motions, ballots, m_motions, m_ballots, city_latest: str):
+    """The minutes votes to show, each with a kind:
+    "new"  the meeting is after the City's newest one;
+    "extra" the City's data never covers this kind of meeting;
+    "gap"  the City's data has the meeting but not this vote.
+    Also returns the check of the City's data against the minutes."""
+    types = {m["meeting_type"] for m in motions}
+    counts = defaultdict(lambda: [0, 0])
+    for b in ballots:
+        if b["vote"] in ("Yes", "No"):
+            counts[b["motion_id"]][b["vote"] == "No"] += 1
+    m_counts = defaultdict(lambda: [0, 0])
+    for b in m_ballots:
+        m_counts[b["motion_id"]][b["vote"] == "No"] += 1
+    city = defaultdict(list)
+    for m in motions:
+        city[(m["date"], m["meeting_type"])].append(m)
+
+    keep, gaps = [], defaultdict(int)
+    checked = matched = 0
+    meetings = set()
+    for (date, kind), group in sorted(_group(m_motions).items()):
+        if kind not in types:
+            keep += [{**m, "kind": "extra"} for m in group]
+            continue
+        if date > city_latest:
+            keep += [{**m, "kind": "new"} for m in group]
+            continue
+        meetings.add((date, kind))
+        left = match(group, city.get((date, kind), []), m_counts, counts)
+        checked += len(group)
+        matched += len(group) - len(left)
+        keep += [{**m, "kind": "gap"} for m in left]
+        if left:
+            gaps[(date, kind)] += len(left)
+    check = {
+        "city_latest": city_latest,
+        "meetings": len(meetings),
+        "minutes_votes": checked,
+        "matched": matched,
+        "missing": checked - matched,
+        "missing_by_meeting": [{"date": d, "meeting": k, "votes": n} for (d, k), n in sorted(gaps.items())],
+    }
+    return keep, check
+
+
+def match(minutes, city, m_counts, counts) -> list[dict]:
+    """Pair one meeting's votes from the minutes with the City's records of
+    it; returns the minutes votes left without a partner. Same wording first,
+    then the closest wording (85% alike, or 75% with the same vote counts),
+    then whatever is left with the same result and the same vote counts."""
+    pool = {c["id"]: c for c in city}
+    ctext = {c["id"]: norm(c["resolution"]) for c in city}
+    left = []
+    for m in minutes:
+        t = norm(m["resolution"])
+        same = [i for i in pool if ctext[i] == t]
+        if same:
+            del pool[next((i for i in same if counts[i] == m_counts[m["id"]]), same[0])]
+        else:
+            left.append(m)
+    pairs = []
+    for m in left:
+        t = norm(m["resolution"])
+        for i in pool:
+            sm = SequenceMatcher(None, t, ctext[i], autojunk=False)
+            if sm.real_quick_ratio() < 0.6 or sm.quick_ratio() < 0.6:
+                continue
+            r = sm.ratio() + (0.1 if counts[i] == m_counts[m["id"]] else 0)
+            if r >= 0.85:
+                pairs.append((r, m["id"], i))
+    done = set()
+    for _, mid, i in sorted(pairs, reverse=True):
+        if mid in done or i not in pool:
+            continue
+        done.add(mid)
+        del pool[i]
+    left = [m for m in left if m["id"] not in done]
+    still = []
+    for m in left:
+        i = next((i for i, c in pool.items() if counts[i] == m_counts[m["id"]] and c["result"] == m["result"]), None)
+        if i is None:
+            still.append(m)
+        else:
+            del pool[i]
+    return still
+
+
+def _group(rows):
+    out = defaultdict(list)
+    for m in rows:
+        out[(m["date"], m["meeting_type"])].append(m)
+    return out
+
+
 def main() -> None:
     motions = read("motions.csv")
     ballots = read("ballots.csv")
-    # Meetings newer than the City's dataset come from the published minutes
-    # (collectors/votes_minutes.py). Once the dataset has a meeting date, its
-    # own rows win and the minutes copy is dropped.
     city_latest = max(m["date"] for m in motions)
-    recent = [m for m in read("minutes_motions.csv") if m["date"] > city_latest]
+    recent, check = from_minutes(motions, ballots, read("minutes_motions.csv"), read("minutes_ballots.csv"), city_latest)
     recent_ids = {m["id"] for m in recent}
     motions += recent
     ballots += [b for b in read("minutes_ballots.csv") if b["motion_id"] in recent_ids]
@@ -181,6 +284,7 @@ def main() -> None:
             sorted(v["Absent"]),
             adds_spending(m["resolution"]),
             m.get("minutes_url") or None,
+            m.get("kind") or None,
         ])
 
     meta = SRC / "dataset.json"
@@ -190,11 +294,15 @@ def main() -> None:
     OUT.write_text(json.dumps({
         "city_updated": city_updated,
         "city_latest": city_latest,
-        "fields": ["date", "meeting_type", "carried", "mentions_money", "largest_amount", "resolution", "yes", "no", "absent", "adds_spending", "minutes_url"],
+        "fields": ["date", "meeting_type", "carried", "mentions_money", "largest_amount", "resolution", "yes", "no", "absent", "adds_spending", "minutes_url", "minutes_kind"],
+        "check": check,
         "voters": voters,
         "meeting_types": types,
         "motions": out,
     }, separators=(",", ":"), ensure_ascii=False) + "\n")
+    (SRC / "check.json").write_text(json.dumps(check, indent=1) + "\n")
+    print(f"check: {check['minutes_votes']} votes in minutes of {check['meetings']} meetings the City's data covers; "
+          f"{check['matched']} matched, {check['missing']} missing from the City's data")
     print(f"wrote {OUT.relative_to(ROOT)}: {len(out)} motions ({len(recent)} from minutes, {sum(1 for m in out if m[9])} adding spending), {len(voters)} members")
 
 

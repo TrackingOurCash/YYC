@@ -41,9 +41,9 @@ jobs:
       - name: Council votes (Open Calgary)
         if: ${{ !cancelled() }}
         run: python scripts/run_source.py votes "Council votes (Open Calgary)" --keep data/votes/motions.csv data/votes/ballots.csv data/votes/dataset.json -- python collectors/votes.py
-      - name: Council votes since the City's last update (meeting minutes)
+      - name: Council votes from meeting minutes (newer meetings, public hearings, committees, and a check of the City's data)
         if: ${{ !cancelled() }}
-        run: python scripts/run_source.py votes_minutes "Council votes from meeting minutes" --keep data/votes/minutes_motions.csv data/votes/minutes_ballots.csv -- python collectors/votes_minutes.py
+        run: python scripts/run_source.py votes_minutes "Council votes from meeting minutes" --keep data/votes/minutes_motions.csv data/votes/minutes_ballots.csv data/votes/minutes_meetings.csv -- python collectors/votes_minutes.py
       - name: Salary list (Open Calgary)
         if: ${{ !cancelled() }}
         run: python scripts/run_source.py compensation "Salary list (Open Calgary)" --keep data/jobs/compensation.csv -- python collectors/compensation.py

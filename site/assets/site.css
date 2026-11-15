@@ -22,6 +22,9 @@
   --y-other: #b5b3aa;
   /* Council motions that add spending. */
   --spend: #b8467a;
+  /* Seats in the council vote chart. */
+  --yes: #178a4c;
+  --no: #e0453a;
   --hover: rgba(11, 11, 11, 0.04);
   --link: #1c5cab;
 }
@@ -47,6 +50,8 @@
     --y2026: #d9a812;
     --y-other: #5a5954;
     --spend: #c95591;
+    --yes: #2fae68;
+    --no: #d8392f;
     --hover: rgba(255, 255, 255, 0.05);
     --link: #86b6ef;
   }
@@ -72,6 +77,8 @@
   --y2026: #d9a812;
   --y-other: #5a5954;
   --spend: #c95591;
+  --yes: #2fae68;
+  --no: #d8392f;
   --hover: rgba(255, 255, 255, 0.05);
   --link: #86b6ef;
 }
@@ -190,7 +197,7 @@ a.card:hover { border-color: var(--s1); }
   font: inherit; font-size: 14px; color: var(--ink); background: var(--surface);
   border: 1px solid var(--border); border-radius: 8px; padding: 6px 10px; min-width: 220px;
 }
-td.motion { min-width: 22rem; max-width: 40rem; }
+td.motion { min-width: 18rem; max-width: 40rem; }
 td.motion details summary { cursor: pointer; color: var(--ink); list-style: none; }
 td.motion details summary::-webkit-details-marker { display: none; }
 td.motion details summary .more-toggle { color: var(--link); white-space: nowrap; }
@@ -239,3 +246,18 @@ tbody tr.mark td:first-child { box-shadow: inset 3px 0 0 var(--mark); }
 .minutes-tag::before { content: ""; width: 8px; height: 8px; border-radius: 2px; border: 1.5px solid var(--muted); box-sizing: border-box; }
 .spend-tag::before { content: ""; width: 8px; height: 8px; border-radius: 2px; background: var(--spend); }
 .vote-away { color: var(--muted); }
+
+/* Council vote seat charts: one dot per member, Yes left, No right. */
+td.seats { width: 1%; padding-top: 6px; padding-bottom: 6px; }
+.seat-box { display: inline-flex; flex-direction: column; align-items: center; gap: 2px; }
+.seat-count { font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.seat-chart { display: block; width: 72px; height: 40px; overflow: visible; cursor: default; }
+.seat-chart .yes { fill: var(--yes); }
+.seat-chart .no { fill: var(--no); }
+.seat-chart .away { fill: none; stroke: var(--muted); stroke-width: 1.2; }
+.seat-legend { display: inline-flex; gap: 12px; flex-wrap: wrap; font-size: 12px; color: var(--muted); }
+.seat-legend span { display: inline-flex; align-items: center; gap: 5px; }
+.seat-legend i { width: 9px; height: 9px; border-radius: 50%; display: inline-block; box-sizing: border-box; }
+.seat-legend .yes { background: var(--yes); }
+.seat-legend .no { background: var(--no); }
+.seat-legend .away { border: 1.2px solid var(--muted); }

@@ -1,22 +1,29 @@
-"""Collect recent council and committee votes from the City's published minutes.
+"""Collect council and committee votes from the City's published minutes.
 
 Open Calgary's Council and Committee Votes dataset is only refreshed about
-once a month, so the latest meetings take weeks to appear in it. The City
-posts each meeting's minutes on its eScribe portal within days, and every
-recorded vote in them lists who voted for and against. This reads those
-minutes for meetings after the newest one in the dataset, so the votes page
-can show them until the dataset catches up; build_votes.py then drops them
-in favour of the City's own data.
+once a month, and it leaves out public hearings and most committees. The
+City posts each meeting's minutes on its eScribe portal, usually within days
+(council's own minutes once council approves them at its next meeting), and
+every recorded vote in them lists who voted for and against. Agendas carry
+no votes; they only list what will be discussed.
 
-Only meeting types the dataset itself covers are read (it leaves out public
-hearings and most committees), so the page doesn't change scope when the
-minutes are swapped out. Minutes don't list absences.
+This reads the minutes of every meeting since the start of the council term
+that has them, once each, and keeps what it read. build_votes.py then uses
+them two ways:
+- meetings the City's dataset doesn't have yet, or never covers, are shown
+  from the minutes;
+- for meetings the dataset does have, each motion in the minutes is matched
+  to the City's record, and any the City left out are kept, so the page
+  doesn't lose votes when the City's monthly update is incomplete.
+
+Minutes don't list absences.
 
 Writes:
-  data/votes/minutes_motions.csv  one row per recorded vote
-  data/votes/minutes_ballots.csv  one row per member per vote
+  data/votes/minutes_motions.csv   one row per recorded vote
+  data/votes/minutes_ballots.csv   one row per member per vote
+  data/votes/minutes_meetings.csv  every meeting whose minutes were read
 
-Usage: python collectors/votes_minutes.py [--since YYYY-MM-DD]
+Usage: python collectors/votes_minutes.py [--since YYYY-MM-DD] [--reread]
 """
 
 from __future__ import annotations
@@ -117,21 +124,52 @@ def parse_minutes(html: str, by_surname: dict[str, str]) -> list[dict]:
     return out
 
 
-def run(since: str | None = None) -> dict:
-    latest, types, by_surname = dataset_state()
-    start = since or (dt.date.fromisoformat(latest) + dt.timedelta(days=1)).isoformat()
+TERM_START = "2025-10-20"
+
+
+def read_csv(path: Path) -> list[dict]:
+    if not path.exists():
+        return []
+    with path.open(newline="") as f:
+        return list(csv.DictReader(f))
+
+
+def calendar(s: requests.Session, start: str, end: str) -> list[dict]:
+    """Meetings between two dates, a month of the calendar at a time."""
+    out, day, last = [], dt.date.fromisoformat(start), dt.date.fromisoformat(end)
+    while day <= last:
+        stop = min(day + dt.timedelta(days=31), last)
+        out += meetings(s, day.isoformat(), stop.isoformat())
+        day = stop + dt.timedelta(days=1)
+    return out
+
+
+def run(since: str | None = None, reread: bool = False) -> dict:
+    _, _, by_surname = dataset_state()
+    start = since or TERM_START
     s = requests.Session()
     s.headers["User-Agent"] = USER_AGENT
+    old_meetings = [] if reread else read_csv(OUT / "minutes_meetings.csv")
+    # A meeting whose minutes showed no votes is looked at again for a month,
+    # in case the City posts fuller minutes.
+    recheck = (dt.date.today() - dt.timedelta(days=30)).isoformat()
+    old_meetings = [m for m in old_meetings if m["motions"] != "0" or m["date"] < recheck]
+    done = {m["escribe_id"] for m in old_meetings}
+    old_motions = [] if reread else read_csv(OUT / "minutes_motions.csv")
+    old_ballots = [] if reread else read_csv(OUT / "minutes_ballots.csv")
     motions, ballots, read = [], [], []
-    for m in sorted(meetings(s, start, dt.date.today().isoformat()), key=lambda m: m.get("StartDate", "")):
-        name, date = m.get("MeetingName", ""), m.get("StartDate", "")[:10].replace("/", "-")
+    seen_ids: set[str] = set()
+    for m in sorted(calendar(s, start, dt.date.today().isoformat()), key=lambda m: m.get("StartDate", "")):
+        name, date = m.get("MeetingName", "").strip(), m.get("StartDate", "")[:10].replace("/", "-")
         has_minutes = any(d.get("Type") == "PostMinutes" for d in m.get("MeetingDocumentLink") or [])
-        if name not in types or not has_minutes or not date:
+        if not has_minutes or not date or str(m["ID"]) in done or str(m["ID"]) in seen_ids:
             continue
+        seen_ids.add(str(m["ID"]))
         url = f"{PORTAL}/Meeting.aspx?Id={m['ID']}&Agenda=PostMinutes&lang=English"
         r = s.get(url, timeout=60)
         r.raise_for_status()
         seen: dict[str, int] = {}
+        count = 0
         for p in parse_minutes(r.text, by_surname):
             key = (date, name, p["resolution"], p["result"])
             n = seen[repr(key)] = seen.get(repr(key), -1) + 1
@@ -144,18 +182,28 @@ def run(since: str | None = None) -> dict:
                 "resolution": p["resolution"], "minutes_url": url,
             })
             ballots += [{"motion_id": motion_id, "voter": v, "vote": vote} for vote, names in p["votes"].items() for v in names]
-        read.append(f"{date} {name}")
+            count += 1
+        read.append({"escribe_id": str(m["ID"]), "date": date, "meeting_type": name, "motions": count,
+                     "read_on": dt.date.today().isoformat()})
         time.sleep(1)
+    # Keep everything read before; minutes don't change once posted.
+    new_ids = {m["id"] for m in motions}
+    motions += [m for m in old_motions if m["id"] not in new_ids]
+    ballots += [b for b in old_ballots if b["motion_id"] not in new_ids]
     write_csv(OUT / "minutes_motions.csv", motions,
               ["id", "date", "meeting_type", "result", "mentions_money", "largest_amount", "resolution", "minutes_url"],
-              sort_key=lambda m: (m["date"], m["meeting_type"], m["id"]), min_share=0)
-    # Empties out whenever the City's dataset catches up with the minutes.
-    write_csv(OUT / "minutes_ballots.csv", ballots, ["motion_id", "voter", "vote"], sort_key=lambda b: (b["motion_id"], b["voter"]), min_share=0)
+              sort_key=lambda m: (m["date"], m["meeting_type"], m["id"]))
+    write_csv(OUT / "minutes_ballots.csv", ballots, ["motion_id", "voter", "vote"], sort_key=lambda b: (b["motion_id"], b["voter"]))
+    write_csv(OUT / "minutes_meetings.csv", old_meetings + read, ["escribe_id", "date", "meeting_type", "motions", "read_on"],
+              sort_key=lambda m: (m["date"], m["meeting_type"], m["escribe_id"]))
     unmatched = sorted({b["voter"] for b in ballots} - set(by_surname.values()))
-    return {"after": start, "meetings": read, "motions": len(motions), "unmatched_names": unmatched}
+    return {"from": start, "meetings_read": [f"{m['date']} {m['meeting_type']} ({m['motions']})" for m in read],
+            "motions": len(motions), "unmatched_names": unmatched}
 
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
-    ap.add_argument("--since", help="read minutes from this date instead of the day after the dataset's newest meeting")
-    print(json.dumps(run(ap.parse_args().since)))
+    ap.add_argument("--since", help=f"look for minutes from this date (default {TERM_START}, the start of the council term)")
+    ap.add_argument("--reread", action="store_true", help="read every meeting's minutes again instead of only new ones")
+    a = ap.parse_args()
+    print(json.dumps(run(a.since, a.reread), indent=1))

@@ -14,6 +14,11 @@ jobs:
           python-version: "3.12"
       - run: pip install -r requirements.txt
       - run: |
-          python .github/scripts/dump16.py
+          git fetch origin main
+          git checkout origin/main -- collectors data/votes requirements.txt
+          cp .github/scripts/votes_minutes_new.py collectors/votes_minutes.py
+          rm -f data/votes/minutes_meetings.csv
+          python collectors/votes_minutes.py > run.json 2> err.txt || true
+          mkdir -p dump17; cp run.json err.txt data/votes/minutes_*.csv dump17/
           git config user.name dbg; git config user.email dbg@users.noreply.github.com
-          git add dump16; git commit -m "dump16 [skip ci]"; git push
+          git reset -q; git add dump17; git commit -m "dump17 [skip ci]"; git push origin HEAD:debug-detail

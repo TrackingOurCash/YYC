@@ -181,7 +181,7 @@ def from_minutes(motions, ballots, m_motions, m_ballots, city_latest: str):
             keep += [{**m, "kind": "extra"} for m in group]
             continue
         if date > city_latest:
-            keep += [{**m, "kind": "new"} for m in group]
+            keep += [{**m, "kind": "summary" if "FileStream" in m["minutes_url"] else "new"} for m in group]
             continue
         meetings.add((date, kind))
         left = match(group, city.get((date, kind), []), m_counts, counts)

@@ -186,8 +186,14 @@ def run(since: str | None = None, reread: bool = False) -> dict:
         read.append({"escribe_id": str(m["ID"]), "date": date, "meeting_type": name, "motions": count,
                      "read_on": dt.date.today().isoformat()})
         time.sleep(1)
-    # Keep everything read before; minutes don't change once posted.
+    # Keep everything read before; minutes don't change once posted. Votes
+    # taken from a Summary of Proceedings (scripts/read_proceedings.py) give
+    # way to the minutes once that meeting's minutes are read.
     new_ids = {m["id"] for m in motions}
+    have_minutes = {(m["date"], m["meeting_type"]) for m in motions}
+    old_motions = [m for m in old_motions if not ("FileStream" in m["minutes_url"] and (m["date"], m["meeting_type"]) in have_minutes)]
+    old_ids = {m["id"] for m in old_motions}
+    old_ballots = [b for b in old_ballots if b["motion_id"] in old_ids]
     motions += [m for m in old_motions if m["id"] not in new_ids]
     ballots += [b for b in old_ballots if b["motion_id"] not in new_ids]
     write_csv(OUT / "minutes_motions.csv", motions,

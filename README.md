@@ -64,7 +64,7 @@ python scripts/build_grants.py
 python scripts/build_workforce.py
 ```
 
-The GitHub Action in `.github/workflows/collect.yml` runs all of these every day at 13:00 UTC and commits any changes. `.github/workflows/pages.yml` then publishes `site/` to GitHub Pages.
+The GitHub Action in `.github/workflows/collect.yml` runs all of these every day at 11:32 UTC (4:32am Calgary time in winter, 5:32am in summer), with a backup run at 21:32 UTC (2:32pm / 3:32pm), and commits any changes. `.github/workflows/pages.yml` then publishes `site/` to GitHub Pages.
 
 ## Dashboard
 

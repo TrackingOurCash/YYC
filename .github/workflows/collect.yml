@@ -5,8 +5,8 @@ on:
     # Off the top of the hour, when GitHub is busiest and most likely to drop a
     # scheduled run (none fired Nov 7-11, 2026). The afternoon run is a backup;
     # when the morning one worked it finds little or nothing new.
-    - cron: "23 13 * * *" # 7:23 Calgary time (MDT) / 6:23 (MST)
-    - cron: "41 20 * * *" # 14:41 / 13:41
+    - cron: "32 11 * * *" # 4:32 Calgary time in winter (MST) / 5:32 in summer (MDT)
+    - cron: "32 21 * * *" # 14:32 / 15:32
   workflow_dispatch:
 
 permissions:

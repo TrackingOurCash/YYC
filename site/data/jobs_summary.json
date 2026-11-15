@@ -1,14 +1,14 @@
 {
- "generated": "2026-11-11",
+ "generated": "2026-11-15",
  "tracking_since": "2024-01-05",
  "total": {
-  "postings": 3201,
-  "positions": 3560,
-  "permanent": 368,
-  "temporary": 351,
+  "postings": 3208,
+  "positions": 3574,
+  "permanent": 374,
+  "temporary": 359,
   "unknown_type": 2841,
-  "est_annual_cost": 171833105,
-  "with_pay": 1491
+  "est_annual_cost": 173983262,
+  "with_pay": 1505
  },
  "by_month": {
   "2024-01": {
@@ -26,8 +26,8 @@
    "permanent": 0,
    "temporary": 2,
    "unknown_type": 276,
-   "est_annual_cost": 7402807,
-   "with_pay": 81
+   "est_annual_cost": 7616693,
+   "with_pay": 83
   },
   "2024-03": {
    "postings": 77,
@@ -35,8 +35,8 @@
    "permanent": 0,
    "temporary": 0,
    "unknown_type": 77,
-   "est_annual_cost": 3431675,
-   "with_pay": 36
+   "est_annual_cost": 3538618,
+   "with_pay": 37
   },
   "2024-05": {
    "postings": 135,
@@ -44,8 +44,8 @@
    "permanent": 1,
    "temporary": 3,
    "unknown_type": 134,
-   "est_annual_cost": 6900015,
-   "with_pay": 70
+   "est_annual_cost": 6998286,
+   "with_pay": 71
   },
   "2024-07": {
    "postings": 119,
@@ -170,8 +170,8 @@
    "permanent": 14,
    "temporary": 9,
    "unknown_type": 80,
-   "est_annual_cost": 6522309,
-   "with_pay": 56
+   "est_annual_cost": 6736195,
+   "with_pay": 58
   },
   "2025-09": {
    "postings": 88,
@@ -215,8 +215,8 @@
    "permanent": 18,
    "temporary": 13,
    "unknown_type": 76,
-   "est_annual_cost": 6701697,
-   "with_pay": 52
+   "est_annual_cost": 6779566,
+   "with_pay": 53
   },
   "2026-04": {
    "postings": 101,
@@ -282,13 +282,13 @@
    "with_pay": 98
   },
   "2026-11": {
-   "postings": 39,
-   "positions": 74,
-   "permanent": 49,
-   "temporary": 25,
+   "postings": 46,
+   "positions": 88,
+   "permanent": 55,
+   "temporary": 33,
    "unknown_type": 0,
-   "est_annual_cost": 7521544,
-   "with_pay": 38
+   "est_annual_cost": 8960846,
+   "with_pay": 45
   }
  },
  "by_category": {
@@ -311,31 +311,31 @@
    "with_pay": 24
   },
   "Business/Customer Support": {
-   "postings": 372,
-   "positions": 409,
+   "postings": 374,
+   "positions": 411,
    "permanent": 38,
-   "temporary": 70,
+   "temporary": 72,
    "unknown_type": 301,
-   "est_annual_cost": 24066763,
-   "with_pay": 220
+   "est_annual_cost": 24325713,
+   "with_pay": 223
   },
   "Science/Technical": {
-   "postings": 209,
-   "positions": 224,
+   "postings": 210,
+   "positions": 225,
    "permanent": 16,
-   "temporary": 22,
+   "temporary": 23,
    "unknown_type": 186,
-   "est_annual_cost": 15077634,
-   "with_pay": 143
+   "est_annual_cost": 15191430,
+   "with_pay": 144
   },
   "Information Technology": {
-   "postings": 168,
-   "positions": 176,
-   "permanent": 13,
-   "temporary": 11,
+   "postings": 169,
+   "positions": 181,
+   "permanent": 16,
+   "temporary": 13,
    "unknown_type": 152,
-   "est_annual_cost": 8698040,
-   "with_pay": 79
+   "est_annual_cost": 9767471,
+   "with_pay": 85
   },
   "Engineering and Geoscience": {
    "postings": 153,
@@ -401,13 +401,13 @@
    "with_pay": 19
   },
   "Accounting/Finance": {
-   "postings": 67,
-   "positions": 72,
-   "permanent": 10,
-   "temporary": 10,
+   "postings": 68,
+   "positions": 75,
+   "permanent": 12,
+   "temporary": 11,
    "unknown_type": 52,
-   "est_annual_cost": 5103287,
-   "with_pay": 45
+   "est_annual_cost": 5336893,
+   "with_pay": 46
   },
   "Planning": {
    "postings": 63,
@@ -428,13 +428,13 @@
    "with_pay": 36
   },
   "General Management": {
-   "postings": 57,
-   "positions": 57,
-   "permanent": 10,
+   "postings": 58,
+   "positions": 58,
+   "permanent": 11,
    "temporary": 3,
    "unknown_type": 44,
-   "est_annual_cost": 5053793,
-   "with_pay": 37
+   "est_annual_cost": 5233354,
+   "with_pay": 38
   },
   "Social Science/Services": {
    "postings": 56,
@@ -442,17 +442,17 @@
    "permanent": 1,
    "temporary": 1,
    "unknown_type": 55,
-   "est_annual_cost": 3359403,
-   "with_pay": 35
+   "est_annual_cost": 3457674,
+   "with_pay": 36
   },
   "Social and Human Sciences": {
-   "postings": 44,
-   "positions": 47,
+   "postings": 45,
+   "positions": 49,
    "permanent": 6,
-   "temporary": 5,
+   "temporary": 7,
    "unknown_type": 36,
-   "est_annual_cost": 3566127,
-   "with_pay": 31
+   "est_annual_cost": 3762669,
+   "with_pay": 32
   },
   "Communications/Marketing": {
    "postings": 44,
@@ -597,8 +597,8 @@
    "permanent": 1,
    "temporary": 0,
    "unknown_type": 2841,
-   "est_annual_cost": 112729574,
-   "with_pay": 1149
+   "est_annual_cost": 113440429,
+   "with_pay": 1156
   },
   "Recreation and Social Programs": {
    "postings": 34,
@@ -619,13 +619,13 @@
    "with_pay": 34
   },
   "Calgary Police Service": {
-   "postings": 25,
-   "positions": 41,
-   "permanent": 22,
-   "temporary": 19,
+   "postings": 26,
+   "positions": 46,
+   "permanent": 25,
+   "temporary": 21,
    "unknown_type": 0,
-   "est_annual_cost": 3147748,
-   "with_pay": 20
+   "est_annual_cost": 3682464,
+   "with_pay": 21
   },
   "Mobility": {
    "postings": 22,
@@ -637,13 +637,13 @@
    "with_pay": 21
   },
   "Calgary Transit": {
-   "postings": 19,
-   "positions": 23,
-   "permanent": 16,
+   "postings": 20,
+   "positions": 24,
+   "permanent": 17,
    "temporary": 7,
    "unknown_type": 0,
-   "est_annual_cost": 2414213,
-   "with_pay": 19
+   "est_annual_cost": 2593774,
+   "with_pay": 20
   },
   "Capital Planning and Business Services": {
    "postings": 16,
@@ -780,6 +780,15 @@
    "est_annual_cost": 1187209,
    "with_pay": 6
   },
+  "Fleet and Inventory": {
+   "postings": 5,
+   "positions": 6,
+   "permanent": 1,
+   "temporary": 5,
+   "unknown_type": 0,
+   "est_annual_cost": 684682,
+   "with_pay": 5
+  },
   "Calgary Fire Department": {
    "postings": 5,
    "positions": 8,
@@ -788,6 +797,24 @@
    "unknown_type": 0,
    "est_annual_cost": 811342,
    "with_pay": 5
+  },
+  "Law": {
+   "postings": 4,
+   "positions": 5,
+   "permanent": 4,
+   "temporary": 1,
+   "unknown_type": 0,
+   "est_annual_cost": 77869,
+   "with_pay": 1
+  },
+  "Supply Management": {
+   "postings": 4,
+   "positions": 6,
+   "permanent": 3,
+   "temporary": 3,
+   "unknown_type": 0,
+   "est_annual_cost": 540358,
+   "with_pay": 4
   },
   "Emergency Management & Community Safety": {
    "postings": 4,
@@ -807,15 +834,6 @@
    "est_annual_cost": 554463,
    "with_pay": 4
   },
-  "Fleet and Inventory": {
-   "postings": 4,
-   "positions": 5,
-   "permanent": 1,
-   "temporary": 4,
-   "unknown_type": 0,
-   "est_annual_cost": 581470,
-   "with_pay": 4
-  },
   "Green Line": {
    "postings": 4,
    "positions": 4,
@@ -833,6 +851,15 @@
    "unknown_type": 0,
    "est_annual_cost": 430444,
    "with_pay": 4
+  },
+  "Environmental Risk and Resilience": {
+   "postings": 3,
+   "positions": 3,
+   "permanent": 0,
+   "temporary": 3,
+   "unknown_type": 0,
+   "est_annual_cost": 352047,
+   "with_pay": 3
   },
   "Real Estate & Development Services": {
    "postings": 3,
@@ -861,15 +888,6 @@
    "est_annual_cost": 749149,
    "with_pay": 3
   },
-  "Supply Management": {
-   "postings": 3,
-   "positions": 3,
-   "permanent": 1,
-   "temporary": 2,
-   "unknown_type": 0,
-   "est_annual_cost": 306752,
-   "with_pay": 3
-  },
   "City and Regional Planning": {
    "postings": 3,
    "positions": 3,
@@ -888,14 +906,14 @@
    "est_annual_cost": 244999,
    "with_pay": 3
   },
-  "Law": {
-   "postings": 3,
-   "positions": 4,
-   "permanent": 4,
-   "temporary": 0,
+  "Partnerships": {
+   "postings": 2,
+   "positions": 3,
+   "permanent": 0,
+   "temporary": 3,
    "unknown_type": 0,
-   "est_annual_cost": 0,
-   "with_pay": 0
+   "est_annual_cost": 294813,
+   "with_pay": 2
   },
   "Marketing & Communications": {
    "postings": 2,
@@ -904,15 +922,6 @@
    "temporary": 2,
    "unknown_type": 0,
    "est_annual_cost": 201483,
-   "with_pay": 2
-  },
-  "Environmental Risk and Resilience": {
-   "postings": 2,
-   "positions": 2,
-   "permanent": 0,
-   "temporary": 2,
-   "unknown_type": 0,
-   "est_annual_cost": 238251,
    "with_pay": 2
   },
   "Development, Business and Building Services": {
@@ -1048,15 +1057,6 @@
    "temporary": 0,
    "unknown_type": 0,
    "est_annual_cost": 162670,
-   "with_pay": 1
-  },
-  "Partnerships": {
-   "postings": 1,
-   "positions": 1,
-   "permanent": 0,
-   "temporary": 1,
-   "unknown_type": 0,
-   "est_annual_cost": 98271,
    "with_pay": 1
   },
   "Water": {

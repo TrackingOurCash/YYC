@@ -1,0 +1,452 @@
+[
+ {
+  "id": "92e1e45e-2fd7-4165-b332-06c1ea477848",
+  "name": "Regular Meeting of Council",
+  "date": "2026/11/10 09:30:00",
+  "docs": [
+   "Agenda",
+   "Agenda",
+   "Video",
+   "AdditionalDocuments",
+   "AdditionalDocuments",
+   "AdditionalDocuments",
+   "AdditionalDocuments",
+   "AdditionalDocuments"
+  ],
+  "PostMinutes": {
+   "len": 128731,
+   "motions": 0,
+   "voters": 0,
+   "results": 0
+  },
+  "PostAgenda": {
+   "len": 128731,
+   "motions": 0,
+   "voters": 0,
+   "results": 0
+  },
+  "Agenda": {
+   "len": 128731,
+   "motions": 0,
+   "voters": 0,
+   "results": 0
+  },
+  "Merged": {
+   "len": 128731,
+   "motions": 0,
+   "voters": 0,
+   "results": 0
+  }
+ },
+ {
+  "id": "4a3ad5e9-98be-4988-91a4-0027715d2462",
+  "name": "Intergovernmental Affairs Committee",
+  "date": "2026/11/05 09:30:00",
+  "docs": [
+   "Agenda",
+   "Agenda",
+   "PostMinutes",
+   "Video"
+  ]
+ },
+ {
+  "id": "b2a6ece3-36ee-41e2-b964-003e8ed8c692",
+  "name": "Public Hearing Meeting of Council",
+  "date": "2026/11/09 09:30:00",
+  "docs": [
+   "Agenda",
+   "Agenda",
+   "Video",
+   "AdditionalDocuments",
+   "AdditionalDocuments",
+   "AdditionalDocuments",
+   "AdditionalDocuments",
+   "AdditionalDocuments",
+   "AdditionalDocuments",
+   "AdditionalDocuments",
+   "AdditionalDocuments",
+   "AdditionalDocuments",
+   "AdditionalDocuments",
+   "AdditionalDocuments",
+   "AdditionalDocuments",
+   "AdditionalDocuments",
+   "AdditionalDocuments",
+   "AdditionalDocuments",
+   "AdditionalDocuments",
+   "AdditionalDocuments",
+   "AdditionalDocuments",
+   "AdditionalDocuments",
+   "AdditionalDocuments",
+   "AdditionalDocuments",
+   "AdditionalDocuments",
+   "AdditionalDocuments",
+   "AdditionalDocuments",
+   "AdditionalDocuments",
+   "AdditionalDocuments",
+   "AdditionalDocuments",
+   "AdditionalDocuments",
+   "AdditionalDocuments",
+   "AdditionalDocuments",
+   "AdditionalDocuments"
+  ],
+  "PostMinutes": {
+   "len": 298745,
+   "motions": 0,
+   "voters": 0,
+   "results": 0
+  },
+  "PostAgenda": {
+   "len": 298745,
+   "motions": 0,
+   "voters": 0,
+   "results": 0
+  },
+  "Agenda": {
+   "len": 298745,
+   "motions": 0,
+   "voters": 0,
+   "results": 0
+  },
+  "Merged": {
+   "len": 298745,
+   "motions": 0,
+   "voters": 0,
+   "results": 0
+  }
+ },
+ {
+  "id": "12cb38f8-ea0d-4c5f-83c8-3c8a1a91f94d",
+  "name": "Community Development Committee",
+  "date": "2026/11/02 09:30:00",
+  "docs": [
+   "Agenda",
+   "Agenda",
+   "PostMinutes",
+   "Video",
+   "AdditionalDocuments",
+   "AdditionalDocuments"
+  ],
+  "PostMinutes": {
+   "len": 144562,
+   "motions": 14,
+   "voters": 9,
+   "results": 9
+  },
+  "PostAgenda": {
+   "len": 128820,
+   "motions": 0,
+   "voters": 0,
+   "results": 0
+  },
+  "Agenda": {
+   "len": 128820,
+   "motions": 0,
+   "voters": 0,
+   "results": 0
+  },
+  "Merged": {
+   "len": 128820,
+   "motions": 0,
+   "voters": 0,
+   "results": 0
+  }
+ },
+ {
+  "id": "fbbe1e9e-20eb-4d1d-9527-4b9acada86b9",
+  "name": "Regular Meeting of Council",
+  "date": "2026/10/27 09:30:00",
+  "docs": [
+   "Agenda",
+   "Agenda",
+   "PostMinutes",
+   "Video",
+   "AdditionalDocuments",
+   "AdditionalDocuments",
+   "AdditionalDocuments",
+   "AdditionalDocuments",
+   "AdditionalDocuments",
+   "AdditionalDocuments",
+   "AdditionalDocuments"
+  ],
+  "PostMinutes": {
+   "len": 419870,
+   "motions": 93,
+   "voters": 67,
+   "results": 67
+  },
+  "PostAgenda": {
+   "len": 308911,
+   "motions": 0,
+   "voters": 0,
+   "results": 0
+  },
+  "Agenda": {
+   "len": 308911,
+   "motions": 0,
+   "voters": 0,
+   "results": 0
+  },
+  "Merged": {
+   "len": 308911,
+   "motions": 0,
+   "voters": 0,
+   "results": 0
+  }
+ },
+ {
+  "id": "4ed9e1a0-eb1b-4af7-ab6b-6a2ea9e82634",
+  "name": "Chief Administrative Officer Recruitment and Appointment Sub-Committee",
+  "date": "2026/11/12 09:30:00",
+  "docs": [
+   "Agenda",
+   "Agenda",
+   "Video",
+   "AdditionalDocuments"
+  ]
+ },
+ {
+  "id": "d259624b-5aff-4bbe-9b10-8c660e2e9902",
+  "name": "Emergency Management Committee",
+  "date": "2026/10/21 09:30:00",
+  "docs": [
+   "Agenda",
+   "Agenda",
+   "PostMinutes",
+   "Video",
+   "AdditionalDocuments"
+  ]
+ },
+ {
+  "id": "90fc4947-eafe-46f0-971a-99417d22ebfa",
+  "name": "Executive Committee",
+  "date": "2026/10/26 09:30:00",
+  "docs": [
+   "Agenda",
+   "Agenda",
+   "PostMinutes",
+   "Video",
+   "AdditionalDocuments",
+   "AdditionalDocuments"
+  ],
+  "PostMinutes": {
+   "len": 132404,
+   "motions": 10,
+   "voters": 6,
+   "results": 6
+  },
+  "PostAgenda": {
+   "len": 120257,
+   "motions": 0,
+   "voters": 0,
+   "results": 0
+  },
+  "Agenda": {
+   "len": 120257,
+   "motions": 0,
+   "voters": 0,
+   "results": 0
+  },
+  "Merged": {
+   "len": 120257,
+   "motions": 0,
+   "voters": 0,
+   "results": 0
+  }
+ },
+ {
+  "id": "e2ee2111-c920-4c34-866e-99a72730d014",
+  "name": "Chief Administrative Officer Recruitment and Appointment Sub-Committee",
+  "date": "2026/10/22 09:30:00",
+  "docs": [
+   "Agenda",
+   "Agenda",
+   "PostMinutes",
+   "Video",
+   "AdditionalDocuments",
+   "AdditionalDocuments"
+  ]
+ },
+ {
+  "id": "4eefd084-2a40-401d-9a59-ae82a79ded04",
+  "name": "Infrastructure and Planning Committee",
+  "date": "2026/11/04 09:30:00",
+  "docs": [
+   "Agenda",
+   "Agenda",
+   "PostMinutes",
+   "Video",
+   "AdditionalDocuments",
+   "AdditionalDocuments",
+   "AdditionalDocuments",
+   "AdditionalDocuments"
+  ],
+  "PostMinutes": {
+   "len": 149521,
+   "motions": 11,
+   "voters": 7,
+   "results": 7
+  },
+  "PostAgenda": {
+   "len": 131316,
+   "motions": 0,
+   "voters": 0,
+   "results": 0
+  },
+  "Agenda": {
+   "len": 131316,
+   "motions": 0,
+   "voters": 0,
+   "results": 0
+  },
+  "Merged": {
+   "len": 131316,
+   "motions": 0,
+   "voters": 0,
+   "results": 0
+  }
+ },
+ {
+  "id": "bc584d9a-3a26-4101-998b-b7845450463a",
+  "name": "Organizational Meeting of Council",
+  "date": "2026/10/20 09:30:00",
+  "docs": [
+   "Agenda",
+   "Agenda",
+   "PostMinutes",
+   "Video",
+   "AdditionalDocuments",
+   "AdditionalDocuments",
+   "AdditionalDocuments",
+   "AdditionalDocuments",
+   "AdditionalDocuments",
+   "AdditionalDocuments",
+   "AdditionalDocuments",
+   "AdditionalDocuments",
+   "AdditionalDocuments",
+   "AdditionalDocuments"
+  ],
+  "PostMinutes": {
+   "len": 259171,
+   "motions": 44,
+   "voters": 27,
+   "results": 27
+  },
+  "PostAgenda": {
+   "len": 196932,
+   "motions": 0,
+   "voters": 0,
+   "results": 0
+  },
+  "Agenda": {
+   "len": 196932,
+   "motions": 0,
+   "voters": 0,
+   "results": 0
+  },
+  "Merged": {
+   "len": 196932,
+   "motions": 0,
+   "voters": 0,
+   "results": 0
+  }
+ },
+ {
+  "id": "d2d11a77-1548-4a5b-9a5b-bd66c5170ade",
+  "name": "Calgary Planning Commission",
+  "date": "2026/11/05 13:00:00",
+  "docs": [
+   "Agenda",
+   "Agenda",
+   "PostMinutes",
+   "Video",
+   "AdditionalDocuments",
+   "AdditionalDocuments",
+   "AdditionalDocuments",
+   "AdditionalDocuments",
+   "AdditionalDocuments"
+  ]
+ },
+ {
+  "id": "13162ba3-d263-4edf-b825-c1d2ab5b1894",
+  "name": "Pro-Tem Committee",
+  "date": "2026/10/20 09:30:00",
+  "docs": [
+   "Agenda",
+   "Agenda",
+   "PostMinutes",
+   "Video",
+   "AdditionalDocuments"
+  ]
+ },
+ {
+  "id": "4db88f2e-5363-40d9-aa59-d1586a13ccfe",
+  "name": "Calgary Planning Commission",
+  "date": "2026/10/22 13:00:00",
+  "docs": [
+   "Agenda",
+   "Agenda",
+   "PostMinutes",
+   "Video",
+   "AdditionalDocuments"
+  ]
+ },
+ {
+  "id": "a1a4ff94-1430-487d-b3d1-da78f40b5bd8",
+  "name": "Chief Administrative Officer Recruitment and Appointment Sub-Committee",
+  "date": "2026/10/23 09:30:00",
+  "docs": [
+   "Agenda",
+   "Agenda",
+   "PostMinutes",
+   "Video",
+   "AdditionalDocuments",
+   "AdditionalDocuments"
+  ]
+ },
+ {
+  "id": "86a503c1-a5bc-499c-8a63-e1a5aef513a1",
+  "name": "Chief Administrative Officer Recruitment and Appointment Sub-Committee",
+  "date": "2026/11/13 09:30:00",
+  "docs": [
+   "Agenda",
+   "Agenda",
+   "Video",
+   "AdditionalDocuments"
+  ]
+ },
+ {
+  "id": "77c20993-3b23-433f-ba9b-fb45f50e58c4",
+  "name": "Executive Committee",
+  "date": "2026/11/03 09:30:00",
+  "docs": [
+   "Agenda",
+   "Agenda",
+   "PostMinutes",
+   "Video"
+  ],
+  "PostMinutes": {
+   "len": 201273,
+   "motions": 35,
+   "voters": 23,
+   "results": 23
+  },
+  "PostAgenda": {
+   "len": 156524,
+   "motions": 0,
+   "voters": 0,
+   "results": 0
+  },
+  "Agenda": {
+   "len": 156524,
+   "motions": 0,
+   "voters": 0,
+   "results": 0
+  },
+  "Merged": {
+   "len": 156524,
+   "motions": 0,
+   "voters": 0,
+   "results": 0
+  }
+ }
+]

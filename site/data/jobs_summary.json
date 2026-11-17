@@ -1,14 +1,14 @@
 {
- "generated": "2026-11-16",
+ "generated": "2026-11-17",
  "tracking_since": "2024-01-05",
  "total": {
-  "postings": 3208,
-  "positions": 3574,
-  "permanent": 374,
-  "temporary": 359,
+  "postings": 3212,
+  "positions": 3578,
+  "permanent": 375,
+  "temporary": 362,
   "unknown_type": 2841,
-  "est_annual_cost": 173983262,
-  "with_pay": 1505
+  "est_annual_cost": 174310616,
+  "with_pay": 1509
  },
  "by_month": {
   "2024-01": {
@@ -152,8 +152,8 @@
    "permanent": 0,
    "temporary": 0,
    "unknown_type": 97,
-   "est_annual_cost": 4223979,
-   "with_pay": 40
+   "est_annual_cost": 4299400,
+   "with_pay": 41
   },
   "2025-07": {
    "postings": 40,
@@ -282,13 +282,13 @@
    "with_pay": 98
   },
   "2026-11": {
-   "postings": 46,
-   "positions": 88,
-   "permanent": 55,
-   "temporary": 33,
+   "postings": 50,
+   "positions": 92,
+   "permanent": 56,
+   "temporary": 36,
    "unknown_type": 0,
-   "est_annual_cost": 8960846,
-   "with_pay": 45
+   "est_annual_cost": 9212779,
+   "with_pay": 48
   }
  },
  "by_category": {
@@ -298,8 +298,8 @@
    "permanent": 18,
    "temporary": 44,
    "unknown_type": 553,
-   "est_annual_cost": 31101674,
-   "with_pay": 307
+   "est_annual_cost": 31177095,
+   "with_pay": 308
   },
   "Apprentice/Student": {
    "postings": 486,
@@ -311,13 +311,13 @@
    "with_pay": 24
   },
   "Business/Customer Support": {
-   "postings": 374,
-   "positions": 411,
-   "permanent": 38,
-   "temporary": 72,
+   "postings": 378,
+   "positions": 415,
+   "permanent": 39,
+   "temporary": 75,
    "unknown_type": 301,
-   "est_annual_cost": 24325713,
-   "with_pay": 223
+   "est_annual_cost": 24577646,
+   "with_pay": 226
   },
   "Science/Technical": {
    "postings": 210,
@@ -597,8 +597,8 @@
    "permanent": 1,
    "temporary": 0,
    "unknown_type": 2841,
-   "est_annual_cost": 113440429,
-   "with_pay": 1156
+   "est_annual_cost": 113515850,
+   "with_pay": 1157
   },
   "Recreation and Social Programs": {
    "postings": 34,
@@ -619,13 +619,13 @@
    "with_pay": 34
   },
   "Calgary Police Service": {
-   "postings": 26,
-   "positions": 46,
+   "postings": 27,
+   "positions": 47,
    "permanent": 25,
-   "temporary": 21,
+   "temporary": 22,
    "unknown_type": 0,
-   "est_annual_cost": 3682464,
-   "with_pay": 21
+   "est_annual_cost": 3765401,
+   "with_pay": 22
   },
   "Mobility": {
    "postings": 22,
@@ -646,13 +646,13 @@
    "with_pay": 20
   },
   "Capital Planning and Business Services": {
-   "postings": 16,
-   "positions": 21,
-   "permanent": 17,
+   "postings": 17,
+   "positions": 22,
+   "permanent": 18,
    "temporary": 4,
    "unknown_type": 0,
-   "est_annual_cost": 2289303,
-   "with_pay": 16
+   "est_annual_cost": 2382878,
+   "with_pay": 17
   },
   "Project Development": {
    "postings": 15,
@@ -663,6 +663,15 @@
    "est_annual_cost": 2141442,
    "with_pay": 13
   },
+  "Calgary Housing": {
+   "postings": 11,
+   "positions": 13,
+   "permanent": 5,
+   "temporary": 8,
+   "unknown_type": 0,
+   "est_annual_cost": 1174861,
+   "with_pay": 10
+  },
   "Finance": {
    "postings": 11,
    "positions": 14,
@@ -671,15 +680,6 @@
    "unknown_type": 0,
    "est_annual_cost": 1565963,
    "with_pay": 11
-  },
-  "Calgary Housing": {
-   "postings": 10,
-   "positions": 12,
-   "permanent": 5,
-   "temporary": 7,
-   "unknown_type": 0,
-   "est_annual_cost": 1174861,
-   "with_pay": 10
   },
   "Human Resources": {
    "postings": 10,
@@ -753,6 +753,15 @@
    "est_annual_cost": 2157970,
    "with_pay": 7
   },
+  "Calgary Fire Department": {
+   "postings": 6,
+   "positions": 9,
+   "permanent": 4,
+   "temporary": 5,
+   "unknown_type": 0,
+   "est_annual_cost": 886763,
+   "with_pay": 6
+  },
   "Community Strategies": {
    "postings": 6,
    "positions": 9,
@@ -787,15 +796,6 @@
    "temporary": 5,
    "unknown_type": 0,
    "est_annual_cost": 684682,
-   "with_pay": 5
-  },
-  "Calgary Fire Department": {
-   "postings": 5,
-   "positions": 8,
-   "permanent": 4,
-   "temporary": 4,
-   "unknown_type": 0,
-   "est_annual_cost": 811342,
    "with_pay": 5
   },
   "Law": {

@@ -1,14 +1,14 @@
 {
- "generated": "2026-11-17",
+ "generated": "2026-11-18",
  "tracking_since": "2024-01-05",
  "total": {
-  "postings": 3212,
-  "positions": 3578,
-  "permanent": 375,
-  "temporary": 362,
+  "postings": 3217,
+  "positions": 3586,
+  "permanent": 377,
+  "temporary": 368,
   "unknown_type": 2841,
-  "est_annual_cost": 174310616,
-  "with_pay": 1509
+  "est_annual_cost": 175760526,
+  "with_pay": 1522
  },
  "by_month": {
   "2024-01": {
@@ -26,8 +26,8 @@
    "permanent": 0,
    "temporary": 2,
    "unknown_type": 276,
-   "est_annual_cost": 7616693,
-   "with_pay": 83
+   "est_annual_cost": 7719905,
+   "with_pay": 84
   },
   "2024-03": {
    "postings": 77,
@@ -53,7 +53,7 @@
    "permanent": 0,
    "temporary": 0,
    "unknown_type": 119,
-   "est_annual_cost": 5142858,
+   "est_annual_cost": 5145124,
    "with_pay": 54
   },
   "2024-08": {
@@ -62,8 +62,8 @@
    "permanent": 0,
    "temporary": 0,
    "unknown_type": 94,
-   "est_annual_cost": 3998515,
-   "with_pay": 43
+   "est_annual_cost": 4075243,
+   "with_pay": 44
   },
   "2024-09": {
    "postings": 99,
@@ -107,8 +107,8 @@
    "permanent": 8,
    "temporary": 35,
    "unknown_type": 58,
-   "est_annual_cost": 5179971,
-   "with_pay": 38
+   "est_annual_cost": 5256699,
+   "with_pay": 39
   },
   "2025-02": {
    "postings": 239,
@@ -170,8 +170,8 @@
    "permanent": 14,
    "temporary": 9,
    "unknown_type": 80,
-   "est_annual_cost": 6736195,
-   "with_pay": 58
+   "est_annual_cost": 6839407,
+   "with_pay": 59
   },
   "2025-09": {
    "postings": 88,
@@ -197,8 +197,8 @@
    "permanent": 6,
    "temporary": 4,
    "unknown_type": 31,
-   "est_annual_cost": 1873974,
-   "with_pay": 16
+   "est_annual_cost": 1977186,
+   "with_pay": 17
   },
   "2026-01": {
    "postings": 252,
@@ -215,8 +215,8 @@
    "permanent": 18,
    "temporary": 13,
    "unknown_type": 76,
-   "est_annual_cost": 6779566,
-   "with_pay": 53
+   "est_annual_cost": 6882778,
+   "with_pay": 54
   },
   "2026-04": {
    "postings": 101,
@@ -233,7 +233,7 @@
    "permanent": 32,
    "temporary": 17,
    "unknown_type": 61,
-   "est_annual_cost": 8950298,
+   "est_annual_cost": 8952564,
    "with_pay": 66
   },
   "2026-06": {
@@ -242,8 +242,8 @@
    "permanent": 0,
    "temporary": 0,
    "unknown_type": 123,
-   "est_annual_cost": 6600213,
-   "with_pay": 65
+   "est_annual_cost": 6705691,
+   "with_pay": 66
   },
   "2026-07": {
    "postings": 90,
@@ -260,8 +260,8 @@
    "permanent": 0,
    "temporary": 0,
    "unknown_type": 41,
-   "est_annual_cost": 1645416,
-   "with_pay": 17
+   "est_annual_cost": 1722144,
+   "with_pay": 18
   },
   "2026-09": {
    "postings": 138,
@@ -282,13 +282,13 @@
    "with_pay": 98
   },
   "2026-11": {
-   "postings": 50,
-   "positions": 92,
-   "permanent": 56,
-   "temporary": 36,
+   "postings": 55,
+   "positions": 100,
+   "permanent": 58,
+   "temporary": 42,
    "unknown_type": 0,
-   "est_annual_cost": 9212779,
-   "with_pay": 48
+   "est_annual_cost": 9909647,
+   "with_pay": 53
   }
  },
  "by_category": {
@@ -298,8 +298,8 @@
    "permanent": 18,
    "temporary": 44,
    "unknown_type": 553,
-   "est_annual_cost": 31177095,
-   "with_pay": 308
+   "est_annual_cost": 31282573,
+   "with_pay": 309
   },
   "Apprentice/Student": {
    "postings": 486,
@@ -311,13 +311,13 @@
    "with_pay": 24
   },
   "Business/Customer Support": {
-   "postings": 378,
-   "positions": 415,
-   "permanent": 39,
-   "temporary": 75,
+   "postings": 381,
+   "positions": 418,
+   "permanent": 40,
+   "temporary": 77,
    "unknown_type": 301,
-   "est_annual_cost": 24577646,
-   "with_pay": 226
+   "est_annual_cost": 25274559,
+   "with_pay": 233
   },
   "Science/Technical": {
    "postings": 210,
@@ -356,13 +356,13 @@
    "with_pay": 82
   },
   "Labour/Operations Support": {
-   "postings": 146,
-   "positions": 235,
-   "permanent": 43,
-   "temporary": 68,
+   "postings": 148,
+   "positions": 240,
+   "permanent": 44,
+   "temporary": 72,
    "unknown_type": 124,
-   "est_annual_cost": 11812731,
-   "with_pay": 67
+   "est_annual_cost": 12460250,
+   "with_pay": 72
   },
   "Engineering Services": {
    "postings": 119,
@@ -597,8 +597,8 @@
    "permanent": 1,
    "temporary": 0,
    "unknown_type": 2841,
-   "est_annual_cost": 113515850,
-   "with_pay": 1157
+   "est_annual_cost": 114268892,
+   "with_pay": 1165
   },
   "Recreation and Social Programs": {
    "postings": 34,
@@ -619,13 +619,13 @@
    "with_pay": 34
   },
   "Calgary Police Service": {
-   "postings": 27,
-   "positions": 47,
+   "postings": 28,
+   "positions": 48,
    "permanent": 25,
-   "temporary": 22,
+   "temporary": 23,
    "unknown_type": 0,
-   "est_annual_cost": 3765401,
-   "with_pay": 22
+   "est_annual_cost": 3838510,
+   "with_pay": 23
   },
   "Mobility": {
    "postings": 22,
@@ -753,6 +753,24 @@
    "est_annual_cost": 2157970,
    "with_pay": 7
   },
+  "Emergency Management & Community Safety": {
+   "postings": 6,
+   "positions": 63,
+   "permanent": 62,
+   "temporary": 1,
+   "unknown_type": 0,
+   "est_annual_cost": 3333276,
+   "with_pay": 5
+  },
+  "Fleet and Inventory": {
+   "postings": 6,
+   "positions": 9,
+   "permanent": 1,
+   "temporary": 8,
+   "unknown_type": 0,
+   "est_annual_cost": 914866,
+   "with_pay": 6
+  },
   "Calgary Fire Department": {
    "postings": 6,
    "positions": 9,
@@ -789,15 +807,6 @@
    "est_annual_cost": 1187209,
    "with_pay": 6
   },
-  "Fleet and Inventory": {
-   "postings": 5,
-   "positions": 6,
-   "permanent": 1,
-   "temporary": 5,
-   "unknown_type": 0,
-   "est_annual_cost": 684682,
-   "with_pay": 5
-  },
   "Law": {
    "postings": 4,
    "positions": 5,
@@ -815,15 +824,6 @@
    "unknown_type": 0,
    "est_annual_cost": 540358,
    "with_pay": 4
-  },
-  "Emergency Management & Community Safety": {
-   "postings": 4,
-   "positions": 60,
-   "permanent": 60,
-   "temporary": 0,
-   "unknown_type": 0,
-   "est_annual_cost": 3042913,
-   "with_pay": 3
   },
   "Facilities": {
    "postings": 4,
@@ -986,6 +986,15 @@
    "unknown_type": 0,
    "est_annual_cost": 643873,
    "with_pay": 2
+  },
+  "Operational Services - Operational Excellence": {
+   "postings": 1,
+   "positions": 1,
+   "permanent": 0,
+   "temporary": 1,
+   "unknown_type": 0,
+   "est_annual_cost": 103212,
+   "with_pay": 1
   },
   "Government Relations": {
    "postings": 1,

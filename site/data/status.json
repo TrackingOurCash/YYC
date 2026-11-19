@@ -49,7 +49,7 @@
  },
  "votes_minutes": {
   "failing_since": "2026-11-18",
-  "fails_in_row": 2,
+  "fails_in_row": 3,
   "last_error": "IndexError: list index out of range",
   "last_ok": "2026-11-18",
   "last_run": "2026-11-19",

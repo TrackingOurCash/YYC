@@ -48,10 +48,10 @@
   "title": "Council votes (Open Calgary)"
  },
  "votes_minutes": {
-  "failing_since": "2026-11-18",
-  "fails_in_row": 3,
-  "last_error": "IndexError: list index out of range",
-  "last_ok": "2026-11-18",
+  "failing_since": null,
+  "fails_in_row": 0,
+  "last_error": "",
+  "last_ok": "2026-11-19",
   "last_run": "2026-11-19",
   "title": "Council votes from meeting minutes"
  },

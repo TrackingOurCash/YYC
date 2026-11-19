@@ -1,0 +1,138 @@
+{
+ "meta_columns": [
+  [
+   "meetingtype",
+   "MeetingType",
+   "text"
+  ],
+  [
+   "meetingdate",
+   "MeetingDate",
+   "calendar_date"
+  ],
+  [
+   "resolution",
+   "Resolution",
+   "text"
+  ],
+  [
+   "voter",
+   "Voter",
+   "text"
+  ],
+  [
+   "vote",
+   "Vote",
+   "text"
+  ],
+  [
+   "result",
+   "Result",
+   "text"
+  ]
+ ],
+ "blank_voter_sample": [
+  {
+   "meetingtype": "Audit Committee",
+   "meetingdate": "2020-11-19T00:00:00.000",
+   "resolution": "That with respect to Report AC2020-1306, the following be approved:\n\nThat the Audit Committee:\n\n\n\n1. Approve the Audit Committees 2021 Work Plan (Attachment); and\n\n2. Recommend that Council receive this Report and Attachment for the Corporate Record.",
+   "vote": "Yes",
+   "result": "MOTION CARRIED"
+  },
+  {
+   "meetingtype": "Audit Committee",
+   "meetingdate": "2020-11-19T00:00:00.000",
+   "resolution": "That with respect to Report AC2020-1306, the following be approved:\n\nThat the Audit Committee:\n\n\n\n1. Approve the Audit Committees 2021 Work Plan (Attachment); and\n\n2. Recommend that Council receive this Report and Attachment for the Corporate Record.",
+   "vote": "Yes",
+   "result": "MOTION CARRIED"
+  },
+  {
+   "meetingtype": "Audit Committee",
+   "meetingdate": "2020-11-19T00:00:00.000",
+   "resolution": "That with respect to Report AC2020-1306, the following be approved:\n\nThat the Audit Committee:\n\n\n\n1. Approve the Audit Committees 2021 Work Plan (Attachment); and\n\n2. Recommend that Council receive this Report and Attachment for the Corporate Record.",
+   "vote": "Yes",
+   "result": "MOTION CARRIED"
+  },
+  {
+   "meetingtype": "Audit Committee",
+   "meetingdate": "2020-11-19T00:00:00.000",
+   "resolution": "That with respect to Report AC2020-1306, the following be approved:\n\nThat the Audit Committee:\n\n\n\n1. Approve the Audit Committees 2021 Work Plan (Attachment); and\n\n2. Recommend that Council receive this Report and Attachment for the Corporate Record.",
+   "vote": "Yes",
+   "result": "MOTION CARRIED"
+  },
+  {
+   "meetingtype": "Audit Committee",
+   "meetingdate": "2020-11-19T00:00:00.000",
+   "resolution": "That with respect to Report AC2020-1306, the following be approved:\n\nThat the Audit Committee:\n\n\n\n1. Approve the Audit Committees 2021 Work Plan (Attachment); and\n\n2. Recommend that Council receive this Report and Attachment for the Corporate Record.",
+   "vote": "Yes",
+   "result": "MOTION CARRIED"
+  },
+  {
+   "meetingtype": "Audit Committee",
+   "meetingdate": "2020-11-19T00:00:00.000",
+   "resolution": "That with respect to Report AC2020-1306, the following be approved:\n\nThat the Audit Committee:\n\n\n\n1. Approve the Audit Committees 2021 Work Plan (Attachment); and\n\n2. Recommend that Council receive this Report and Attachment for the Corporate Record.",
+   "vote": "Yes",
+   "result": "MOTION CARRIED"
+  },
+  {
+   "meetingtype": "Audit Committee",
+   "meetingdate": "2020-11-19T00:00:00.000",
+   "resolution": "That with respect to Verbal Report AC2020-1337, the following be approved:\n\n\nThat the Audit Committee direct that the Closed Meeting discussions remain confidential pursuant to Section 24 (Advice from officials) of the\u00a0Freedom of Information and Protection of Privacy Act.",
+   "vote": "Yes",
+   "result": "MOTION CARRIED"
+  },
+  {
+   "meetingtype": "Audit Committee",
+   "meetingdate": "2020-11-19T00:00:00.000",
+   "resolution": "That with respect to Verbal Report AC2020-1337, the following be approved:\n\n\nThat the Audit Committee direct that the Closed Meeting discussions remain confidential pursuant to Section 24 (Advice from officials) of the\u00a0Freedom of Information and Protection of Privacy Act.",
+   "vote": "Yes",
+   "result": "MOTION CARRIED"
+  }
+ ],
+ "blank_count": [
+  {
+   "count": "8691"
+  }
+ ],
+ "by_year_blank": [
+  {
+   "y": "2021",
+   "count": "264"
+  },
+  {
+   "y": "2020",
+   "count": "8427"
+  }
+ ],
+ "by_year_all": [
+  {
+   "y": "2024",
+   "count": "9134"
+  },
+  {
+   "y": "2023",
+   "count": "7733"
+  },
+  {
+   "y": "2022",
+   "count": "10841"
+  },
+  {
+   "y": "2026",
+   "count": "7720"
+  },
+  {
+   "y": "2025",
+   "count": "7843"
+  },
+  {
+   "y": "2021",
+   "count": "12984"
+  },
+  {
+   "y": "2020",
+   "count": "8804"
+  }
+ ],
+ "sample_2020": []
+}

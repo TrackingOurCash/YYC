@@ -118,10 +118,23 @@ def keep_missing_meetings(motions: list[dict], ballots: list[dict]) -> int:
     return len(kept)
 
 
+def drop_unnamed_meetings(rows: list[dict]) -> list[tuple[str, str]]:
+    """Meetings where the City's rows are missing who voted.
+
+    The City's 2026-11-18 refresh blanked the voter on 8,691 rows from
+    October 2020 to early 2021. Without names each ballot would become its own
+    motion, so those meetings are left out of the City's rows here and
+    keep_missing_meetings keeps them from our earlier copy instead."""
+    bad = {((r.get("meetingdate") or "")[:10], r.get("meetingtype", "")) for r in rows if not clean(r.get("voter", ""))}
+    rows[:] = [r for r in rows if ((r.get("meetingdate") or "")[:10], r.get("meetingtype", "")) not in bad]
+    return sorted(bad)
+
+
 def run() -> dict:
     rows = fetch_all(DATASET, **{"$select": ":id,meetingtype,meetingdate,resolution,voter,vote,result"})
     if not rows:
         raise SystemExit("Open Calgary returned no votes.")
+    unnamed = drop_unnamed_meetings(rows)
     motions, ballots = group_motions(rows)
     kept = keep_missing_meetings(motions, ballots)
     write_csv(
@@ -137,6 +150,7 @@ def run() -> dict:
     if updated:
         (OUT / "dataset.json").write_text(json.dumps({"city_updated": updated}) + "\n")
     return {"rows": len(rows), "motions": len(motions), "kept_from_our_copy": kept,
+            "meetings_without_voter_names": len(unnamed),
             "money_motions": sum(1 for m in motions if m["mentions_money"]), "city_updated": updated}
 
 

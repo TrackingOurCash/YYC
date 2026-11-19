@@ -64,6 +64,8 @@ def dataset_state() -> tuple[str, set[str], dict[str, str]]:
     ever: dict[str, set[str]] = {}
     with (OUT / "ballots.csv").open(newline="") as f:
         for b in csv.DictReader(f):
+            if not b["voter"].strip():
+                continue
             surname = b["voter"].split()[-1].lower()
             ever.setdefault(surname, set()).add(b["voter"])
             if motions[b["motion_id"]]["date"] >= since:

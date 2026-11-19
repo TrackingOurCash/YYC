@@ -14,6 +14,6 @@ jobs:
           python-version: "3.12"
       - run: pip install -r requirements.txt
       - run: |
-          python .github/scripts/dump18.py
+          python .github/scripts/dump20.py || true
           git config user.name dbg; git config user.email dbg@users.noreply.github.com
-          git add dump18; git commit -m "dump18 [skip ci]"; git push origin HEAD:debug-detail
+          git add dump20; git commit -m "dump20 [skip ci]"; git push origin HEAD:debug-detail

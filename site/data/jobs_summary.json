@@ -2,13 +2,13 @@
  "generated": "2026-11-21",
  "tracking_since": "2024-01-05",
  "total": {
-  "postings": 3227,
-  "positions": 3597,
-  "permanent": 384,
+  "postings": 3228,
+  "positions": 3598,
+  "permanent": 385,
   "temporary": 372,
   "unknown_type": 2841,
-  "est_annual_cost": 177027424,
-  "with_pay": 1534
+  "est_annual_cost": 177115694,
+  "with_pay": 1535
  },
  "by_month": {
   "2024-01": {
@@ -282,13 +282,13 @@
    "with_pay": 98
   },
   "2026-11": {
-   "postings": 65,
-   "positions": 111,
-   "permanent": 65,
+   "postings": 66,
+   "positions": 112,
+   "permanent": 66,
    "temporary": 46,
    "unknown_type": 0,
-   "est_annual_cost": 11000934,
-   "with_pay": 63
+   "est_annual_cost": 11089204,
+   "with_pay": 64
   }
  },
  "by_category": {
@@ -320,13 +320,13 @@
    "with_pay": 234
   },
   "Science/Technical": {
-   "postings": 211,
-   "positions": 226,
-   "permanent": 16,
+   "postings": 212,
+   "positions": 227,
+   "permanent": 17,
    "temporary": 24,
    "unknown_type": 186,
-   "est_annual_cost": 15376778,
-   "with_pay": 146
+   "est_annual_cost": 15465048,
+   "with_pay": 147
   },
   "Information Technology": {
    "postings": 169,
@@ -744,6 +744,15 @@
    "est_annual_cost": 1796514,
    "with_pay": 8
   },
+  "Community Strategies": {
+   "postings": 7,
+   "positions": 10,
+   "permanent": 6,
+   "temporary": 4,
+   "unknown_type": 0,
+   "est_annual_cost": 1067656,
+   "with_pay": 7
+  },
   "Emergency Management &": {
    "postings": 7,
    "positions": 19,
@@ -778,15 +787,6 @@
    "temporary": 5,
    "unknown_type": 0,
    "est_annual_cost": 886763,
-   "with_pay": 6
-  },
-  "Community Strategies": {
-   "postings": 6,
-   "positions": 9,
-   "permanent": 5,
-   "temporary": 4,
-   "unknown_type": 0,
-   "est_annual_cost": 979386,
    "with_pay": 6
   },
   "Chief Administrative Office": {

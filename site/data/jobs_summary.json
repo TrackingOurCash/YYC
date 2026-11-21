@@ -1,14 +1,14 @@
 {
- "generated": "2026-11-20",
+ "generated": "2026-11-21",
  "tracking_since": "2024-01-05",
  "total": {
-  "postings": 3226,
-  "positions": 3596,
-  "permanent": 383,
+  "postings": 3227,
+  "positions": 3597,
+  "permanent": 384,
   "temporary": 372,
   "unknown_type": 2841,
-  "est_annual_cost": 176935896,
-  "with_pay": 1533
+  "est_annual_cost": 177027424,
+  "with_pay": 1534
  },
  "by_month": {
   "2024-01": {
@@ -282,13 +282,13 @@
    "with_pay": 98
   },
   "2026-11": {
-   "postings": 64,
-   "positions": 110,
-   "permanent": 64,
+   "postings": 65,
+   "positions": 111,
+   "permanent": 65,
    "temporary": 46,
    "unknown_type": 0,
-   "est_annual_cost": 10909406,
-   "with_pay": 62
+   "est_annual_cost": 11000934,
+   "with_pay": 63
   }
  },
  "by_category": {
@@ -481,6 +481,15 @@
    "est_annual_cost": 2814084,
    "with_pay": 26
   },
+  "Public Transit": {
+   "postings": 20,
+   "positions": 20,
+   "permanent": 5,
+   "temporary": 0,
+   "unknown_type": 15,
+   "est_annual_cost": 1010213,
+   "with_pay": 14
+  },
   "Property/Asset  Management": {
    "postings": 20,
    "positions": 20,
@@ -489,15 +498,6 @@
    "unknown_type": 20,
    "est_annual_cost": 1842320,
    "with_pay": 18
-  },
-  "Public Transit": {
-   "postings": 19,
-   "positions": 19,
-   "permanent": 4,
-   "temporary": 0,
-   "unknown_type": 15,
-   "est_annual_cost": 918685,
-   "with_pay": 13
   },
   "Real Estate and Facilities": {
    "postings": 17,
@@ -627,6 +627,15 @@
    "est_annual_cost": 4194032,
    "with_pay": 26
   },
+  "Calgary Transit": {
+   "postings": 22,
+   "positions": 26,
+   "permanent": 18,
+   "temporary": 8,
+   "unknown_type": 0,
+   "est_annual_cost": 2815199,
+   "with_pay": 22
+  },
   "Mobility": {
    "postings": 22,
    "positions": 31,
@@ -634,15 +643,6 @@
    "temporary": 18,
    "unknown_type": 0,
    "est_annual_cost": 3379486,
-   "with_pay": 21
-  },
-  "Calgary Transit": {
-   "postings": 21,
-   "positions": 25,
-   "permanent": 17,
-   "temporary": 8,
-   "unknown_type": 0,
-   "est_annual_cost": 2723671,
    "with_pay": 21
   },
   "Capital Planning and Business Services": {

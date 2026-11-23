@@ -1,14 +1,14 @@
 {
- "generated": "2026-11-22",
+ "generated": "2026-11-23",
  "tracking_since": "2024-01-05",
  "total": {
-  "postings": 3228,
-  "positions": 3598,
-  "permanent": 385,
+  "postings": 3229,
+  "positions": 3599,
+  "permanent": 386,
   "temporary": 372,
   "unknown_type": 2841,
-  "est_annual_cost": 177115694,
-  "with_pay": 1535
+  "est_annual_cost": 177229490,
+  "with_pay": 1536
  },
  "by_month": {
   "2024-01": {
@@ -282,13 +282,13 @@
    "with_pay": 98
   },
   "2026-11": {
-   "postings": 66,
-   "positions": 112,
-   "permanent": 66,
+   "postings": 67,
+   "positions": 113,
+   "permanent": 67,
    "temporary": 46,
    "unknown_type": 0,
-   "est_annual_cost": 11089204,
-   "with_pay": 64
+   "est_annual_cost": 11203000,
+   "with_pay": 65
   }
  },
  "by_category": {
@@ -446,13 +446,13 @@
    "with_pay": 36
   },
   "Social and Human Sciences": {
-   "postings": 46,
-   "positions": 50,
-   "permanent": 7,
+   "postings": 47,
+   "positions": 51,
+   "permanent": 8,
    "temporary": 7,
    "unknown_type": 36,
-   "est_annual_cost": 3865881,
-   "with_pay": 33
+   "est_annual_cost": 3979677,
+   "with_pay": 34
   },
   "Communications/Marketing": {
    "postings": 44,
@@ -619,13 +619,13 @@
    "with_pay": 34
   },
   "Calgary Police Service": {
-   "postings": 31,
-   "positions": 51,
-   "permanent": 27,
+   "postings": 32,
+   "positions": 52,
+   "permanent": 28,
    "temporary": 24,
    "unknown_type": 0,
-   "est_annual_cost": 4194032,
-   "with_pay": 26
+   "est_annual_cost": 4307828,
+   "with_pay": 27
   },
   "Calgary Transit": {
    "postings": 22,

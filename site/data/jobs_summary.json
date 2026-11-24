@@ -1,14 +1,14 @@
 {
- "generated": "2026-11-23",
+ "generated": "2026-11-24",
  "tracking_since": "2024-01-05",
  "total": {
-  "postings": 3229,
-  "positions": 3599,
+  "postings": 3230,
+  "positions": 3600,
   "permanent": 386,
-  "temporary": 372,
+  "temporary": 373,
   "unknown_type": 2841,
-  "est_annual_cost": 177229490,
-  "with_pay": 1536
+  "est_annual_cost": 177426032,
+  "with_pay": 1538
  },
  "by_month": {
   "2024-01": {
@@ -53,8 +53,8 @@
    "permanent": 0,
    "temporary": 0,
    "unknown_type": 119,
-   "est_annual_cost": 5145124,
-   "with_pay": 54
+   "est_annual_cost": 5243395,
+   "with_pay": 55
   },
   "2024-08": {
    "postings": 94,
@@ -282,13 +282,13 @@
    "with_pay": 98
   },
   "2026-11": {
-   "postings": 67,
-   "positions": 113,
+   "postings": 68,
+   "positions": 114,
    "permanent": 67,
-   "temporary": 46,
+   "temporary": 47,
    "unknown_type": 0,
-   "est_annual_cost": 11203000,
-   "with_pay": 65
+   "est_annual_cost": 11301271,
+   "with_pay": 66
   }
  },
  "by_category": {
@@ -298,8 +298,8 @@
    "permanent": 18,
    "temporary": 44,
    "unknown_type": 553,
-   "est_annual_cost": 31282573,
-   "with_pay": 309
+   "est_annual_cost": 31380844,
+   "with_pay": 310
   },
   "Apprentice/Student": {
    "postings": 486,
@@ -311,13 +311,13 @@
    "with_pay": 24
   },
   "Business/Customer Support": {
-   "postings": 382,
-   "positions": 419,
+   "postings": 383,
+   "positions": 420,
    "permanent": 40,
-   "temporary": 78,
+   "temporary": 79,
    "unknown_type": 301,
-   "est_annual_cost": 25368134,
-   "with_pay": 234
+   "est_annual_cost": 25466405,
+   "with_pay": 235
   },
   "Science/Technical": {
    "postings": 212,
@@ -597,8 +597,8 @@
    "permanent": 1,
    "temporary": 0,
    "unknown_type": 2841,
-   "est_annual_cost": 114444503,
-   "with_pay": 1167
+   "est_annual_cost": 114542774,
+   "with_pay": 1168
   },
   "Recreation and Social Programs": {
    "postings": 34,
@@ -655,13 +655,13 @@
    "with_pay": 17
   },
   "Project Development": {
-   "postings": 15,
-   "positions": 18,
+   "postings": 16,
+   "positions": 19,
    "permanent": 15,
-   "temporary": 3,
+   "temporary": 4,
    "unknown_type": 0,
-   "est_annual_cost": 2141442,
-   "with_pay": 13
+   "est_annual_cost": 2239713,
+   "with_pay": 14
   },
   "Finance": {
    "postings": 12,

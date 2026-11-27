@@ -3,64 +3,64 @@
   "failing_since": null,
   "fails_in_row": 0,
   "last_error": "",
-  "last_ok": "2026-11-26",
-  "last_run": "2026-11-26",
+  "last_ok": "2026-11-27",
+  "last_run": "2026-11-27",
   "title": "Budget (Open Calgary)"
  },
  "compensation": {
   "failing_since": null,
   "fails_in_row": 0,
   "last_error": "",
-  "last_ok": "2026-11-26",
-  "last_run": "2026-11-26",
+  "last_ok": "2026-11-27",
+  "last_run": "2026-11-27",
   "title": "Salary list (Open Calgary)"
  },
  "grants_civic": {
   "failing_since": null,
   "fails_in_row": 0,
   "last_error": "",
-  "last_ok": "2026-11-26",
-  "last_run": "2026-11-26",
+  "last_ok": "2026-11-27",
+  "last_run": "2026-11-27",
   "title": "Civic Partners grants"
  },
  "grants_fcss": {
   "failing_since": null,
   "fails_in_row": 0,
   "last_error": "",
-  "last_ok": "2026-11-26",
-  "last_run": "2026-11-26",
+  "last_ok": "2026-11-27",
+  "last_run": "2026-11-27",
   "title": "FCSS grants"
  },
  "jobs": {
   "failing_since": null,
   "fails_in_row": 0,
   "last_error": "",
-  "last_ok": "2026-11-26",
-  "last_run": "2026-11-26",
+  "last_ok": "2026-11-27",
+  "last_run": "2026-11-27",
   "title": "City job postings"
  },
  "votes": {
   "failing_since": null,
   "fails_in_row": 0,
   "last_error": "",
-  "last_ok": "2026-11-26",
-  "last_run": "2026-11-26",
+  "last_ok": "2026-11-27",
+  "last_run": "2026-11-27",
   "title": "Council votes (Open Calgary)"
  },
  "votes_minutes": {
   "failing_since": null,
   "fails_in_row": 0,
   "last_error": "",
-  "last_ok": "2026-11-26",
-  "last_run": "2026-11-26",
+  "last_ok": "2026-11-27",
+  "last_run": "2026-11-27",
   "title": "Council votes from meeting minutes"
  },
  "workforce": {
   "failing_since": null,
   "fails_in_row": 0,
   "last_error": "",
-  "last_ok": "2026-11-26",
-  "last_run": "2026-11-26",
+  "last_ok": "2026-11-27",
+  "last_run": "2026-11-27",
   "title": "City staff and payroll"
  }
 }

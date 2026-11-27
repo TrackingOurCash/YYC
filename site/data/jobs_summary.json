@@ -1,14 +1,14 @@
 {
- "generated": "2026-11-26",
+ "generated": "2026-11-27",
  "tracking_since": "2024-01-05",
  "total": {
-  "postings": 3240,
-  "positions": 3611,
+  "postings": 3243,
+  "positions": 3614,
   "permanent": 390,
-  "temporary": 380,
+  "temporary": 383,
   "unknown_type": 2841,
-  "est_annual_cost": 178853361,
-  "with_pay": 1553
+  "est_annual_cost": 179152526,
+  "with_pay": 1556
  },
  "by_month": {
   "2024-01": {
@@ -282,13 +282,13 @@
    "with_pay": 98
   },
   "2026-11": {
-   "postings": 78,
-   "positions": 125,
+   "postings": 81,
+   "positions": 128,
    "permanent": 71,
-   "temporary": 54,
+   "temporary": 57,
    "unknown_type": 0,
-   "est_annual_cost": 12245768,
-   "with_pay": 76
+   "est_annual_cost": 12544933,
+   "with_pay": 79
   }
  },
  "by_category": {
@@ -311,22 +311,22 @@
    "with_pay": 24
   },
   "Business/Customer Support": {
-   "postings": 388,
-   "positions": 426,
+   "postings": 389,
+   "positions": 427,
    "permanent": 42,
-   "temporary": 83,
+   "temporary": 84,
    "unknown_type": 301,
-   "est_annual_cost": 26043179,
-   "with_pay": 241
+   "est_annual_cost": 26141450,
+   "with_pay": 242
   },
   "Science/Technical": {
-   "postings": 212,
-   "positions": 227,
+   "postings": 213,
+   "positions": 228,
    "permanent": 17,
-   "temporary": 24,
+   "temporary": 25,
    "unknown_type": 186,
-   "est_annual_cost": 15465048,
-   "with_pay": 147
+   "est_annual_cost": 15583005,
+   "with_pay": 148
   },
   "Information Technology": {
    "postings": 170,
@@ -401,13 +401,13 @@
    "with_pay": 19
   },
   "Accounting/Finance": {
-   "postings": 70,
-   "positions": 77,
+   "postings": 71,
+   "positions": 78,
    "permanent": 12,
-   "temporary": 13,
+   "temporary": 14,
    "unknown_type": 52,
-   "est_annual_cost": 5689973,
-   "with_pay": 50
+   "est_annual_cost": 5772910,
+   "with_pay": 51
   },
   "Planning": {
    "postings": 63,
@@ -601,13 +601,13 @@
    "with_pay": 1173
   },
   "Calgary Police Service": {
-   "postings": 34,
-   "positions": 54,
+   "postings": 35,
+   "positions": 55,
    "permanent": 29,
-   "temporary": 25,
+   "temporary": 26,
    "unknown_type": 0,
-   "est_annual_cost": 4458806,
-   "with_pay": 29
+   "est_annual_cost": 4541743,
+   "with_pay": 30
   },
   "Recreation and Social Programs": {
    "postings": 34,
@@ -717,6 +717,15 @@
    "est_annual_cost": 2650220,
    "with_pay": 10
   },
+  "Occupational Health & Safety": {
+   "postings": 9,
+   "positions": 18,
+   "permanent": 6,
+   "temporary": 12,
+   "unknown_type": 0,
+   "est_annual_cost": 1914471,
+   "with_pay": 9
+  },
   "Climate and Environment": {
    "postings": 9,
    "positions": 9,
@@ -743,15 +752,6 @@
    "unknown_type": 0,
    "est_annual_cost": 824183,
    "with_pay": 7
-  },
-  "Occupational Health & Safety": {
-   "postings": 8,
-   "positions": 17,
-   "permanent": 6,
-   "temporary": 11,
-   "unknown_type": 0,
-   "est_annual_cost": 1796514,
-   "with_pay": 8
   },
   "Community Strategies": {
    "postings": 7,
@@ -807,6 +807,15 @@
    "est_annual_cost": 1187209,
    "with_pay": 6
   },
+  "Facilities": {
+   "postings": 5,
+   "positions": 7,
+   "permanent": 1,
+   "temporary": 6,
+   "unknown_type": 0,
+   "est_annual_cost": 652734,
+   "with_pay": 5
+  },
   "Law": {
    "postings": 4,
    "positions": 5,
@@ -823,15 +832,6 @@
    "temporary": 3,
    "unknown_type": 0,
    "est_annual_cost": 540358,
-   "with_pay": 4
-  },
-  "Facilities": {
-   "postings": 4,
-   "positions": 6,
-   "permanent": 1,
-   "temporary": 5,
-   "unknown_type": 0,
-   "est_annual_cost": 554463,
    "with_pay": 4
   },
   "Green Line": {
